@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math"
+	"strings"
 
 	v1 "demo/api/my_track_wallet/v1"
 	"demo/internal/dao"
@@ -11,6 +12,7 @@ import (
 	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
+	"demo/utility"
 
 	hyperliquid "github.com/sonirico/go-hyperliquid"
 )
@@ -232,4 +234,69 @@ func (s *sMyTrackWallet) entityToItem(ctx context.Context, e entity.MyTrackWalle
 	item.TotalPositionValue = fmt.Sprintf("%.4f", totalPosValue)
 
 	return item
+}
+
+// ==================== 导出/导入分享码 ====================
+
+// Export 导出当前用户所有跟踪钱包为分享码
+func (s *sMyTrackWallet) Export(ctx context.Context, userId int64) (res *v1.MyTrackWalletExportRes, err error) {
+	var items []entity.MyTrackWallet
+	err = dao.MyTrackWallet.Ctx(ctx).
+		Where(do.MyTrackWallet{UserId: userId}).
+		Scan(&items)
+	if err != nil {
+		return nil, err
+	}
+	if len(items) == 0 {
+		return nil, fmt.Errorf("没有可导出的跟踪钱包")
+	}
+
+	wallets := make([]string, 0, len(items))
+	for _, item := range items {
+		wallets = append(wallets, item.Wallet)
+	}
+
+	code, err := utility.EncodeWallets(wallets)
+	if err != nil {
+		return nil, err
+	}
+	return &v1.MyTrackWalletExportRes{Code: code}, nil
+}
+
+// Import 通过分享码导入跟踪钱包（跳过已存在的地址）
+func (s *sMyTrackWallet) Import(ctx context.Context, userId int64, in v1.MyTrackWalletImportReq) (res *v1.MyTrackWalletImportRes, err error) {
+	wallets, err := utility.DecodeWallets(in.Code)
+	if err != nil {
+		return nil, err
+	}
+
+	// 查询当前用户已有的钱包地址，避免重复
+	var existing []entity.MyTrackWallet
+	err = dao.MyTrackWallet.Ctx(ctx).
+		Where(do.MyTrackWallet{UserId: userId}).
+		Scan(&existing)
+	if err != nil {
+		return nil, err
+	}
+	existMap := make(map[string]bool, len(existing))
+	for _, e := range existing {
+		existMap[strings.ToLower(e.Wallet)] = true
+	}
+
+	ids := make([]int64, 0)
+	for _, w := range wallets {
+		if existMap[strings.ToLower(w)] {
+			continue // 跳过已存在的
+		}
+		id, err := dao.MyTrackWallet.Ctx(ctx).Data(do.MyTrackWallet{
+			UserId: userId,
+			Wallet: w,
+		}).InsertAndGetId()
+		if err != nil {
+			return nil, err
+		}
+		ids = append(ids, id)
+	}
+
+	return &v1.MyTrackWalletImportRes{Ids: ids}, nil
 }

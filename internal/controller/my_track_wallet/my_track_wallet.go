@@ -42,3 +42,13 @@ func (c *Controller) MyTrackWalletList(ctx context.Context, req *v1.MyTrackWalle
 	userId := g.RequestFromCtx(ctx).GetCtxVar(consts.CtxUserIdKey).Int64()
 	return service.MyTrackWallet().List(ctx, userId, *req)
 }
+
+func (c *Controller) MyTrackWalletExport(ctx context.Context, req *v1.MyTrackWalletExportReq) (res *v1.MyTrackWalletExportRes, err error) {
+	userId := g.RequestFromCtx(ctx).GetCtxVar(consts.CtxUserIdKey).Int64()
+	return service.MyTrackWallet().Export(ctx, userId)
+}
+
+func (c *Controller) MyTrackWalletImport(ctx context.Context, req *v1.MyTrackWalletImportReq) (res *v1.MyTrackWalletImportRes, err error) {
+	userId := g.RequestFromCtx(ctx).GetCtxVar(consts.CtxUserIdKey).Int64()
+	return service.MyTrackWallet().Import(ctx, userId, *req)
+}

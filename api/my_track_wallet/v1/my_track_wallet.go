@@ -66,3 +66,22 @@ type MyTrackWalletListRes struct {
 	Total  int                     `json:"total"`
 	Page   int                     `json:"page"`
 }
+
+// 导出跟踪钱包为分享码（需登录）
+type MyTrackWalletExportReq struct {
+	g.Meta `path:"/my-track-wallet/export" tags:"MyTrackWallet" method:"get" summary:"导出跟踪钱包分享码" login_required:"true"`
+}
+type MyTrackWalletExportRes struct {
+	g.Meta `mime:"application/json"`
+	Code   string `json:"code"`
+}
+
+// 通过分享码导入跟踪钱包（需登录）
+type MyTrackWalletImportReq struct {
+	g.Meta `path:"/my-track-wallet/import" tags:"MyTrackWallet" method:"post" summary:"通过分享码导入跟踪钱包" login_required:"true"`
+	Code   string `json:"code" v:"required#请输入分享码"`
+}
+type MyTrackWalletImportRes struct {
+	g.Meta `mime:"application/json"`
+	Ids    []int64 `json:"ids"`
+}

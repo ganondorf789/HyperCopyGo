@@ -12,6 +12,8 @@ type IMyTrackWallet interface {
 	Delete(ctx context.Context, userId int64, id int64) error
 	Detail(ctx context.Context, userId int64, id int64) (res *v1.MyTrackWalletDetailRes, err error)
 	List(ctx context.Context, userId int64, in v1.MyTrackWalletListReq) (res *v1.MyTrackWalletListRes, err error)
+	Export(ctx context.Context, userId int64) (res *v1.MyTrackWalletExportRes, err error)
+	Import(ctx context.Context, userId int64, in v1.MyTrackWalletImportReq) (res *v1.MyTrackWalletImportRes, err error)
 }
 
 var localMyTrackWallet IMyTrackWallet
