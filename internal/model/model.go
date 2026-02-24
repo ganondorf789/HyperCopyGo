@@ -1,5 +1,18 @@
 package model
 
+// ==================== 配置 ====================
+
+type Config struct {
+	Jwt JwtConfig
+}
+
+type JwtConfig struct {
+	Secret string `json:"secret"`
+	Expire int64  `json:"expire"`
+}
+
+// ==================== 用户 ====================
+
 // 用户注册输入
 type UserRegisterInput struct {
 	Username string
@@ -29,6 +42,8 @@ type TokenOutput struct {
 	Token  string `json:"token"`
 	Expire int64  `json:"expire"`
 }
+
+// ==================== 管理员 ====================
 
 // 管理员登录输入
 type AdminLoginInput struct {
