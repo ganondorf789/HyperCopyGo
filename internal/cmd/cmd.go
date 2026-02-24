@@ -9,6 +9,7 @@ import (
 
 	"demo/internal/controller/admin"
 	copyTradingCtrl "demo/internal/controller/copy_trading"
+	myTrackWalletCtrl "demo/internal/controller/my_track_wallet"
 	"demo/internal/controller/user"
 	walletCtrl "demo/internal/controller/wallet"
 	"demo/internal/initialization"
@@ -16,6 +17,7 @@ import (
 
 	_ "demo/internal/logic/admin"
 	_ "demo/internal/logic/copy_trading"
+	_ "demo/internal/logic/my_track_wallet"
 	_ "demo/internal/logic/user"
 	_ "demo/internal/logic/wallet"
 )
@@ -44,6 +46,7 @@ var (
 						admin.New(),
 						copyTradingCtrl.New(),
 						walletCtrl.New(),
+						myTrackWalletCtrl.New(),
 					)
 				})
 			})
