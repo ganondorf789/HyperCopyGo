@@ -23,6 +23,7 @@ type sPosition struct{}
 func (s *sPosition) List(ctx context.Context, in v1.PositionListReq) (res *v1.PositionListRes, err error) {
 	m := dao.Position.Ctx(ctx)
 
+	// Coin 筛选
 	if in.User != "" {
 		m = m.Where(do.Position{User: in.User})
 	}
@@ -30,15 +31,33 @@ func (s *sPosition) List(ctx context.Context, in v1.PositionListReq) (res *v1.Po
 		m = m.Where(do.Position{Symbol: in.Symbol})
 	}
 
+	// Direction 筛选: long (position_size > 0) / short (position_size < 0)
+	if in.Direction == "long" {
+		m = m.Where("position_size > 0")
+	} else if in.Direction == "short" {
+		m = m.Where("position_size < 0")
+	}
+
 	total, err := m.Count()
 	if err != nil {
 		return nil, err
 	}
 
+	// 排序：uPnL / Funding Fee / 默认按 id 倒序
+	if in.UpnlSort == "asc" {
+		m = m.OrderAsc("unrealized_pnl")
+	} else if in.UpnlSort == "desc" {
+		m = m.OrderDesc("unrealized_pnl")
+	} else if in.FundingSort == "asc" {
+		m = m.OrderAsc("funding_fee")
+	} else if in.FundingSort == "desc" {
+		m = m.OrderDesc("funding_fee")
+	} else {
+		m = m.OrderDesc(dao.Position.Columns().Id)
+	}
+
 	var items []entity.Position
-	err = m.Page(in.Page, in.PageSize).
-		OrderDesc(dao.Position.Columns().Id).
-		Scan(&items)
+	err = m.Page(in.Page, in.PageSize).Scan(&items)
 	if err != nil {
 		return nil, err
 	}

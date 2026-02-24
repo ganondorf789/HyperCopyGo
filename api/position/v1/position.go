@@ -8,11 +8,14 @@ import (
 
 // 获取持仓列表（无需登录）
 type PositionListReq struct {
-	g.Meta   `path:"/position" tags:"Position" method:"get" summary:"持仓列表"`
-	User     string `json:"user" in:"query"`   // 按钱包地址筛选
-	Symbol   string `json:"symbol" in:"query"` // 按交易对筛选
-	Page     int    `json:"page" d:"1"`
-	PageSize int    `json:"pageSize" d:"20" v:"max:100#每页最多100条"`
+	g.Meta     `path:"/position" tags:"Position" method:"get" summary:"持仓列表"`
+	User       string `json:"user" in:"query"`       // 按钱包地址筛选
+	Symbol     string `json:"symbol" in:"query"`     // 按交易对(Coin)筛选
+	Direction  string `json:"direction" in:"query"`  // 方向筛选 long/short
+	UpnlSort   string `json:"upnlSort" in:"query"`   // uPnL排序 asc/desc
+	FundingSort string `json:"fundingSort" in:"query"` // Funding Fee排序 asc/desc
+	Page       int    `json:"page" d:"1"`
+	PageSize   int    `json:"pageSize" d:"20" v:"max:100#每页最多100条"`
 }
 type PositionListRes struct {
 	g.Meta `mime:"application/json"`
