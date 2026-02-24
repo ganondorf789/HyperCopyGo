@@ -128,29 +128,43 @@ func (s *sWallet) entityToItem(ctx context.Context, e entity.Wallet) model.Walle
 		UpdatedAt:        updatedAt,
 	}
 
-	// 从 Hyperliquid 获取链上账户状态
 	info := hyperliquid.NewInfo(ctx, hyperliquid.MainnetAPIURL, true, nil, nil, nil)
+
+	// 1. 获取永续合约账户状态（余额、保证金、可提现、持仓）
 	state, err := info.UserState(ctx, e.Address)
-	if err != nil {
-		return item
-	}
+	if err == nil {
+		item.Balance = state.MarginSummary.AccountValue
+		item.TotalMarginUsed = state.MarginSummary.TotalMarginUsed
+		item.Withdrawable = state.Withdrawable
 
-	item.Balance = state.MarginSummary.AccountValue
-	item.TotalMarginUsed = state.MarginSummary.TotalMarginUsed
-	item.Withdrawable = state.Withdrawable
-
-	// 计算未实现盈亏：汇总所有持仓的 unrealizedPnl
-	upnl := "0.0000"
-	if len(state.AssetPositions) > 0 {
-		totalUpnl := 0.0
-		for _, ap := range state.AssetPositions {
-			var pnl float64
-			fmt.Sscanf(ap.Position.UnrealizedPnl, "%f", &pnl)
-			totalUpnl += pnl
+		// 汇总所有持仓的未实现盈亏
+		if len(state.AssetPositions) > 0 {
+			totalUpnl := 0.0
+			for _, ap := range state.AssetPositions {
+				var pnl float64
+				fmt.Sscanf(ap.Position.UnrealizedPnl, "%f", &pnl)
+				totalUpnl += pnl
+			}
+			item.Upnl = fmt.Sprintf("%.4f", totalUpnl)
 		}
-		upnl = fmt.Sprintf("%.4f", totalUpnl)
 	}
-	item.Upnl = upnl
+
+	// 2. 获取现货账户状态，将 USDC 余额累加到 balance
+	spotState, err := info.SpotUserState(ctx, e.Address)
+	if err == nil {
+		for _, b := range spotState.Balances {
+			if b.Coin == "USDC" {
+				var spotTotal float64
+				fmt.Sscanf(b.Total, "%f", &spotTotal)
+				if spotTotal > 0 {
+					var currentBalance float64
+					fmt.Sscanf(item.Balance, "%f", &currentBalance)
+					item.Balance = fmt.Sprintf("%.4f", currentBalance+spotTotal)
+				}
+				break
+			}
+		}
+	}
 
 	return item
 }
