@@ -6,10 +6,10 @@ import (
 
 	"github.com/gogf/gf/v2/crypto/gmd5"
 
+	v1 "demo/api/user/v1"
 	"demo/internal/consts"
 	"demo/internal/dao"
 	"demo/internal/middleware"
-	"demo/internal/model"
 	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
@@ -21,7 +21,7 @@ func init() {
 
 type sUser struct{}
 
-func (s *sUser) Register(ctx context.Context, in model.UserRegisterInput) error {
+func (s *sUser) Register(ctx context.Context, in v1.UserRegisterReq) error {
 	count, err := dao.User.Ctx(ctx).
 		Where(do.User{Username: in.Username}).
 		Count()
@@ -40,9 +40,9 @@ func (s *sUser) Register(ctx context.Context, in model.UserRegisterInput) error 
 	return err
 }
 
-func (s *sUser) Login(ctx context.Context, in model.UserLoginInput) (*model.TokenOutput, error) {
+func (s *sUser) Login(ctx context.Context, in v1.UserLoginReq) (res *v1.UserLoginRes, err error) {
 	var user entity.User
-	err := dao.User.Ctx(ctx).
+	err = dao.User.Ctx(ctx).
 		Where(do.User{Username: in.Username}).
 		Scan(&user)
 	if err != nil {
@@ -62,12 +62,12 @@ func (s *sUser) Login(ctx context.Context, in model.UserLoginInput) (*model.Toke
 	if err != nil {
 		return nil, err
 	}
-	return &model.TokenOutput{Token: token, Expire: expire}, nil
+	return &v1.UserLoginRes{Token: token, Expire: expire}, nil
 }
 
-func (s *sUser) Profile(ctx context.Context, userId int64) (*model.UserInfoOutput, error) {
+func (s *sUser) Profile(ctx context.Context, userId int64) (res *v1.UserProfileRes, err error) {
 	var user entity.User
-	err := dao.User.Ctx(ctx).
+	err = dao.User.Ctx(ctx).
 		Where(do.User{Id: userId}).
 		Scan(&user)
 	if err != nil {
@@ -76,14 +76,13 @@ func (s *sUser) Profile(ctx context.Context, userId int64) (*model.UserInfoOutpu
 	if user.Id == 0 {
 		return nil, fmt.Errorf("用户不存在")
 	}
-	return &model.UserInfoOutput{
+	return &v1.UserProfileRes{
 		Id:       user.Id,
 		Username: user.Username,
 		Nickname: user.Nickname,
 		Avatar:   user.Avatar,
 		Email:    user.Email,
 		Phone:    user.Phone,
-		Status:   user.Status,
 	}, nil
 }
 

@@ -3,13 +3,13 @@ package service
 import (
 	"context"
 
-	"demo/internal/model"
+	v1 "demo/api/user/v1"
 )
 
 type IUser interface {
-	Register(ctx context.Context, in model.UserRegisterInput) error
-	Login(ctx context.Context, in model.UserLoginInput) (*model.TokenOutput, error)
-	Profile(ctx context.Context, userId int64) (*model.UserInfoOutput, error)
+	Register(ctx context.Context, in v1.UserRegisterReq) error
+	Login(ctx context.Context, in v1.UserLoginReq) (res *v1.UserLoginRes, err error)
+	Profile(ctx context.Context, userId int64) (res *v1.UserProfileRes, err error)
 }
 
 var localUser IUser

@@ -6,10 +6,10 @@ import (
 
 	"github.com/gogf/gf/v2/crypto/gmd5"
 
+	v1 "demo/api/admin/v1"
 	"demo/internal/consts"
 	"demo/internal/dao"
 	"demo/internal/middleware"
-	"demo/internal/model"
 	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
@@ -21,9 +21,9 @@ func init() {
 
 type sAdmin struct{}
 
-func (s *sAdmin) Login(ctx context.Context, in model.AdminLoginInput) (*model.TokenOutput, error) {
+func (s *sAdmin) Login(ctx context.Context, in v1.AdminLoginReq) (res *v1.AdminLoginRes, err error) {
 	var admin entity.Admin
-	err := dao.Admin.Ctx(ctx).
+	err = dao.Admin.Ctx(ctx).
 		Where(do.Admin{Username: in.Username}).
 		Scan(&admin)
 	if err != nil {
@@ -43,12 +43,12 @@ func (s *sAdmin) Login(ctx context.Context, in model.AdminLoginInput) (*model.To
 	if err != nil {
 		return nil, err
 	}
-	return &model.TokenOutput{Token: token, Expire: expire}, nil
+	return &v1.AdminLoginRes{Token: token, Expire: expire}, nil
 }
 
-func (s *sAdmin) Profile(ctx context.Context, adminId int64) (*model.AdminInfoOutput, error) {
+func (s *sAdmin) Profile(ctx context.Context, adminId int64) (res *v1.AdminProfileRes, err error) {
 	var admin entity.Admin
-	err := dao.Admin.Ctx(ctx).
+	err = dao.Admin.Ctx(ctx).
 		Where(do.Admin{Id: adminId}).
 		Scan(&admin)
 	if err != nil {
@@ -57,16 +57,15 @@ func (s *sAdmin) Profile(ctx context.Context, adminId int64) (*model.AdminInfoOu
 	if admin.Id == 0 {
 		return nil, fmt.Errorf("管理员不存在")
 	}
-	return &model.AdminInfoOutput{
+	return &v1.AdminProfileRes{
 		Id:       admin.Id,
 		Username: admin.Username,
 		Realname: admin.Realname,
 		Role:     admin.Role,
-		Status:   admin.Status,
 	}, nil
 }
 
-func (s *sAdmin) UserList(ctx context.Context, in model.AdminUserListInput) (*model.AdminUserListOutput, error) {
+func (s *sAdmin) UserList(ctx context.Context, in v1.AdminUserListReq) (res *v1.AdminUserListRes, err error) {
 	m := dao.User.Ctx(ctx)
 	if in.Status >= 0 {
 		m = m.Where(do.User{Status: in.Status})
@@ -85,27 +84,26 @@ func (s *sAdmin) UserList(ctx context.Context, in model.AdminUserListInput) (*mo
 		return nil, err
 	}
 
-	list := make([]model.UserInfoOutput, 0, len(users))
+	list := make([]v1.AdminUserItem, 0, len(users))
 	for _, u := range users {
-		list = append(list, model.UserInfoOutput{
+		list = append(list, v1.AdminUserItem{
 			Id:       u.Id,
 			Username: u.Username,
 			Nickname: u.Nickname,
-			Avatar:   u.Avatar,
 			Email:    u.Email,
 			Phone:    u.Phone,
 			Status:   u.Status,
 		})
 	}
 
-	return &model.AdminUserListOutput{
+	return &v1.AdminUserListRes{
 		List:  list,
 		Total: total,
 		Page:  in.Page,
 	}, nil
 }
 
-func (s *sAdmin) UserSetStatus(ctx context.Context, in model.AdminUserStatusInput) error {
+func (s *sAdmin) UserSetStatus(ctx context.Context, in v1.AdminUserStatusReq) error {
 	_, err := dao.User.Ctx(ctx).
 		Where(do.User{Id: in.Id}).
 		Data(do.User{Status: in.Status}).
