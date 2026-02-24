@@ -31,3 +31,14 @@ type PositionStatsRes struct {
 	g.Meta `mime:"application/json"`
 	List   []model.PositionStatsPoint `json:"list"`
 }
+
+// 多空比率曲线（无需登录）
+type PositionLongShortRatioReq struct {
+	g.Meta   `path:"/position/long-short-ratio" tags:"Position" method:"get" summary:"多空比率曲线"`
+	Interval string `json:"interval" in:"query" v:"required|in:1h,4h,1D#请输入时间框架|时间框架仅支持1h,4h,1D"` // 时间框架
+	Symbol   string `json:"symbol" in:"query"`                                                        // 按交易对筛选
+}
+type PositionLongShortRatioRes struct {
+	g.Meta `mime:"application/json"`
+	List   []model.LongShortRatioPoint `json:"list"`
+}

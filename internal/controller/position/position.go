@@ -20,3 +20,7 @@ func (c *Controller) PositionList(ctx context.Context, req *v1.PositionListReq) 
 func (c *Controller) PositionStats(ctx context.Context, req *v1.PositionStatsReq) (res *v1.PositionStatsRes, err error) {
 	return service.Position().Stats(ctx, *req)
 }
+
+func (c *Controller) PositionLongShortRatio(ctx context.Context, req *v1.PositionLongShortRatioReq) (res *v1.PositionLongShortRatioRes, err error) {
+	return service.Position().LongShortRatio(ctx, *req)
+}

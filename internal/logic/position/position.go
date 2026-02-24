@@ -193,3 +193,68 @@ func (s *sPosition) Stats(ctx context.Context, in v1.PositionStatsReq) (res *v1.
 
 	return &v1.PositionStatsRes{List: list}, nil
 }
+
+// ratioRow 多空比率原生 SQL 查询结果行
+type ratioRow struct {
+	Bucket     time.Time `json:"bucket"`
+	LongValue  float64   `json:"long_value"`
+	ShortValue float64   `json:"short_value"`
+}
+
+func (s *sPosition) LongShortRatio(ctx context.Context, in v1.PositionLongShortRatioReq) (res *v1.PositionLongShortRatioRes, err error) {
+	// 仅支持 1h, 4h, 1D
+	var truncSQL string
+	var lookback time.Duration
+	switch in.Interval {
+	case "1h":
+		truncSQL = "date_trunc('hour', created_at)"
+		lookback = 7 * 24 * time.Hour
+	case "4h":
+		truncSQL = "to_timestamp(floor(extract(epoch from created_at) / 14400) * 14400)"
+		lookback = 14 * 24 * time.Hour
+	case "1D":
+		truncSQL = "date_trunc('day', created_at)"
+		lookback = 90 * 24 * time.Hour
+	default:
+		return nil, fmt.Errorf("不支持的时间框架: %s", in.Interval)
+	}
+
+	since := time.Now().Add(-lookback)
+
+	symbolFilter := ""
+	if in.Symbol != "" {
+		symbolFilter = fmt.Sprintf("AND symbol = '%s'", strings.ReplaceAll(in.Symbol, "'", "''"))
+	}
+
+	sql := fmt.Sprintf(`
+		SELECT
+			%s AS bucket,
+			COALESCE(SUM(CASE WHEN position_size > 0 THEN ABS(position_value_usd) ELSE 0 END), 0) AS long_value,
+			COALESCE(SUM(CASE WHEN position_size < 0 THEN ABS(position_value_usd) ELSE 0 END), 0) AS short_value
+		FROM position
+		WHERE created_at >= $1 %s
+		GROUP BY bucket
+		ORDER BY bucket ASC
+	`, truncSQL, symbolFilter)
+
+	var rows []ratioRow
+	err = dao.Position.DB().GetScan(ctx, &rows, sql, since)
+	if err != nil {
+		return nil, err
+	}
+
+	list := make([]model.LongShortRatioPoint, 0, len(rows))
+	for _, r := range rows {
+		ratio := 0.0
+		if r.ShortValue > 0 {
+			ratio = r.LongValue / r.ShortValue
+		}
+		list = append(list, model.LongShortRatioPoint{
+			Timestamp:               r.Bucket.UnixMilli(),
+			LongShortRatio:          ratio,
+			PositionValueDifference: r.LongValue - r.ShortValue,
+		})
+	}
+
+	return &v1.PositionLongShortRatioRes{List: list}, nil
+}

@@ -28,3 +28,10 @@ type PositionStatsPoint struct {
 	LongLiqValue  float64 `json:"longLiqValue"`  // 多头清算价值
 	ShortLiqValue float64 `json:"shortLiqValue"` // 空头清算价值
 }
+
+// LongShortRatioPoint 多空比率曲线数据点
+type LongShortRatioPoint struct {
+	Timestamp               int64   `json:"timestamp"`               // 时间桶时间戳(ms)
+	LongShortRatio          float64 `json:"longShortRatio"`          // 多空比率 (long/short)
+	PositionValueDifference float64 `json:"positionValueDifference"` // 多空仓位价值差 (longValue - shortValue)
+}
