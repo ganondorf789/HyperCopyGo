@@ -1,0 +1,156 @@
+package wallet
+
+import (
+	"context"
+	"fmt"
+
+	v1 "demo/api/wallet/v1"
+	"demo/internal/dao"
+	"demo/internal/model"
+	"demo/internal/model/do"
+	"demo/internal/model/entity"
+	"demo/internal/service"
+
+	hyperliquid "github.com/sonirico/go-hyperliquid"
+)
+
+func init() {
+	service.RegisterWallet(&sWallet{})
+}
+
+type sWallet struct{}
+
+func (s *sWallet) Create(ctx context.Context, userId int64, in v1.WalletCreateReq) (res *v1.WalletCreateRes, err error) {
+	id, err := dao.Wallet.Ctx(ctx).Data(do.Wallet{
+		UserId:           userId,
+		Address:          in.Address,
+		ApiWalletAddress: in.ApiWalletAddress,
+		ApiSecretKey:     in.ApiSecretKey,
+		Remark:           in.Remark,
+	}).InsertAndGetId()
+	if err != nil {
+		return nil, err
+	}
+	return &v1.WalletCreateRes{Id: id}, nil
+}
+
+func (s *sWallet) Update(ctx context.Context, userId int64, in v1.WalletUpdateReq) error {
+	count, err := dao.Wallet.Ctx(ctx).
+		Where(do.Wallet{Id: in.Id, UserId: userId}).
+		Count()
+	if err != nil {
+		return err
+	}
+	if count == 0 {
+		return fmt.Errorf("钱包不存在")
+	}
+	// 只允许编辑 Remark
+	_, err = dao.Wallet.Ctx(ctx).
+		Where(do.Wallet{Id: in.Id, UserId: userId}).
+		Data(do.Wallet{Remark: in.Remark}).
+		Update()
+	return err
+}
+
+func (s *sWallet) Delete(ctx context.Context, userId int64, id int64) error {
+	_, err := dao.Wallet.Ctx(ctx).
+		Where(do.Wallet{Id: id, UserId: userId}).
+		Delete()
+	return err
+}
+
+func (s *sWallet) Detail(ctx context.Context, userId int64, id int64) (res *v1.WalletDetailRes, err error) {
+	var item entity.Wallet
+	err = dao.Wallet.Ctx(ctx).
+		Where(do.Wallet{Id: id, UserId: userId}).
+		Scan(&item)
+	if err != nil {
+		return nil, err
+	}
+	if item.Id == 0 {
+		return nil, fmt.Errorf("钱包不存在")
+	}
+	walletItem := s.entityToItem(ctx, item)
+	return &v1.WalletDetailRes{WalletItem: walletItem}, nil
+}
+
+func (s *sWallet) List(ctx context.Context, userId int64, in v1.WalletListReq) (res *v1.WalletListRes, err error) {
+	m := dao.Wallet.Ctx(ctx).Where(do.Wallet{UserId: userId})
+
+	total, err := m.Count()
+	if err != nil {
+		return nil, err
+	}
+
+	var items []entity.Wallet
+	err = m.Page(in.Page, in.PageSize).
+		OrderDesc(dao.Wallet.Columns().Id).
+		Scan(&items)
+	if err != nil {
+		return nil, err
+	}
+
+	list := make([]model.WalletItem, 0, len(items))
+	for _, item := range items {
+		list = append(list, s.entityToItem(ctx, item))
+	}
+
+	return &v1.WalletListRes{
+		List:  list,
+		Total: total,
+		Page:  in.Page,
+	}, nil
+}
+
+// entityToItem 将 DB entity 转为 API 返回项，并从 Hyperliquid 拉取链上数据
+func (s *sWallet) entityToItem(ctx context.Context, e entity.Wallet) model.WalletItem {
+	createdAt := ""
+	if e.CreatedAt != nil {
+		createdAt = e.CreatedAt.String()
+	}
+	updatedAt := ""
+	if e.UpdatedAt != nil {
+		updatedAt = e.UpdatedAt.String()
+	}
+	item := model.WalletItem{
+		Id:               e.Id,
+		Address:          e.Address,
+		ApiWalletAddress: e.ApiWalletAddress,
+		Remark:           e.Remark,
+		Balance:          "0.0",
+		TotalMarginUsed:  "0.0",
+		Withdrawable:     "0.0",
+		Upnl:             "0.0000",
+		DepositWallet:    e.ApiWalletAddress,
+		ArbWithdrawAble:  nil,
+		BscWithdrawAble:  nil,
+		CreatedAt:        createdAt,
+		UpdatedAt:        updatedAt,
+	}
+
+	// 从 Hyperliquid 获取链上账户状态
+	info := hyperliquid.NewInfo(ctx, hyperliquid.MainnetAPIURL, true, nil, nil, nil)
+	state, err := info.UserState(ctx, e.Address)
+	if err != nil {
+		return item
+	}
+
+	item.Balance = state.MarginSummary.AccountValue
+	item.TotalMarginUsed = state.MarginSummary.TotalMarginUsed
+	item.Withdrawable = state.Withdrawable
+
+	// 计算未实现盈亏：汇总所有持仓的 unrealizedPnl
+	upnl := "0.0000"
+	if len(state.AssetPositions) > 0 {
+		totalUpnl := 0.0
+		for _, ap := range state.AssetPositions {
+			var pnl float64
+			fmt.Sscanf(ap.Position.UnrealizedPnl, "%f", &pnl)
+			totalUpnl += pnl
+		}
+		upnl = fmt.Sprintf("%.4f", totalUpnl)
+	}
+	item.Upnl = upnl
+
+	return item
+}

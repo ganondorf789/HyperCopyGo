@@ -97,8 +97,31 @@ COMMENT ON COLUMN copy_trading.main_wallet IS '主钱包地址';
 COMMENT ON COLUMN copy_trading.main_wallet_platform IS '主钱包平台';
 COMMENT ON COLUMN copy_trading.status IS '状态 0:停用 1:启用';
 
+-- 钱包表
+CREATE TABLE IF NOT EXISTS wallet (
+    id                  BIGSERIAL    PRIMARY KEY,
+    user_id             BIGINT       NOT NULL DEFAULT 0,          -- 所属用户ID
+    address             VARCHAR(255) NOT NULL DEFAULT '',         -- 钱包地址
+    api_wallet_address  VARCHAR(255) NOT NULL DEFAULT '',         -- API Wallet Address
+    api_secret_key      VARCHAR(255) NOT NULL DEFAULT '',         -- API Secret Key
+    remark              VARCHAR(255) NOT NULL DEFAULT '',         -- 备注
+    status              SMALLINT     NOT NULL DEFAULT 1,          -- 状态 1:正常 0:禁用
+    created_at          TIMESTAMPTZ  NOT NULL DEFAULT NOW(),
+    updated_at          TIMESTAMPTZ  NOT NULL DEFAULT NOW()
+);
+
+COMMENT ON TABLE  wallet IS '钱包表';
+COMMENT ON COLUMN wallet.user_id IS '所属用户ID';
+COMMENT ON COLUMN wallet.address IS '钱包地址';
+COMMENT ON COLUMN wallet.api_wallet_address IS 'API Wallet Address';
+COMMENT ON COLUMN wallet.api_secret_key IS 'API Secret Key';
+COMMENT ON COLUMN wallet.remark IS '备注';
+COMMENT ON COLUMN wallet.status IS '状态 1:正常 0:禁用';
+
 -- 索引
 CREATE INDEX idx_user_status ON "user"(status);
 CREATE INDEX idx_admin_status ON "admin"(status);
 CREATE INDEX idx_copy_trading_user_id ON copy_trading(user_id);
 CREATE INDEX idx_copy_trading_status ON copy_trading(status);
+CREATE INDEX idx_wallet_user_id ON wallet(user_id);
+CREATE INDEX idx_wallet_status ON wallet(status);
