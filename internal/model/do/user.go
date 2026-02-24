@@ -13,13 +13,13 @@ import (
 type User struct {
 	g.Meta    `orm:"table:user, do:true"`
 	Id        any         //
-	Username  any         //
-	Password  any         //
-	Nickname  any         //
-	Avatar    any         //
-	Email     any         //
-	Phone     any         //
-	Status    any         //
+	Username  any         // 用户名
+	Password  any         // 密码
+	Nickname  any         // 昵称
+	Avatar    any         // 头像
+	Email     any         // 邮箱
+	Phone     any         // 手机号
+	Status    any         // 状态 1:正常 0:禁用
 	CreatedAt *gtime.Time //
 	UpdatedAt *gtime.Time //
 }
