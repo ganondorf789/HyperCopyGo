@@ -13,6 +13,7 @@ import (
 	"demo/internal/model/entity"
 	"demo/internal/service"
 	"demo/utility"
+	proxyPool "demo/internal/proxy_pool"
 
 	hyperliquid "github.com/sonirico/go-hyperliquid"
 )
@@ -141,7 +142,9 @@ func (s *sMyTrackWallet) entityToItem(ctx context.Context, e entity.MyTrackWalle
 		Positions:          make([]model.TrackWalletPosition, 0),
 	}
 
-	info := hyperliquid.NewInfo(ctx, hyperliquid.MainnetAPIURL, true, nil, nil, nil)
+	info := hyperliquid.NewInfo(ctx, hyperliquid.MainnetAPIURL, true, nil, nil, nil,
+		hyperliquid.InfoOptClientOptions(hyperliquid.ClientOptHTTPClient(proxyPool.HTTPClient())),
+	)
 
 	state, err := info.UserState(ctx, e.Wallet)
 	if err != nil {

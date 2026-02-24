@@ -11,15 +11,18 @@ import (
 	copyTradingCtrl "demo/internal/controller/copy_trading"
 	myTrackWalletCtrl "demo/internal/controller/my_track_wallet"
 	positionCtrl "demo/internal/controller/position"
+	proxyPoolCtrl "demo/internal/controller/proxy_pool"
 	"demo/internal/controller/user"
 	walletCtrl "demo/internal/controller/wallet"
 	"demo/internal/initialization"
 	"demo/internal/middleware"
+	proxyPool "demo/internal/proxy_pool"
 
 	_ "demo/internal/logic/admin"
 	_ "demo/internal/logic/copy_trading"
 	_ "demo/internal/logic/my_track_wallet"
 	_ "demo/internal/logic/position"
+	_ "demo/internal/logic/proxy_pool"
 	_ "demo/internal/logic/user"
 	_ "demo/internal/logic/wallet"
 )
@@ -32,6 +35,11 @@ var (
 		Func: func(ctx context.Context, parser *gcmd.Parser) (err error) {
 			// 初始化配置
 			if err = initialization.InitConfig(); err != nil {
+				return err
+			}
+
+			// 初始化代理池（从数据库加载）
+			if err = proxyPool.Reload(); err != nil {
 				return err
 			}
 
@@ -50,6 +58,7 @@ var (
 						walletCtrl.New(),
 						myTrackWalletCtrl.New(),
 						positionCtrl.New(),
+						proxyPoolCtrl.New(),
 					)
 				})
 			})

@@ -10,6 +10,7 @@ import (
 	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
+	proxyPool "demo/internal/proxy_pool"
 
 	hyperliquid "github.com/sonirico/go-hyperliquid"
 )
@@ -128,7 +129,9 @@ func (s *sWallet) entityToItem(ctx context.Context, e entity.Wallet) model.Walle
 		UpdatedAt:        updatedAt,
 	}
 
-	info := hyperliquid.NewInfo(ctx, hyperliquid.MainnetAPIURL, true, nil, nil, nil)
+	info := hyperliquid.NewInfo(ctx, hyperliquid.MainnetAPIURL, true, nil, nil, nil,
+		hyperliquid.InfoOptClientOptions(hyperliquid.ClientOptHTTPClient(proxyPool.HTTPClient())),
+	)
 
 	// 1. 获取永续合约账户状态（余额、保证金、可提现、持仓）
 	state, err := info.UserState(ctx, e.Address)
