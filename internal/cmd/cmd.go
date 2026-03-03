@@ -11,6 +11,7 @@ import (
 	appVersionCtrl "demo/internal/controller/app_version"
 	copyTradingCtrl "demo/internal/controller/copy_trading"
 	cronTaskCtrl "demo/internal/controller/cron_task"
+	membershipCtrl "demo/internal/controller/membership"
 	myTrackWalletCtrl "demo/internal/controller/my_track_wallet"
 	notificationCtrl "demo/internal/controller/notification"
 	positionCtrl "demo/internal/controller/position"
@@ -26,6 +27,7 @@ import (
 	_ "demo/internal/logic/app_version"
 	_ "demo/internal/logic/copy_trading"
 	_ "demo/internal/logic/cron_task"
+	_ "demo/internal/logic/membership"
 	_ "demo/internal/logic/my_track_wallet"
 	_ "demo/internal/logic/notification"
 	_ "demo/internal/logic/position"
@@ -66,6 +68,7 @@ var (
 						cronTaskCtrl.NewV1(),
 						copyTradingCtrl.New(),
 						walletCtrl.New(),
+						membershipCtrl.NewV1(),
 						myTrackWalletCtrl.New(),
 						notificationCtrl.NewV1(),
 						positionCtrl.New(),
