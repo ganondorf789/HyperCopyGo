@@ -16,6 +16,7 @@ import (
 	notificationCtrl "demo/internal/controller/notification"
 	positionCtrl "demo/internal/controller/position"
 	proxyPoolCtrl "demo/internal/controller/proxy_pool"
+	completedTradesCtrl "demo/internal/controller/completed_trades"
 	traderPositionsCtrl "demo/internal/controller/trader_positions"
 	"demo/internal/controller/user"
 	userAppKeyCtrl "demo/internal/controller/user_app_key"
@@ -25,6 +26,7 @@ import (
 	"demo/internal/middleware"
 	proxyPool "demo/internal/proxy_pool"
 
+	_ "demo/internal/logic/completed_trades"
 	_ "demo/internal/logic/admin"
 	_ "demo/internal/logic/app_version"
 	_ "demo/internal/logic/copy_trading"
@@ -75,6 +77,7 @@ var (
 						user.New(),
 						admin.New(),
 						appVersionCtrl.NewV1(),
+						completedTradesCtrl.NewV1(),
 						cronTaskCtrl.NewV1(),
 						copyTradingCtrl.New(),
 						walletCtrl.New(),
