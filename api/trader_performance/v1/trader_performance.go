@@ -28,3 +28,18 @@ type TraderPerformanceRes struct {
 	BestTrades        []model.TradePerformanceBestTrade `json:"bestTrades"`
 	PerformanceAssets []model.TradePerformanceAsset     `json:"performanceAssets"`
 }
+
+// 交易概览
+type TraderPerformanceSummaryReq struct {
+	g.Meta  `path:"/trader-performance/summary" tags:"TraderPerformance" method:"get" summary:"交易概览" login_required:"true"`
+	Address string `json:"address" v:"required#钱包地址不能为空"`
+}
+type TraderPerformanceSummaryRes struct {
+	g.Meta         `mime:"application/json"`
+	WinRate        float64 `json:"winRate"`
+	OrderCount     int     `json:"orderCount"`
+	ClosePosCount  int     `json:"closePosCount"`
+	AvgPosDuration int64   `json:"avgPosDuration"`
+	MaxDrawdown    float64 `json:"maxDrawdown"`
+	TotalPnl       float64 `json:"totalPnl"`
+}

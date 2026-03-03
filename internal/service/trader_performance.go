@@ -13,6 +13,7 @@ import (
 type (
 	ITraderPerformance interface {
 		Performance(ctx context.Context, in v1.TraderPerformanceReq) (res *v1.TraderPerformanceRes, err error)
+		Summary(ctx context.Context, in v1.TraderPerformanceSummaryReq) (res *v1.TraderPerformanceSummaryRes, err error)
 	}
 )
 
