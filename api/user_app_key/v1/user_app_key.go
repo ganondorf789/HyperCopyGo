@@ -1,6 +1,8 @@
 package v1
 
 import (
+	"demo/internal/model"
+
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gtime"
 )
@@ -48,7 +50,7 @@ type UserAppKeyDetailReq struct {
 }
 type UserAppKeyDetailRes struct {
 	g.Meta `mime:"application/json"`
-	UserAppKeyItem
+	model.UserAppKeyItem
 }
 
 // 用户AppKey列表（管理员）
@@ -61,20 +63,7 @@ type UserAppKeyListReq struct {
 }
 type UserAppKeyListRes struct {
 	g.Meta `mime:"application/json"`
-	List   []UserAppKeyItem `json:"list"`
-	Total  int              `json:"total"`
-	Page   int              `json:"page"`
-}
-
-// 列表项
-type UserAppKeyItem struct {
-	Id        int64       `json:"id"`
-	UserId    int64       `json:"userId"`
-	AppId     string      `json:"appId"`
-	AppSecret string      `json:"appSecret"`
-	Remark    string      `json:"remark"`
-	ExpireAt  *gtime.Time `json:"expireAt"`
-	Status    int         `json:"status"`
-	CreatedAt *gtime.Time `json:"createdAt"`
-	UpdatedAt *gtime.Time `json:"updatedAt"`
+	List   []model.UserAppKeyItem `json:"list"`
+	Total  int                    `json:"total"`
+	Page   int                    `json:"page"`
 }

@@ -4,7 +4,6 @@ import (
 	"demo/internal/model"
 
 	"github.com/gogf/gf/v2/frame/g"
-	"github.com/gogf/gf/v2/os/gtime"
 )
 
 // 创建定时任务（管理员）
@@ -45,7 +44,7 @@ type CronTaskDetailReq struct {
 }
 type CronTaskDetailRes struct {
 	g.Meta `mime:"application/json"`
-	CronTaskItem
+	model.CronTaskItem
 }
 
 // 定时任务列表（管理员）
@@ -58,20 +57,7 @@ type CronTaskListReq struct {
 }
 type CronTaskListRes struct {
 	g.Meta `mime:"application/json"`
-	List   []CronTaskItem `json:"list"`
-	Total  int            `json:"total"`
-	Page   int            `json:"page"`
-}
-
-// 列表项
-type CronTaskItem struct {
-	Id int64 `json:"id"`
-	model.BaseCronTask
-	LastRunAt   *gtime.Time `json:"lastRunAt"`
-	LastRunCost int64       `json:"lastRunCost"`
-	LastError   string      `json:"lastError"`
-	RunCount    int64       `json:"runCount"`
-	Status      int         `json:"status"`
-	CreatedAt   *gtime.Time `json:"createdAt"`
-	UpdatedAt   *gtime.Time `json:"updatedAt"`
+	List   []model.CronTaskItem `json:"list"`
+	Total  int                  `json:"total"`
+	Page   int                  `json:"page"`
 }

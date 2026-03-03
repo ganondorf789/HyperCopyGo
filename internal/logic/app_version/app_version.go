@@ -87,9 +87,9 @@ func (s *sAppVersion) List(ctx context.Context, in v1.AppVersionListReq) (res *v
 		return nil, err
 	}
 
-	list := make([]v1.AppVersionItem, 0, len(items))
+	list := make([]model.AppVersionItem, 0, len(items))
 	for _, e := range items {
-		list = append(list, v1.AppVersionItem{
+		list = append(list, model.AppVersionItem{
 			Id: e.Id,
 			BaseAppVersion: model.BaseAppVersion{
 				Platform:       e.Platform,

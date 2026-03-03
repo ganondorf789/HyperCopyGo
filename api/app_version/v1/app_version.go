@@ -4,7 +4,6 @@ import (
 	"demo/internal/model"
 
 	"github.com/gogf/gf/v2/frame/g"
-	"github.com/gogf/gf/v2/os/gtime"
 )
 
 // 创建APP版本（管理员）
@@ -48,9 +47,9 @@ type AppVersionListReq struct {
 }
 type AppVersionListRes struct {
 	g.Meta `mime:"application/json"`
-	List   []AppVersionItem `json:"list"`
-	Total  int              `json:"total"`
-	Page   int              `json:"page"`
+	List   []model.AppVersionItem `json:"list"`
+	Total  int                    `json:"total"`
+	Page   int                    `json:"page"`
 }
 
 // 检查APP更新（免鉴权）
@@ -67,13 +66,4 @@ type AppVersionCheckRes struct {
 	VersionCode int64  `json:"versionCode,omitempty"`
 	DownloadUrl string `json:"downloadUrl,omitempty"`
 	ChangeLog   string `json:"changeLog,omitempty"`
-}
-
-// 列表项
-type AppVersionItem struct {
-	Id int64 `json:"id"`
-	model.BaseAppVersion
-	Status    int         `json:"status"`
-	CreatedAt *gtime.Time `json:"createdAt"`
-	UpdatedAt *gtime.Time `json:"updatedAt"`
 }

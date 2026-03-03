@@ -6,6 +6,7 @@ import (
 
 	v1 "demo/api/user_app_key/v1"
 	"demo/internal/dao"
+	"demo/internal/model"
 	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
@@ -103,7 +104,7 @@ func (s *sUserAppKey) List(ctx context.Context, in v1.UserAppKeyListReq) (res *v
 		return nil, err
 	}
 
-	list := make([]v1.UserAppKeyItem, 0, len(items))
+	list := make([]model.UserAppKeyItem, 0, len(items))
 	for _, e := range items {
 		list = append(list, entityToItem(e))
 	}
@@ -115,8 +116,8 @@ func (s *sUserAppKey) List(ctx context.Context, in v1.UserAppKeyListReq) (res *v
 	}, nil
 }
 
-func entityToItem(e entity.UserAppKey) v1.UserAppKeyItem {
-	return v1.UserAppKeyItem{
+func entityToItem(e entity.UserAppKey) model.UserAppKeyItem {
+	return model.UserAppKeyItem{
 		Id:        e.Id,
 		UserId:    e.UserId,
 		AppId:     e.AppId,

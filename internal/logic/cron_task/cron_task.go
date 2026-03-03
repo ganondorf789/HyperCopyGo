@@ -97,7 +97,7 @@ func (s *sCronTask) List(ctx context.Context, in v1.CronTaskListReq) (res *v1.Cr
 		return nil, err
 	}
 
-	list := make([]v1.CronTaskItem, 0, len(items))
+	list := make([]model.CronTaskItem, 0, len(items))
 	for _, e := range items {
 		list = append(list, entityToItem(e))
 	}
@@ -109,8 +109,8 @@ func (s *sCronTask) List(ctx context.Context, in v1.CronTaskListReq) (res *v1.Cr
 	}, nil
 }
 
-func entityToItem(e entity.CronTask) v1.CronTaskItem {
-	return v1.CronTaskItem{
+func entityToItem(e entity.CronTask) model.CronTaskItem {
+	return model.CronTaskItem{
 		Id: e.Id,
 		BaseCronTask: model.BaseCronTask{
 			Name:     e.Name,

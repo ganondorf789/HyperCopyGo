@@ -134,7 +134,7 @@ func (s *sCopyTrading) List(ctx context.Context, userId int64, in v1.CopyTrading
 		return nil, err
 	}
 
-	list := make([]v1.CopyTradingItem, 0, len(items))
+	list := make([]model.CopyTradingItem, 0, len(items))
 	for _, item := range items {
 		list = append(list, entityToItem(item))
 	}
@@ -146,8 +146,8 @@ func (s *sCopyTrading) List(ctx context.Context, userId int64, in v1.CopyTrading
 	}, nil
 }
 
-func entityToItem(e entity.CopyTrading) v1.CopyTradingItem {
-	return v1.CopyTradingItem{
+func entityToItem(e entity.CopyTrading) model.CopyTradingItem {
+	return model.CopyTradingItem{
 		Id: e.Id,
 		BaseCopyTrading: model.BaseCopyTrading{
 			TargetWallet:                   e.TargetWallet,

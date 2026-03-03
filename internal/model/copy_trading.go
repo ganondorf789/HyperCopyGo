@@ -1,5 +1,7 @@
 package model
 
+import "github.com/gogf/gf/v2/os/gtime"
+
 // BaseCopyTrading 跟单配置公共字段，供 API 请求/响应复用
 type BaseCopyTrading struct {
 	TargetWallet                   string   `json:"targetWallet"`
@@ -37,4 +39,13 @@ type BaseCopyTrading struct {
 	SymbolList                     string   `json:"symbolList"`
 	MainWallet                     string   `json:"mainWallet"`
 	MainWalletPlatform             string   `json:"mainWalletPlatform"`
+}
+
+// CopyTradingItem 跟单配置列表项
+type CopyTradingItem struct {
+	Id int64 `json:"id"`
+	BaseCopyTrading
+	Status    int         `json:"status"`
+	CreatedAt *gtime.Time `json:"createdAt"`
+	UpdatedAt *gtime.Time `json:"updatedAt"`
 }

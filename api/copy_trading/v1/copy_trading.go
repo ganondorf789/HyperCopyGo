@@ -4,7 +4,6 @@ import (
 	"demo/internal/model"
 
 	"github.com/gogf/gf/v2/frame/g"
-	"github.com/gogf/gf/v2/os/gtime"
 )
 
 // 创建跟单配置（需登录）
@@ -44,7 +43,7 @@ type CopyTradingDetailReq struct {
 }
 type CopyTradingDetailRes struct {
 	g.Meta `mime:"application/json"`
-	CopyTradingItem
+	model.CopyTradingItem
 }
 
 // 获取跟单配置列表（需登录）
@@ -56,16 +55,7 @@ type CopyTradingListReq struct {
 }
 type CopyTradingListRes struct {
 	g.Meta `mime:"application/json"`
-	List   []CopyTradingItem `json:"list"`
-	Total  int               `json:"total"`
-	Page   int               `json:"page"`
-}
-
-// 列表项
-type CopyTradingItem struct {
-	Id int64 `json:"id"`
-	model.BaseCopyTrading
-	Status    int         `json:"status"`
-	CreatedAt *gtime.Time `json:"createdAt"`
-	UpdatedAt *gtime.Time `json:"updatedAt"`
+	List   []model.CopyTradingItem `json:"list"`
+	Total  int                     `json:"total"`
+	Page   int                     `json:"page"`
 }
