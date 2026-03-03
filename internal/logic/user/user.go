@@ -9,10 +9,10 @@ import (
 	v1 "demo/api/user/v1"
 	"demo/internal/consts"
 	"demo/internal/dao"
-	"demo/internal/middleware"
 	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
+	"demo/utility"
 )
 
 func init() {
@@ -58,7 +58,7 @@ func (s *sUser) Login(ctx context.Context, in v1.UserLoginReq) (res *v1.UserLogi
 		return nil, fmt.Errorf("密码错误")
 	}
 
-	token, expire, err := middleware.GenerateToken(user.Id, consts.UserTypeUser)
+	token, expire, err := utility.GenerateToken(user.Id, consts.UserTypeUser)
 	if err != nil {
 		return nil, err
 	}

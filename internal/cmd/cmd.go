@@ -20,6 +20,7 @@ import (
 	"demo/internal/controller/user"
 	userAppKeyCtrl "demo/internal/controller/user_app_key"
 	walletCtrl "demo/internal/controller/wallet"
+	wsCtrl "demo/internal/controller/ws"
 	"demo/internal/initialization"
 	"demo/internal/middleware"
 	proxyPool "demo/internal/proxy_pool"
@@ -56,6 +57,13 @@ var (
 			}
 
 			s := g.Server()
+
+			// WebSocket 路由（不使用 MiddlewareHandlerResponse，避免干扰 WebSocket 升级）
+			s.Group("/api", func(group *ghttp.RouterGroup) {
+				group.Bind(wsCtrl.New())
+			})
+
+			// REST API 路由
 			s.Group("/", func(group *ghttp.RouterGroup) {
 				group.Middleware(ghttp.MiddlewareHandlerResponse)
 				group.Group("/api", func(group *ghttp.RouterGroup) {
