@@ -12,6 +12,7 @@ import (
 	copyTradingCtrl "demo/internal/controller/copy_trading"
 	cronTaskCtrl "demo/internal/controller/cron_task"
 	myTrackWalletCtrl "demo/internal/controller/my_track_wallet"
+	notificationCtrl "demo/internal/controller/notification"
 	positionCtrl "demo/internal/controller/position"
 	proxyPoolCtrl "demo/internal/controller/proxy_pool"
 	"demo/internal/controller/user"
@@ -26,6 +27,7 @@ import (
 	_ "demo/internal/logic/copy_trading"
 	_ "demo/internal/logic/cron_task"
 	_ "demo/internal/logic/my_track_wallet"
+	_ "demo/internal/logic/notification"
 	_ "demo/internal/logic/position"
 	_ "demo/internal/logic/proxy_pool"
 	_ "demo/internal/logic/user"
@@ -65,6 +67,7 @@ var (
 						copyTradingCtrl.New(),
 						walletCtrl.New(),
 						myTrackWalletCtrl.New(),
+						notificationCtrl.NewV1(),
 						positionCtrl.New(),
 						proxyPoolCtrl.New(),
 						userAppKeyCtrl.NewV1(),
