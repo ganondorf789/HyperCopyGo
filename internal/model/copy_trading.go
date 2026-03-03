@@ -1,0 +1,40 @@
+package model
+
+// BaseCopyTrading 跟单配置公共字段，供 API 请求/响应复用
+type BaseCopyTrading struct {
+	TargetWallet                   string   `json:"targetWallet"`
+	TargetWalletPlatform           string   `json:"targetWalletPlatform"`
+	Remark                         string   `json:"remark"`
+	FollowType                     int64    `json:"followType"`
+	FollowOnce                     int64    `json:"followOnce"`
+	PositionConditions             string   `json:"positionConditions"`
+	TraderConditions               string   `json:"traderConditions"`
+	TagAccountValue                string   `json:"tagAccountValue"`
+	TagProfitScale                 string   `json:"tagProfitScale"`
+	TagDirection                   string   `json:"tagDirection"`
+	TagTradingRhythm               string   `json:"tagTradingRhythm"`
+	TagProfitStatus                string   `json:"tagProfitStatus"`
+	TagTradingStyles               []string `json:"tagTradingStyles"`
+	TraderMetricPeriod             string   `json:"traderMetricPeriod"`
+	FollowMarginMode               int64    `json:"followMarginMode"`
+	FollowSymbol                   string   `json:"followSymbol"`
+	Leverage                       int64    `json:"leverage"`
+	MarginMode                     int64    `json:"marginMode"`
+	FollowModel                    int64    `json:"followModel"`
+	FollowModelValue               float64  `json:"followModelValue"`
+	MinValue                       float64  `json:"minValue"`
+	MaxValue                       float64  `json:"maxValue"`
+	MaxMarginUsage                 float64  `json:"maxMarginUsage"`
+	TpValue                        float64  `json:"tpValue"`
+	SlValue                        float64  `json:"slValue"`
+	OptReverseFollowOrder          int64    `json:"optReverseFollowOrder"`
+	OptFollowupDecrease            int64    `json:"optFollowupDecrease"`
+	OptFollowupIncrease            int64    `json:"optFollowupIncrease"`
+	OptForcedLiquidationProtection int64    `json:"optForcedLiquidationProtection"`
+	OptPositionIncreaseOpening     int64    `json:"optPositionIncreaseOpening"`
+	OptSlippageProtection          int64    `json:"optSlippageProtection"`
+	SymbolListType                 string   `json:"symbolListType"`
+	SymbolList                     string   `json:"symbolList"`
+	MainWallet                     string   `json:"mainWallet"`
+	MainWalletPlatform             string   `json:"mainWalletPlatform"`
+}

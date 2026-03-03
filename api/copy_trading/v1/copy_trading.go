@@ -1,7 +1,7 @@
 package v1
 
 import (
-	"demo/internal/model/entity"
+	"demo/internal/model"
 
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/gogf/gf/v2/os/gtime"
@@ -10,7 +10,7 @@ import (
 // 创建跟单配置（需登录）
 type CopyTradingCreateReq struct {
 	g.Meta `path:"/copy-trading" tags:"CopyTrading" method:"post" summary:"创建跟单配置" login_required:"true"`
-	entity.BaseCopyTrading
+	model.BaseCopyTrading
 }
 type CopyTradingCreateRes struct {
 	g.Meta `mime:"application/json"`
@@ -21,7 +21,7 @@ type CopyTradingCreateRes struct {
 type CopyTradingUpdateReq struct {
 	g.Meta `path:"/copy-trading/{id}" tags:"CopyTrading" method:"put" summary:"更新跟单配置" login_required:"true"`
 	Id     int64 `json:"id" in:"path" v:"required"`
-	entity.BaseCopyTrading
+	model.BaseCopyTrading
 	Status int `json:"status"`
 }
 type CopyTradingUpdateRes struct {
@@ -64,7 +64,7 @@ type CopyTradingListRes struct {
 // 列表项
 type CopyTradingItem struct {
 	Id int64 `json:"id"`
-	entity.BaseCopyTrading
+	model.BaseCopyTrading
 	Status    int         `json:"status"`
 	CreatedAt *gtime.Time `json:"createdAt"`
 	UpdatedAt *gtime.Time `json:"updatedAt"`

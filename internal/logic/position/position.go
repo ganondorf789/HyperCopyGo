@@ -102,7 +102,7 @@ func (s *sPosition) entityToItem(e entity.Position) model.PositionItem {
 		EntryPrice:       e.EntryPrice,
 		MarkPrice:        e.MarkPrice,
 		LiqPrice:         e.LiqPrice,
-		Leverage:         e.Leverage,
+		Leverage:         int(e.Leverage),
 		MarginBalance:    e.MarginBalance,
 		PositionValueUsd: e.PositionValueUsd,
 		UnrealizedPnL:    e.UnrealizedPnl,

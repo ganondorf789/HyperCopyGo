@@ -6,6 +6,7 @@ import (
 
 	v1 "demo/api/copy_trading/v1"
 	"demo/internal/dao"
+	"demo/internal/model"
 	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
@@ -147,10 +148,46 @@ func (s *sCopyTrading) List(ctx context.Context, userId int64, in v1.CopyTrading
 
 func entityToItem(e entity.CopyTrading) v1.CopyTradingItem {
 	return v1.CopyTradingItem{
-		Id:              e.Id,
-		BaseCopyTrading: e.BaseCopyTrading,
-		Status:          e.Status,
-		CreatedAt:       e.CreatedAt,
-		UpdatedAt:       e.UpdatedAt,
+		Id: e.Id,
+		BaseCopyTrading: model.BaseCopyTrading{
+			TargetWallet:                   e.TargetWallet,
+			TargetWalletPlatform:           e.TargetWalletPlatform,
+			Remark:                         e.Remark,
+			FollowType:                     e.FollowType,
+			FollowOnce:                     e.FollowOnce,
+			PositionConditions:             e.PositionConditions,
+			TraderConditions:               e.TraderConditions,
+			TagAccountValue:                e.TagAccountValue,
+			TagProfitScale:                 e.TagProfitScale,
+			TagDirection:                   e.TagDirection,
+			TagTradingRhythm:               e.TagTradingRhythm,
+			TagProfitStatus:                e.TagProfitStatus,
+			TagTradingStyles:               e.TagTradingStyles,
+			TraderMetricPeriod:             e.TraderMetricPeriod,
+			FollowMarginMode:               e.FollowMarginMode,
+			FollowSymbol:                   e.FollowSymbol,
+			Leverage:                       e.Leverage,
+			MarginMode:                     e.MarginMode,
+			FollowModel:                    e.FollowModel,
+			FollowModelValue:               e.FollowModelValue,
+			MinValue:                       e.MinValue,
+			MaxValue:                       e.MaxValue,
+			MaxMarginUsage:                 e.MaxMarginUsage,
+			TpValue:                        e.TpValue,
+			SlValue:                        e.SlValue,
+			OptReverseFollowOrder:          e.OptReverseFollowOrder,
+			OptFollowupDecrease:            e.OptFollowupDecrease,
+			OptFollowupIncrease:            e.OptFollowupIncrease,
+			OptForcedLiquidationProtection: e.OptForcedLiquidationProtection,
+			OptPositionIncreaseOpening:     e.OptPositionIncreaseOpening,
+			OptSlippageProtection:          e.OptSlippageProtection,
+			SymbolListType:                 e.SymbolListType,
+			SymbolList:                     e.SymbolList,
+			MainWallet:                     e.MainWallet,
+			MainWalletPlatform:             e.MainWalletPlatform,
+		},
+		Status:    int(e.Status),
+		CreatedAt: e.CreatedAt,
+		UpdatedAt: e.UpdatedAt,
 	}
 }
