@@ -8,6 +8,7 @@ import (
 	"github.com/gogf/gf/v2/os/gcmd"
 
 	"demo/internal/controller/admin"
+	appVersionCtrl "demo/internal/controller/app_version"
 	copyTradingCtrl "demo/internal/controller/copy_trading"
 	myTrackWalletCtrl "demo/internal/controller/my_track_wallet"
 	positionCtrl "demo/internal/controller/position"
@@ -19,6 +20,7 @@ import (
 	proxyPool "demo/internal/proxy_pool"
 
 	_ "demo/internal/logic/admin"
+	_ "demo/internal/logic/app_version"
 	_ "demo/internal/logic/copy_trading"
 	_ "demo/internal/logic/my_track_wallet"
 	_ "demo/internal/logic/position"
@@ -54,6 +56,7 @@ var (
 					group.Bind(
 						user.New(),
 						admin.New(),
+						appVersionCtrl.NewV1(),
 						copyTradingCtrl.New(),
 						walletCtrl.New(),
 						myTrackWalletCtrl.New(),
