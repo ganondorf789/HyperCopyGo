@@ -6,6 +6,7 @@ import (
 
 	v1 "demo/api/proxy_pool/v1"
 	"demo/internal/dao"
+	"demo/internal/model"
 	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
@@ -86,8 +87,25 @@ func (s *sProxyPool) List(ctx context.Context, in v1.ProxyPoolListReq) (res *v1.
 		return nil, err
 	}
 
+	list := make([]model.ProxyPoolItem, 0, len(items))
+	for _, e := range items {
+		list = append(list, model.ProxyPoolItem{
+			Id: e.Id,
+			BaseProxyPool: model.BaseProxyPool{
+				Host:     e.Host,
+				Port:     e.Port,
+				Username: e.Username,
+				Password: e.Password,
+				Remark:   e.Remark,
+			},
+			Status:    e.Status,
+			CreatedAt: e.CreatedAt,
+			UpdatedAt: e.UpdatedAt,
+		})
+	}
+
 	return &v1.ProxyPoolListRes{
-		List:  items,
+		List:  list,
 		Total: total,
 		Page:  in.Page,
 	}, nil

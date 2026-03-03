@@ -1,19 +1,15 @@
 package v1
 
 import (
-	"demo/internal/model/entity"
+	"demo/internal/model"
 
 	"github.com/gogf/gf/v2/frame/g"
 )
 
 // 创建代理（需管理员权限）
 type ProxyPoolCreateReq struct {
-	g.Meta   `path:"/proxy-pool" tags:"ProxyPool" method:"post" summary:"创建代理" login_required:"true" admin_required:"true"`
-	Host     string `json:"host"     v:"required#请输入代理主机地址"`
-	Port     int    `json:"port"     v:"required#请输入代理端口"`
-	Username string `json:"username" v:"required#请输入认证用户名"`
-	Password string `json:"password" v:"required#请输入认证密码"`
-	Remark   string `json:"remark"`
+	g.Meta `path:"/proxy-pool" tags:"ProxyPool" method:"post" summary:"创建代理" login_required:"true" admin_required:"true"`
+	model.BaseProxyPool
 }
 type ProxyPoolCreateRes struct {
 	g.Meta `mime:"application/json"`
@@ -22,14 +18,10 @@ type ProxyPoolCreateRes struct {
 
 // 更新代理（需管理员权限）
 type ProxyPoolUpdateReq struct {
-	g.Meta   `path:"/proxy-pool/{id}" tags:"ProxyPool" method:"put" summary:"更新代理" login_required:"true" admin_required:"true"`
-	Id       int64  `json:"id"       in:"path" v:"required"`
-	Host     string `json:"host"`
-	Port     int    `json:"port"`
-	Username string `json:"username"`
-	Password string `json:"password"`
-	Status   *int   `json:"status"`
-	Remark   string `json:"remark"`
+	g.Meta `path:"/proxy-pool/{id}" tags:"ProxyPool" method:"put" summary:"更新代理" login_required:"true" admin_required:"true"`
+	Id     int64 `json:"id" in:"path" v:"required"`
+	model.BaseProxyPool
+	Status *int `json:"status"`
 }
 type ProxyPoolUpdateRes struct {
 	g.Meta `mime:"application/json"`
@@ -52,7 +44,7 @@ type ProxyPoolListReq struct {
 }
 type ProxyPoolListRes struct {
 	g.Meta `mime:"application/json"`
-	List   []entity.ProxyPool `json:"list"`
-	Total  int                `json:"total"`
-	Page   int                `json:"page"`
+	List   []model.ProxyPoolItem `json:"list"`
+	Total  int                   `json:"total"`
+	Page   int                   `json:"page"`
 }
