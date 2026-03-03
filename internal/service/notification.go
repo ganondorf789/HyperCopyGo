@@ -12,6 +12,10 @@ import (
 
 type (
 	INotification interface {
+		Update(ctx context.Context, in v1.NotificationUpdateReq) error
+		Delete(ctx context.Context, id int64) error
+		AdminList(ctx context.Context, in v1.NotificationAdminListReq) (res *v1.NotificationAdminListRes, err error)
+		Send(ctx context.Context, in v1.NotificationSendReq) (res *v1.NotificationSendRes, err error)
 		Summary(ctx context.Context, userId int64) (res *v1.NotificationSummaryRes, err error)
 		List(ctx context.Context, userId int64, in v1.NotificationListReq) (res *v1.NotificationListRes, err error)
 		Read(ctx context.Context, userId int64, ids []int64) error

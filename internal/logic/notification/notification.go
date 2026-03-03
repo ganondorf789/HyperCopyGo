@@ -2,6 +2,7 @@ package notification
 
 import (
 	"context"
+	"fmt"
 
 	v1 "demo/api/notification/v1"
 	"demo/internal/dao"
@@ -16,6 +17,97 @@ func init() {
 }
 
 type sNotification struct{}
+
+func (s *sNotification) Update(ctx context.Context, in v1.NotificationUpdateReq) error {
+	count, err := dao.Notification.Ctx(ctx).Where(do.Notification{Id: in.Id}).Count()
+	if err != nil {
+		return err
+	}
+	if count == 0 {
+		return fmt.Errorf("通知不存在")
+	}
+
+	_, err = dao.Notification.Ctx(ctx).
+		Where(do.Notification{Id: in.Id}).
+		Data(do.Notification{
+			Category: in.Category,
+			Title:    in.Title,
+			Content:  in.Content,
+			Level:    in.Level,
+			RefId:    in.RefId,
+			RefType:  in.RefType,
+			Status:   in.Status,
+		}).
+		Update()
+	return err
+}
+
+func (s *sNotification) Delete(ctx context.Context, id int64) error {
+	_, err := dao.Notification.Ctx(ctx).Where(do.Notification{Id: id}).Delete()
+	return err
+}
+
+func (s *sNotification) AdminList(ctx context.Context, in v1.NotificationAdminListReq) (res *v1.NotificationAdminListRes, err error) {
+	m := dao.Notification.Ctx(ctx)
+	if in.Category != "" {
+		m = m.Where(do.Notification{Category: in.Category})
+	}
+	if in.Status >= 0 {
+		m = m.Where(do.Notification{Status: in.Status})
+	}
+
+	total, err := m.Count()
+	if err != nil {
+		return nil, err
+	}
+
+	var items []entity.Notification
+	err = m.Page(in.Page, in.PageSize).
+		OrderDesc(dao.Notification.Columns().Id).
+		Scan(&items)
+	if err != nil {
+		return nil, err
+	}
+
+	list := make([]model.NotificationAdminItem, 0, len(items))
+	for _, e := range items {
+		list = append(list, model.NotificationAdminItem{
+			Id:        e.Id,
+			UserId:    e.UserId,
+			Category:  e.Category,
+			Title:     e.Title,
+			Content:   e.Content,
+			RefId:     e.RefId,
+			RefType:   e.RefType,
+			Level:     e.Level,
+			Status:    e.Status,
+			CreatedAt: e.CreatedAt,
+		})
+	}
+
+	return &v1.NotificationAdminListRes{
+		List:  list,
+		Total: total,
+		Page:  in.Page,
+	}, nil
+}
+
+func (s *sNotification) Send(ctx context.Context, in v1.NotificationSendReq) (res *v1.NotificationSendRes, err error) {
+	id, err := dao.Notification.Ctx(ctx).Data(do.Notification{
+		UserId:   0,
+		Category: in.Category,
+		Title:    in.Title,
+		Content:  in.Content,
+		Level:    in.Level,
+		RefId:    in.RefId,
+		RefType:  in.RefType,
+		Status:   1,
+	}).InsertAndGetId()
+	if err != nil {
+		return nil, err
+	}
+	return &v1.NotificationSendRes{Id: id}, nil
+}
 
 // allCategories 所有通知分类，保证 1 级页面固定顺序
 var allCategories = []string{"public", "copy_trading", "whale", "track", "market"}

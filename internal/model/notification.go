@@ -18,6 +18,20 @@ type NotificationPreview struct {
 	CreatedAt *gtime.Time `json:"createdAt"`
 }
 
+// NotificationAdminItem 通知管理列表项（管理员）
+type NotificationAdminItem struct {
+	Id        int64       `json:"id"`
+	UserId    int64       `json:"userId"`
+	Category  string      `json:"category"`
+	Title     string      `json:"title"`
+	Content   string      `json:"content"`
+	RefId     int64       `json:"refId"`
+	RefType   string      `json:"refType"`
+	Level     int         `json:"level"`
+	Status    int         `json:"status"`
+	CreatedAt *gtime.Time `json:"createdAt"`
+}
+
 // NotificationItem 通知列表项（2级页面）
 type NotificationItem struct {
 	Id        int64       `json:"id"`
