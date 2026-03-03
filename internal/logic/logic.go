@@ -15,6 +15,7 @@ import (
 	_ "demo/internal/logic/notification"
 	_ "demo/internal/logic/position"
 	_ "demo/internal/logic/proxy_pool"
+	_ "demo/internal/logic/trader_performance"
 	_ "demo/internal/logic/trader_positions"
 	_ "demo/internal/logic/user"
 	_ "demo/internal/logic/user_app_key"

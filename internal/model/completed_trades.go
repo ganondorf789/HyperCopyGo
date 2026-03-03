@@ -20,3 +20,19 @@ type CompletedTradeItem struct {
 	CreatedAt  *gtime.Time `json:"createdAt"`
 	UpdatedAt  *gtime.Time `json:"updatedAt"`
 }
+
+type TradePerformanceBestTrade struct {
+	Coin      string  `json:"coin"`
+	Direction string  `json:"direction"`
+	Duration  int64   `json:"duration"`
+	CreateAt  int64   `json:"createAt"`
+	Pnl       float64 `json:"pnl"`
+}
+
+type TradePerformanceAsset struct {
+	Address *string `json:"address"`
+	Trades  int     `json:"trades"`
+	Coin    string  `json:"coin"`
+	Pnl     float64 `json:"pnl"`
+	Fees    float64 `json:"fees"`
+}

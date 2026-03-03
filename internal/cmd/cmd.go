@@ -17,6 +17,7 @@ import (
 	positionCtrl "demo/internal/controller/position"
 	proxyPoolCtrl "demo/internal/controller/proxy_pool"
 	completedTradesCtrl "demo/internal/controller/completed_trades"
+	traderPerformanceCtrl "demo/internal/controller/trader_performance"
 	traderPositionsCtrl "demo/internal/controller/trader_positions"
 	"demo/internal/controller/user"
 	userAppKeyCtrl "demo/internal/controller/user_app_key"
@@ -27,6 +28,7 @@ import (
 	proxyPool "demo/internal/proxy_pool"
 
 	_ "demo/internal/logic/completed_trades"
+	_ "demo/internal/logic/trader_performance"
 	_ "demo/internal/logic/admin"
 	_ "demo/internal/logic/app_version"
 	_ "demo/internal/logic/copy_trading"
@@ -86,6 +88,7 @@ var (
 						notificationCtrl.NewV1(),
 						positionCtrl.New(),
 						proxyPoolCtrl.New(),
+						traderPerformanceCtrl.NewV1(),
 						traderPositionsCtrl.NewV1(),
 						userAppKeyCtrl.NewV1(),
 					)

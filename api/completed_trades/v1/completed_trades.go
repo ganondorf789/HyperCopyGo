@@ -22,3 +22,4 @@ type CompletedTradesListRes struct {
 	Total  int                        `json:"total"`
 	Page   int                        `json:"page"`
 }
+
