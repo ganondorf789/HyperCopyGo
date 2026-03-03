@@ -8,38 +8,46 @@ import (
 	"github.com/gogf/gf/v2/os/gtime"
 )
 
-// BaseCopyTrading 跟单配置公共字段，供 API 层复用以减少重复定义
-type BaseCopyTrading struct {
-	TargetWallet                   string  `json:"targetWallet"                   orm:"target_wallet"`                     // 目标钱包地址
-	TargetWalletPlatform           string  `json:"targetWalletPlatform"           orm:"target_wallet_platform"`            // 目标钱包平台
-	Remark                         string  `json:"remark"                         orm:"remark"`                            // 备注
-	Leverage                       int     `json:"leverage"                       orm:"leverage"`                          // 杠杆倍数
-	MarginMode                     int     `json:"marginMode"                     orm:"margin_mode"`                       // 保证金模式 1:逐仓 2:全仓
-	FollowModel                    int     `json:"followModel"                    orm:"follow_model"`                      // 跟单模式 1:固定金额 2:固定比例
-	FollowModelValue               float64 `json:"followModelValue"               orm:"follow_model_value"`                // 跟单模式值
-	MinValue                       float64 `json:"minValue"                       orm:"min_value"`                         // 最小下单金额
-	MaxValue                       float64 `json:"maxValue"                       orm:"max_value"`                         // 最大下单金额
-	MaxMarginUsage                 float64 `json:"maxMarginUsage"                 orm:"max_margin_usage"`                  // 最大保证金使用率
-	TpValue                        float64 `json:"tpValue"                        orm:"tp_value"`                          // 止盈比例
-	SlValue                        float64 `json:"slValue"                        orm:"sl_value"`                          // 止损比例
-	OptReverseFollowOrder          int     `json:"optReverseFollowOrder"          orm:"opt_reverse_follow_order"`          // 反向跟单 0:关 1:开
-	OptFollowupDecrease            int     `json:"optFollowupDecrease"            orm:"opt_followup_decrease"`             // 跟随减仓 0:关 1:开
-	OptFollowupIncrease            int     `json:"optFollowupIncrease"            orm:"opt_followup_increase"`             // 跟随加仓 0:关 1:开
-	OptForcedLiquidationProtection int     `json:"optForcedLiquidationProtection" orm:"opt_forced_liquidation_protection"` // 强平保护 0:关 1:开
-	OptPositionIncreaseOpening     int     `json:"optPositionIncreaseOpening"     orm:"opt_position_increase_opening"`     // 加仓开仓 0:关 1:开
-	OptSlippageProtection          int     `json:"optSlippageProtection"          orm:"opt_slippage_protection"`           // 滑点保护 0:关 1:开
-	SymbolListType                 string  `json:"symbolListType"                 orm:"symbol_list_type"`                  // 交易对列表类型 WHITE:白名单 BLACK:黑名单
-	SymbolList                     string  `json:"symbolList"                     orm:"symbol_list"`                       // 交易对列表,逗号分隔
-	MainWallet                     string  `json:"mainWallet"                     orm:"main_wallet"`                       // 主钱包地址
-	MainWalletPlatform             string  `json:"mainWalletPlatform"             orm:"main_wallet_platform"`              // 主钱包平台
-}
-
 // CopyTrading is the golang structure for table copy_trading.
 type CopyTrading struct {
-	Id        int64       `json:"id"        orm:"id"`
-	UserId    int64       `json:"userId"    orm:"user_id"`    // 所属用户ID
-	BaseCopyTrading
-	Status    int         `json:"status"    orm:"status"`     // 状态 0:停用 1:启用
-	CreatedAt *gtime.Time `json:"createdAt" orm:"created_at"`
-	UpdatedAt *gtime.Time `json:"updatedAt" orm:"updated_at"`
+	Id                             int64       `json:"id"                             orm:"id"                                description:"主键ID"`                                                                                                                            // 主键ID
+	UserId                         int64       `json:"userId"                         orm:"user_id"                           description:"所属用户ID"`                                                                                                                          // 所属用户ID
+	TargetWallet                   string      `json:"targetWallet"                   orm:"target_wallet"                     description:"目标钱包地址"`                                                                                                                          // 目标钱包地址
+	TargetWalletPlatform           string      `json:"targetWalletPlatform"           orm:"target_wallet_platform"            description:"目标钱包平台"`                                                                                                                          // 目标钱包平台
+	Remark                         string      `json:"remark"                         orm:"remark"                            description:"备注"`                                                                                                                              // 备注
+	FollowType                     int64       `json:"followType"                     orm:"follow_type"                       description:"跟单类型 1:自动跟单 2:条件跟单 3:实时跟单"`                                                                                                       // 跟单类型 1:自动跟单 2:条件跟单 3:实时跟单
+	FollowOnce                     int64       `json:"followOnce"                     orm:"follow_once"                       description:"是否只跟一次 0:否 1:是"`                                                                                                                  // 是否只跟一次 0:否 1:是
+	PositionConditions             string      `json:"positionConditions"             orm:"position_conditions"               description:"持仓筛选条件(JSON数组)"`                                                                                                                  // 持仓筛选条件(JSON数组)
+	TraderConditions               string      `json:"traderConditions"               orm:"trader_conditions"                 description:"交易员筛选条件(JSON数组)"`                                                                                                                 // 交易员筛选条件(JSON数组)
+	TagAccountValue                string      `json:"tagAccountValue"                orm:"tag_account_value"                 description:"账户总价值 small/medium/whale"`                                                                                                        // 账户总价值 small/medium/whale
+	TagProfitScale                 string      `json:"tagProfitScale"                 orm:"tag_profit_scale"                  description:"盈利规模 small/medium/large"`                                                                                                         // 盈利规模 small/medium/large
+	TagDirection                   string      `json:"tagDirection"                   orm:"tag_direction"                     description:"方向偏好 short/neutral/long"`                                                                                                         // 方向偏好 short/neutral/long
+	TagTradingRhythm               string      `json:"tagTradingRhythm"               orm:"tag_trading_rhythm"                description:"交易节奏 longterm/swing/short/scalping"`                                                                                              // 交易节奏 longterm/swing/short/scalping
+	TagProfitStatus                string      `json:"tagProfitStatus"                orm:"tag_profit_status"                 description:"盈利状态 steady/volatile/balanced"`                                                                                                   // 盈利状态 steady/volatile/balanced
+	TagTradingStyles               []string    `json:"tagTradingStyles"               orm:"tag_trading_styles"                description:"交易风格(多选) hf_stable/hf_aggressive/lf_stable/lf_aggressive/steady_profit/high_risk_high_return/asymmetric/low_drawdown/volatility"` // 交易风格(多选) hf_stable/hf_aggressive/lf_stable/lf_aggressive/steady_profit/high_risk_high_return/asymmetric/low_drawdown/volatility
+	TraderMetricPeriod             string      `json:"traderMetricPeriod"             orm:"trader_metric_period"              description:"交易员指标周期 1d/7d/30d/90d/all"`                                                                                                       // 交易员指标周期 1d/7d/30d/90d/all
+	FollowMarginMode               int64       `json:"followMarginMode"               orm:"follow_margin_mode"                description:"跟单保证金模式 1:逐仓 2:全仓"`                                                                                                               // 跟单保证金模式 1:逐仓 2:全仓
+	FollowSymbol                   string      `json:"followSymbol"                   orm:"follow_symbol"                     description:"跟单币种"`                                                                                                                            // 跟单币种
+	Leverage                       int64       `json:"leverage"                       orm:"leverage"                          description:"杠杆倍数"`                                                                                                                            // 杠杆倍数
+	MarginMode                     int64       `json:"marginMode"                     orm:"margin_mode"                       description:"保证金模式 1:逐仓 2:全仓"`                                                                                                                 // 保证金模式 1:逐仓 2:全仓
+	FollowModel                    int64       `json:"followModel"                    orm:"follow_model"                      description:"跟单模式 1:固定金额 2:固定比例"`                                                                                                              // 跟单模式 1:固定金额 2:固定比例
+	FollowModelValue               float64     `json:"followModelValue"               orm:"follow_model_value"                description:"跟单模式值"`                                                                                                                           // 跟单模式值
+	MinValue                       float64     `json:"minValue"                       orm:"min_value"                         description:"最小下单金额"`                                                                                                                          // 最小下单金额
+	MaxValue                       float64     `json:"maxValue"                       orm:"max_value"                         description:"最大下单金额"`                                                                                                                          // 最大下单金额
+	MaxMarginUsage                 float64     `json:"maxMarginUsage"                 orm:"max_margin_usage"                  description:"最大保证金使用率"`                                                                                                                        // 最大保证金使用率
+	TpValue                        float64     `json:"tpValue"                        orm:"tp_value"                          description:"止盈比例"`                                                                                                                            // 止盈比例
+	SlValue                        float64     `json:"slValue"                        orm:"sl_value"                          description:"止损比例"`                                                                                                                            // 止损比例
+	OptReverseFollowOrder          int64       `json:"optReverseFollowOrder"          orm:"opt_reverse_follow_order"          description:"反向跟单 0:关 1:开"`                                                                                                                    // 反向跟单 0:关 1:开
+	OptFollowupDecrease            int64       `json:"optFollowupDecrease"            orm:"opt_followup_decrease"             description:"跟随减仓 0:关 1:开"`                                                                                                                    // 跟随减仓 0:关 1:开
+	OptFollowupIncrease            int64       `json:"optFollowupIncrease"            orm:"opt_followup_increase"             description:"跟随加仓 0:关 1:开"`                                                                                                                    // 跟随加仓 0:关 1:开
+	OptForcedLiquidationProtection int64       `json:"optForcedLiquidationProtection" orm:"opt_forced_liquidation_protection" description:"强平保护 0:关 1:开"`                                                                                                                    // 强平保护 0:关 1:开
+	OptPositionIncreaseOpening     int64       `json:"optPositionIncreaseOpening"     orm:"opt_position_increase_opening"     description:"加仓开仓 0:关 1:开"`                                                                                                                    // 加仓开仓 0:关 1:开
+	OptSlippageProtection          int64       `json:"optSlippageProtection"          orm:"opt_slippage_protection"           description:"滑点保护 0:关 1:开"`                                                                                                                    // 滑点保护 0:关 1:开
+	SymbolListType                 string      `json:"symbolListType"                 orm:"symbol_list_type"                  description:"交易对列表类型 WHITE:白名单 BLACK:黑名单"`                                                                                                     // 交易对列表类型 WHITE:白名单 BLACK:黑名单
+	SymbolList                     string      `json:"symbolList"                     orm:"symbol_list"                       description:"交易对列表,逗号分隔"`                                                                                                                      // 交易对列表,逗号分隔
+	MainWallet                     string      `json:"mainWallet"                     orm:"main_wallet"                       description:"主钱包地址"`                                                                                                                           // 主钱包地址
+	MainWalletPlatform             string      `json:"mainWalletPlatform"             orm:"main_wallet_platform"              description:"主钱包平台"`                                                                                                                           // 主钱包平台
+	Status                         int64       `json:"status"                         orm:"status"                            description:"状态 0:停用 1:启用"`                                                                                                                    // 状态 0:停用 1:启用
+	CreatedAt                      *gtime.Time `json:"createdAt"                      orm:"created_at"                        description:"创建时间"`                                                                                                                            // 创建时间
+	UpdatedAt                      *gtime.Time `json:"updatedAt"                      orm:"updated_at"                        description:"更新时间"`                                                                                                                            // 更新时间
 }

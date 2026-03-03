@@ -21,11 +21,24 @@ type CopyTradingDao struct {
 
 // CopyTradingColumns defines and stores column names for the table copy_trading.
 type CopyTradingColumns struct {
-	Id                             string //
+	Id                             string // 主键ID
 	UserId                         string // 所属用户ID
 	TargetWallet                   string // 目标钱包地址
 	TargetWalletPlatform           string // 目标钱包平台
 	Remark                         string // 备注
+	FollowType                     string // 跟单类型 1:自动跟单 2:条件跟单 3:实时跟单
+	FollowOnce                     string // 是否只跟一次 0:否 1:是
+	PositionConditions             string // 持仓筛选条件(JSON数组)
+	TraderConditions               string // 交易员筛选条件(JSON数组)
+	TagAccountValue                string // 账户总价值 small/medium/whale
+	TagProfitScale                 string // 盈利规模 small/medium/large
+	TagDirection                   string // 方向偏好 short/neutral/long
+	TagTradingRhythm               string // 交易节奏 longterm/swing/short/scalping
+	TagProfitStatus                string // 盈利状态 steady/volatile/balanced
+	TagTradingStyles               string // 交易风格(多选) hf_stable/hf_aggressive/lf_stable/lf_aggressive/steady_profit/high_risk_high_return/asymmetric/low_drawdown/volatility
+	TraderMetricPeriod             string // 交易员指标周期 1d/7d/30d/90d/all
+	FollowMarginMode               string // 跟单保证金模式 1:逐仓 2:全仓
+	FollowSymbol                   string // 跟单币种
 	Leverage                       string // 杠杆倍数
 	MarginMode                     string // 保证金模式 1:逐仓 2:全仓
 	FollowModel                    string // 跟单模式 1:固定金额 2:固定比例
@@ -46,8 +59,8 @@ type CopyTradingColumns struct {
 	MainWallet                     string // 主钱包地址
 	MainWalletPlatform             string // 主钱包平台
 	Status                         string // 状态 0:停用 1:启用
-	CreatedAt                      string //
-	UpdatedAt                      string //
+	CreatedAt                      string // 创建时间
+	UpdatedAt                      string // 更新时间
 }
 
 // copyTradingColumns holds the columns for the table copy_trading.
@@ -57,6 +70,19 @@ var copyTradingColumns = CopyTradingColumns{
 	TargetWallet:                   "target_wallet",
 	TargetWalletPlatform:           "target_wallet_platform",
 	Remark:                         "remark",
+	FollowType:                     "follow_type",
+	FollowOnce:                     "follow_once",
+	PositionConditions:             "position_conditions",
+	TraderConditions:               "trader_conditions",
+	TagAccountValue:                "tag_account_value",
+	TagProfitScale:                 "tag_profit_scale",
+	TagDirection:                   "tag_direction",
+	TagTradingRhythm:               "tag_trading_rhythm",
+	TagProfitStatus:                "tag_profit_status",
+	TagTradingStyles:               "tag_trading_styles",
+	TraderMetricPeriod:             "trader_metric_period",
+	FollowMarginMode:               "follow_margin_mode",
+	FollowSymbol:                   "follow_symbol",
 	Leverage:                       "leverage",
 	MarginMode:                     "margin_mode",
 	FollowModel:                    "follow_model",

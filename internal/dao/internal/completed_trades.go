@@ -21,36 +21,38 @@ type CompletedTradesDao struct {
 
 // CompletedTradesColumns defines and stores column names for the table completed_trades.
 type CompletedTradesColumns struct {
-	Id         string //
-	User       string // 交易员钱包地址
+	Id         string // 主键ID
+	Address    string // 钱包地址
 	Coin       string // 币种
-	Side       string // 方向 long/short
-	EntryPx    string // 开仓均价
-	ClosePx    string // 平仓均价
-	Sz         string // 交易数量
-	ClosedPnl  string // 已实现盈亏
+	MarginMode string // 保证金模式（isolated/cross）
+	Direction  string // 方向（long/short）
+	Size       string // 最大持仓量
+	EntryPrice string // 加权平均入场价
+	ClosePrice string // 加权平均平仓价
+	StartTime  string // 开仓时间（毫秒时间戳）
+	EndTime    string // 平仓时间（毫秒时间戳）
 	TotalFee   string // 总手续费
-	OpenTime   string // 开仓时间戳(ms)
-	CloseTime  string // 平仓时间戳(ms)
-	DurationMs string // 持仓时长(ms)
-	CreatedAt  string //
-	UpdatedAt  string //
+	Pnl        string // 已实现盈亏（closedPnl 之和）
+	FillCount  string // 成交笔数
+	CreatedAt  string // 创建时间
+	UpdatedAt  string // 更新时间
 }
 
 // completedTradesColumns holds the columns for the table completed_trades.
 var completedTradesColumns = CompletedTradesColumns{
 	Id:         "id",
-	User:       "user",
+	Address:    "address",
 	Coin:       "coin",
-	Side:       "side",
-	EntryPx:    "entry_px",
-	ClosePx:    "close_px",
-	Sz:         "sz",
-	ClosedPnl:  "closed_pnl",
+	MarginMode: "margin_mode",
+	Direction:  "direction",
+	Size:       "size",
+	EntryPrice: "entry_price",
+	ClosePrice: "close_price",
+	StartTime:  "start_time",
+	EndTime:    "end_time",
 	TotalFee:   "total_fee",
-	OpenTime:   "open_time",
-	CloseTime:  "close_time",
-	DurationMs: "duration_ms",
+	Pnl:        "pnl",
+	FillCount:  "fill_count",
 	CreatedAt:  "created_at",
 	UpdatedAt:  "updated_at",
 }

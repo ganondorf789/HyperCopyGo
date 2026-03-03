@@ -21,7 +21,7 @@ type MyTrackWalletDao struct {
 
 // MyTrackWalletColumns defines and stores column names for the table my_track_wallet.
 type MyTrackWalletColumns struct {
-	Id           string //
+	Id           string // 主键ID
 	UserId       string // 所属用户ID
 	Wallet       string // 跟踪的钱包地址
 	Remark       string // 备注
@@ -29,8 +29,8 @@ type MyTrackWalletColumns struct {
 	NotifyAction string // 通知动作 1:开仓 2:平仓 3:加仓 4:减仓
 	Lang         string // 语言
 	Status       string // 状态 1:正常 0:禁用
-	CreatedAt    string //
-	UpdatedAt    string //
+	CreatedAt    string // 创建时间
+	UpdatedAt    string // 更新时间
 }
 
 // myTrackWalletColumns holds the columns for the table my_track_wallet.

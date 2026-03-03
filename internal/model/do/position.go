@@ -12,7 +12,7 @@ import (
 // Position is the golang structure of table position for DAO operations like Where/Data.
 type Position struct {
 	g.Meta           `orm:"table:position, do:true"`
-	Id               any         //
+	Id               any         // 主键ID
 	User             any         // 用户钱包地址
 	Symbol           any         // 交易对符号
 	PositionSize     any         // 持仓数量（负数为空头）
@@ -25,7 +25,7 @@ type Position struct {
 	UnrealizedPnl    any         // 未实现盈亏
 	FundingFee       any         // 资金费用
 	MarginMode       any         // 保证金模式 cross/isolated
-	Labels           any         // 标签，逗号分隔
-	CreatedAt        *gtime.Time //
-	UpdatedAt        *gtime.Time //
+	Labels           any         // 标签,逗号分隔
+	CreatedAt        *gtime.Time // 创建时间
+	UpdatedAt        *gtime.Time // 更新时间
 }

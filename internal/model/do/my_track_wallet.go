@@ -12,7 +12,7 @@ import (
 // MyTrackWallet is the golang structure of table my_track_wallet for DAO operations like Where/Data.
 type MyTrackWallet struct {
 	g.Meta       `orm:"table:my_track_wallet, do:true"`
-	Id           any         //
+	Id           any         // 主键ID
 	UserId       any         // 所属用户ID
 	Wallet       any         // 跟踪的钱包地址
 	Remark       any         // 备注
@@ -20,6 +20,6 @@ type MyTrackWallet struct {
 	NotifyAction any         // 通知动作 1:开仓 2:平仓 3:加仓 4:减仓
 	Lang         any         // 语言
 	Status       any         // 状态 1:正常 0:禁用
-	CreatedAt    *gtime.Time //
-	UpdatedAt    *gtime.Time //
+	CreatedAt    *gtime.Time // 创建时间
+	UpdatedAt    *gtime.Time // 更新时间
 }

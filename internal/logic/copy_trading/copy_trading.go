@@ -147,10 +147,10 @@ func (s *sCopyTrading) List(ctx context.Context, userId int64, in v1.CopyTrading
 
 func entityToItem(e entity.CopyTrading) v1.CopyTradingItem {
 	return v1.CopyTradingItem{
-		Id:                 e.Id,
-		BaseCopyTrading:    e.BaseCopyTrading,
-		Status:             e.Status,
-		CreatedAt:          e.CreatedAt,
-		UpdatedAt:          e.UpdatedAt,
+		Id:              e.Id,
+		BaseCopyTrading: e.BaseCopyTrading,
+		Status:          e.Status,
+		CreatedAt:       e.CreatedAt,
+		UpdatedAt:       e.UpdatedAt,
 	}
 }

@@ -21,7 +21,7 @@ type PositionDao struct {
 
 // PositionColumns defines and stores column names for the table position.
 type PositionColumns struct {
-	Id               string //
+	Id               string // 主键ID
 	User             string // 用户钱包地址
 	Symbol           string // 交易对符号
 	PositionSize     string // 持仓数量（负数为空头）
@@ -34,9 +34,9 @@ type PositionColumns struct {
 	UnrealizedPnl    string // 未实现盈亏
 	FundingFee       string // 资金费用
 	MarginMode       string // 保证金模式 cross/isolated
-	Labels           string // 标签，逗号分隔
-	CreatedAt        string //
-	UpdatedAt        string //
+	Labels           string // 标签,逗号分隔
+	CreatedAt        string // 创建时间
+	UpdatedAt        string // 更新时间
 }
 
 // positionColumns holds the columns for the table position.

@@ -21,15 +21,15 @@ type WalletDao struct {
 
 // WalletColumns defines and stores column names for the table wallet.
 type WalletColumns struct {
-	Id               string //
+	Id               string // 主键ID
 	UserId           string // 所属用户ID
 	Address          string // 钱包地址
 	ApiWalletAddress string // API Wallet Address
 	ApiSecretKey     string // API Secret Key
 	Remark           string // 备注
 	Status           string // 状态 1:正常 0:禁用
-	CreatedAt        string //
-	UpdatedAt        string //
+	CreatedAt        string // 创建时间
+	UpdatedAt        string // 更新时间
 }
 
 // walletColumns holds the columns for the table wallet.

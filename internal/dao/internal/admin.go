@@ -21,14 +21,14 @@ type AdminDao struct {
 
 // AdminColumns defines and stores column names for the table admin.
 type AdminColumns struct {
-	Id        string //
+	Id        string // 主键ID
 	Username  string // 用户名
 	Password  string // 密码
 	Realname  string // 真实姓名
 	Role      string // 角色 admin/super_admin
 	Status    string // 状态 1:正常 0:禁用
-	CreatedAt string //
-	UpdatedAt string //
+	CreatedAt string // 创建时间
+	UpdatedAt string // 更新时间
 }
 
 // adminColumns holds the columns for the table admin.
