@@ -15,6 +15,7 @@ import (
 	positionCtrl "demo/internal/controller/position"
 	proxyPoolCtrl "demo/internal/controller/proxy_pool"
 	"demo/internal/controller/user"
+	userAppKeyCtrl "demo/internal/controller/user_app_key"
 	walletCtrl "demo/internal/controller/wallet"
 	"demo/internal/initialization"
 	"demo/internal/middleware"
@@ -28,6 +29,7 @@ import (
 	_ "demo/internal/logic/position"
 	_ "demo/internal/logic/proxy_pool"
 	_ "demo/internal/logic/user"
+	_ "demo/internal/logic/user_app_key"
 	_ "demo/internal/logic/wallet"
 )
 
@@ -65,6 +67,7 @@ var (
 						myTrackWalletCtrl.New(),
 						positionCtrl.New(),
 						proxyPoolCtrl.New(),
+						userAppKeyCtrl.NewV1(),
 					)
 				})
 			})
