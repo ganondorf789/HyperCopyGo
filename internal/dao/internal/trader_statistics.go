@@ -47,6 +47,7 @@ type TraderStatisticsColumns struct {
 	AvgLeverage        string // 平均杠杆
 	CreatedAt          string // 创建时间
 	UpdatedAt          string // 更新时间
+	Coins              string // 交易过的币种
 }
 
 // traderStatisticsColumns holds the columns for the table trader_statistics.
@@ -77,6 +78,7 @@ var traderStatisticsColumns = TraderStatisticsColumns{
 	AvgLeverage:        "avg_leverage",
 	CreatedAt:          "created_at",
 	UpdatedAt:          "updated_at",
+	Coins:              "coins",
 }
 
 // NewTraderStatisticsDao creates and returns a new DAO object for table data access.

@@ -36,4 +36,5 @@ type TraderStatistics struct {
 	AvgLeverage        float64     `json:"avgLeverage"        orm:"avg_leverage"         description:"平均杠杆"`                         // 平均杠杆
 	CreatedAt          *gtime.Time `json:"createdAt"          orm:"created_at"           description:"创建时间"`                         // 创建时间
 	UpdatedAt          *gtime.Time `json:"updatedAt"          orm:"updated_at"           description:"更新时间"`                         // 更新时间
+	Coins              []string    `json:"coins"              orm:"coins"                description:"交易过的币种"`                       // 交易过的币种
 }

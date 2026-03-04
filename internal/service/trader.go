@@ -16,6 +16,8 @@ type (
 		Popular(ctx context.Context) (res *v1.TraderPopularRes, err error)
 		// KolList 获取 X KOL 列表，支持分页和窗口筛选
 		KolList(ctx context.Context, in v1.TraderKolListReq) (res *v1.TraderKolListRes, err error)
+		// Discover 发现交易员，支持排序/筛选/标签/币种/分页
+		Discover(ctx context.Context, in v1.TraderDiscoverReq) (res *v1.TraderDiscoverRes, err error)
 	}
 )
 
