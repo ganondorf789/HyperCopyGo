@@ -109,17 +109,16 @@ func (s *sNotification) Send(ctx context.Context, in v1.NotificationSendReq) (re
 	}
 	// 通过 WebSocket 实时推送：userId=0 表示公共通知，广播给所有在线用户
 	hub := websocket.GetHub()
-	wsMsg := websocket.WsMessage{
+	hub.Broadcast(websocket.WsMessage{
 		Type: "notification",
-		Data: map[string]interface{}{
-			"id":       id,
-			"category": in.Category,
-			"title":    in.Title,
-			"content":  in.Content,
-			"level":    in.Level,
+		Data: model.MarketAlertBroadcast{
+			Id:       id,
+			Category: in.Category,
+			Title:    in.Title,
+			Content:  in.Content,
+			Level:    in.Level,
 		},
-	}
-	hub.Broadcast(wsMsg)
+	})
 
 	return &v1.NotificationSendRes{Id: id}, nil
 }

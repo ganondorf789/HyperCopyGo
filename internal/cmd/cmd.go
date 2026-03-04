@@ -28,6 +28,7 @@ import (
 	"demo/internal/middleware"
 	proxyPool "demo/internal/proxy_pool"
 	"demo/internal/service"
+	"demo/internal/subscriber"
 
 	_ "demo/internal/cron_jobs"
 	_ "demo/internal/logic/completed_trades"
@@ -66,6 +67,9 @@ var (
 
 			// 从数据库加载并启动定时任务
 			service.CronTask().StartAll(ctx)
+
+			// 启动 Redis 订阅（new_positions / market_alert）
+			subscriber.Start(ctx)
 
 			s := g.Server()
 
