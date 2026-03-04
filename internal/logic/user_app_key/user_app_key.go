@@ -22,6 +22,17 @@ func init() {
 type sUserAppKey struct{}
 
 func (s *sUserAppKey) Create(ctx context.Context, in v1.UserAppKeyCreateReq) (res *v1.UserAppKeyCreateRes, err error) {
+	var existing entity.UserAppKey
+	err = dao.UserAppKey.Ctx(ctx).
+		Where(do.UserAppKey{UserId: in.UserId}).
+		Scan(&existing)
+	if err != nil {
+		return nil, err
+	}
+	if existing.Id != 0 {
+		return nil, fmt.Errorf("该用户已存在AppKey")
+	}
+
 	appId := gstr.ToUpper(grand.S(16))
 	appSecret := grand.S(32)
 
@@ -41,6 +52,26 @@ func (s *sUserAppKey) Create(ctx context.Context, in v1.UserAppKeyCreateReq) (re
 		AppId:     appId,
 		AppSecret: appSecret,
 	}, nil
+}
+
+func (s *sUserAppKey) RefreshSecret(ctx context.Context, in v1.UserAppKeyRefreshSecretReq) (res *v1.UserAppKeyRefreshSecretRes, err error) {
+	count, err := dao.UserAppKey.Ctx(ctx).Where(do.UserAppKey{Id: in.Id}).Count()
+	if err != nil {
+		return nil, err
+	}
+	if count == 0 {
+		return nil, fmt.Errorf("AppKey不存在")
+	}
+
+	appSecret := grand.S(32)
+	_, err = dao.UserAppKey.Ctx(ctx).
+		Where(do.UserAppKey{Id: in.Id}).
+		Data(do.UserAppKey{AppSecret: appSecret}).
+		Update()
+	if err != nil {
+		return nil, err
+	}
+	return &v1.UserAppKeyRefreshSecretRes{AppSecret: appSecret}, nil
 }
 
 func (s *sUserAppKey) Update(ctx context.Context, in v1.UserAppKeyUpdateReq) error {

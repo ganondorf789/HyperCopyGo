@@ -22,6 +22,16 @@ type UserAppKeyCreateRes struct {
 	AppSecret string `json:"appSecret"`
 }
 
+// 刷新用户AppSecret（管理员）
+type UserAppKeyRefreshSecretReq struct {
+	g.Meta `path:"/user-app-key/{id}/refresh-secret" tags:"UserAppKey" method:"put" summary:"刷新用户AppSecret" login_required:"true" admin_required:"true"`
+	Id     int64 `json:"id" in:"path" v:"required"`
+}
+type UserAppKeyRefreshSecretRes struct {
+	g.Meta    `mime:"application/json"`
+	AppSecret string `json:"appSecret"`
+}
+
 // 更新用户AppKey（管理员）
 type UserAppKeyUpdateReq struct {
 	g.Meta   `path:"/user-app-key/{id}" tags:"UserAppKey" method:"put" summary:"更新用户AppKey" login_required:"true" admin_required:"true"`

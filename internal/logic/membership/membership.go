@@ -10,6 +10,8 @@ import (
 	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
+
+	"github.com/gogf/gf/v2/os/gtime"
 )
 
 func init() {
@@ -19,6 +21,17 @@ func init() {
 type sMembership struct{}
 
 func (s *sMembership) Create(ctx context.Context, in v1.MembershipCreateReq) (res *v1.MembershipCreateRes, err error) {
+	count, err := dao.Membership.Ctx(ctx).
+		Where(do.Membership{UserId: in.UserId, Status: 1}).
+		WhereGTE(dao.Membership.Columns().ExpireAt, gtime.Now()).
+		Count()
+	if err != nil {
+		return nil, err
+	}
+	if count > 0 {
+		return nil, fmt.Errorf("该用户已有未过期的会员，无法重复创建")
+	}
+
 	id, err := dao.Membership.Ctx(ctx).Data(do.Membership{
 		UserId:   in.UserId,
 		Level:    in.Level,

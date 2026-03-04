@@ -13,6 +13,7 @@ import (
 type (
 	IUserAppKey interface {
 		Create(ctx context.Context, in v1.UserAppKeyCreateReq) (res *v1.UserAppKeyCreateRes, err error)
+		RefreshSecret(ctx context.Context, in v1.UserAppKeyRefreshSecretReq) (res *v1.UserAppKeyRefreshSecretRes, err error)
 		Update(ctx context.Context, in v1.UserAppKeyUpdateReq) error
 		Delete(ctx context.Context, id int64) error
 		Detail(ctx context.Context, id int64) (res *v1.UserAppKeyDetailRes, err error)

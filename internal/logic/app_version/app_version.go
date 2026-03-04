@@ -19,6 +19,14 @@ func init() {
 type sAppVersion struct{}
 
 func (s *sAppVersion) Create(ctx context.Context, in v1.AppVersionCreateReq) (res *v1.AppVersionCreateRes, err error) {
+	count, err := dao.AppVersion.Ctx(ctx).Where(do.AppVersion{Platform: in.Platform}).Count()
+	if err != nil {
+		return nil, err
+	}
+	if count > 0 {
+		return nil, fmt.Errorf("平台 %s 已存在", in.Platform)
+	}
+
 	id, err := dao.AppVersion.Ctx(ctx).Data(do.AppVersion{
 		Platform:       in.Platform,
 		VersionName:    in.VersionName,
