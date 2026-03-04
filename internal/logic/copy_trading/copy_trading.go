@@ -10,6 +10,8 @@ import (
 	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
+
+	"github.com/gogf/gf/v2/util/gconv"
 )
 
 func init() {
@@ -19,31 +21,13 @@ func init() {
 type sCopyTrading struct{}
 
 func (s *sCopyTrading) Create(ctx context.Context, userId int64, in v1.CopyTradingCreateReq) (res *v1.CopyTradingCreateRes, err error) {
-	id, err := dao.CopyTrading.Ctx(ctx).Data(do.CopyTrading{
-		UserId:                         userId,
-		TargetWallet:                   in.TargetWallet,
-		TargetWalletPlatform:           in.TargetWalletPlatform,
-		Remark:                         in.Remark,
-		Leverage:                       in.Leverage,
-		MarginMode:                     in.MarginMode,
-		FollowModel:                    in.FollowModel,
-		FollowModelValue:               in.FollowModelValue,
-		MinValue:                       in.MinValue,
-		MaxValue:                       in.MaxValue,
-		MaxMarginUsage:                 in.MaxMarginUsage,
-		TpValue:                        in.TpValue,
-		SlValue:                        in.SlValue,
-		OptReverseFollowOrder:          in.OptReverseFollowOrder,
-		OptFollowupDecrease:            in.OptFollowupDecrease,
-		OptFollowupIncrease:            in.OptFollowupIncrease,
-		OptForcedLiquidationProtection: in.OptForcedLiquidationProtection,
-		OptPositionIncreaseOpening:     in.OptPositionIncreaseOpening,
-		OptSlippageProtection:          in.OptSlippageProtection,
-		SymbolListType:                 in.SymbolListType,
-		SymbolList:                     in.SymbolList,
-		MainWallet:                     in.MainWallet,
-		MainWalletPlatform:             in.MainWalletPlatform,
-	}).InsertAndGetId()
+	var data do.CopyTrading
+	if err = gconv.Scan(in, &data); err != nil {
+		return nil, err
+	}
+	data.UserId = userId
+
+	id, err := dao.CopyTrading.Ctx(ctx).Data(data).InsertAndGetId()
 	if err != nil {
 		return nil, err
 	}
@@ -61,33 +45,16 @@ func (s *sCopyTrading) Update(ctx context.Context, userId int64, in v1.CopyTradi
 		return fmt.Errorf("跟单配置不存在")
 	}
 
+	var data do.CopyTrading
+	if err = gconv.Scan(in, &data); err != nil {
+		return err
+	}
+	data.Id = nil
+	data.UserId = nil
+
 	_, err = dao.CopyTrading.Ctx(ctx).
 		Where(do.CopyTrading{Id: in.Id, UserId: userId}).
-		Data(do.CopyTrading{
-			TargetWallet:                   in.TargetWallet,
-			TargetWalletPlatform:           in.TargetWalletPlatform,
-			Remark:                         in.Remark,
-			Leverage:                       in.Leverage,
-			MarginMode:                     in.MarginMode,
-			FollowModel:                    in.FollowModel,
-			FollowModelValue:               in.FollowModelValue,
-			MinValue:                       in.MinValue,
-			MaxValue:                       in.MaxValue,
-			MaxMarginUsage:                 in.MaxMarginUsage,
-			TpValue:                        in.TpValue,
-			SlValue:                        in.SlValue,
-			OptReverseFollowOrder:          in.OptReverseFollowOrder,
-			OptFollowupDecrease:            in.OptFollowupDecrease,
-			OptFollowupIncrease:            in.OptFollowupIncrease,
-			OptForcedLiquidationProtection: in.OptForcedLiquidationProtection,
-			OptPositionIncreaseOpening:     in.OptPositionIncreaseOpening,
-			OptSlippageProtection:          in.OptSlippageProtection,
-			SymbolListType:                 in.SymbolListType,
-			SymbolList:                     in.SymbolList,
-			MainWallet:                     in.MainWallet,
-			MainWalletPlatform:             in.MainWalletPlatform,
-			Status:                         in.Status,
-		}).
+		Data(data).
 		Update()
 	return err
 }
