@@ -19,7 +19,7 @@ func init() {
 type sProxyPool struct{}
 
 func (s *sProxyPool) Create(ctx context.Context, in v1.ProxyPoolCreateReq) (res *v1.ProxyPoolCreateRes, err error) {
-	id, err := dao.ProxyPool.Ctx(ctx).Data(do.ProxyPool{
+	id, err := dao.ProxyPools.Ctx(ctx).Data(do.ProxyPool{
 		Host:     in.Host,
 		Port:     in.Port,
 		Username: in.Username,
@@ -34,7 +34,7 @@ func (s *sProxyPool) Create(ctx context.Context, in v1.ProxyPoolCreateReq) (res 
 }
 
 func (s *sProxyPool) Update(ctx context.Context, in v1.ProxyPoolUpdateReq) error {
-	count, err := dao.ProxyPool.Ctx(ctx).Where(do.ProxyPool{Id: in.Id}).Count()
+	count, err := dao.ProxyPools.Ctx(ctx).Where(do.ProxyPool{Id: in.Id}).Count()
 	if err != nil {
 		return err
 	}
@@ -62,17 +62,17 @@ func (s *sProxyPool) Update(ctx context.Context, in v1.ProxyPoolUpdateReq) error
 		data.Remark = in.Remark
 	}
 
-	_, err = dao.ProxyPool.Ctx(ctx).Where(do.ProxyPool{Id: in.Id}).Data(data).Update()
+	_, err = dao.ProxyPools.Ctx(ctx).Where(do.ProxyPool{Id: in.Id}).Data(data).Update()
 	return err
 }
 
 func (s *sProxyPool) Delete(ctx context.Context, id int64) error {
-	_, err := dao.ProxyPool.Ctx(ctx).Where(do.ProxyPool{Id: id}).Delete()
+	_, err := dao.ProxyPools.Ctx(ctx).Where(do.ProxyPool{Id: id}).Delete()
 	return err
 }
 
 func (s *sProxyPool) List(ctx context.Context, in v1.ProxyPoolListReq) (res *v1.ProxyPoolListRes, err error) {
-	m := dao.ProxyPool.Ctx(ctx)
+	m := dao.ProxyPools.Ctx(ctx)
 
 	total, err := m.Count()
 	if err != nil {
@@ -81,7 +81,7 @@ func (s *sProxyPool) List(ctx context.Context, in v1.ProxyPoolListReq) (res *v1.
 
 	var items []entity.ProxyPool
 	err = m.Page(in.Page, in.PageSize).
-		OrderDesc(dao.ProxyPool.Columns().Id).
+		OrderDesc(dao.ProxyPools.Columns().Id).
 		Scan(&items)
 	if err != nil {
 		return nil, err

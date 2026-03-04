@@ -69,6 +69,7 @@ func (s *sCopyTrading) Update(ctx context.Context, userId int64, in v1.CopyTradi
 	}
 	data.Id = nil
 	data.UserId = nil
+	data.TargetWallet = nil
 
 	_, err = dao.CopyTrading.Ctx(ctx).
 		Where(do.CopyTrading{Id: in.Id, UserId: userId}).
