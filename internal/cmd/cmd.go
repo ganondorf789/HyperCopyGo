@@ -23,11 +23,12 @@ import (
 	userAppKeyCtrl "demo/internal/controller/user_app_key"
 	walletCtrl "demo/internal/controller/wallet"
 	wsCtrl "demo/internal/controller/ws"
-	cronJobs "demo/internal/cron_jobs"
 	"demo/internal/initialization"
 	"demo/internal/middleware"
 	proxyPool "demo/internal/proxy_pool"
+	"demo/internal/service"
 
+	_ "demo/internal/cron_jobs"
 	_ "demo/internal/logic/completed_trades"
 	_ "demo/internal/logic/trader_performance"
 	_ "demo/internal/logic/admin"
@@ -61,8 +62,8 @@ var (
 				return err
 			}
 
-			// 启动定时任务
-			cronJobs.StartAll(ctx)
+			// 从数据库加载并启动定时任务
+			service.CronTask().StartAll(ctx)
 
 			s := g.Server()
 

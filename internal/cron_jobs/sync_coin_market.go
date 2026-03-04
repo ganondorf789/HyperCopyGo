@@ -13,12 +13,12 @@ import (
 )
 
 func init() {
-	registerJob("sync_coin_market", "0 */5 * * * *", SyncCoinMarket)
+	Register("sync_coin_market", SyncCoinMarket)
 }
 
 // SyncCoinMarket 通过 Hyperliquid API 拉取全部永续合约资产的行情数据，
 // 更新 coin_market 表中的价格、涨跌幅、成交量、资金费率、未平仓量等字段。
-func SyncCoinMarket(ctx context.Context) {
+func SyncCoinMarket(ctx context.Context, _ string) {
 	info := hyperliquid.NewInfo(ctx, hyperliquid.MainnetAPIURL, true, nil, nil, nil,
 		hyperliquid.InfoOptClientOptions(hyperliquid.ClientOptHTTPClient(proxyPool.HTTPClient())),
 	)

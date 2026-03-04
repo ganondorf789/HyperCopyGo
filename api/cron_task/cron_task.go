@@ -16,4 +16,6 @@ type ICronTaskV1 interface {
 	CronTaskDelete(ctx context.Context, req *v1.CronTaskDeleteReq) (res *v1.CronTaskDeleteRes, err error)
 	CronTaskDetail(ctx context.Context, req *v1.CronTaskDetailReq) (res *v1.CronTaskDetailRes, err error)
 	CronTaskList(ctx context.Context, req *v1.CronTaskListReq) (res *v1.CronTaskListRes, err error)
+	CronTaskExecute(ctx context.Context, req *v1.CronTaskExecuteReq) (res *v1.CronTaskExecuteRes, err error)
+	CronTaskTypes(ctx context.Context, req *v1.CronTaskTypesReq) (res *v1.CronTaskTypesRes, err error)
 }

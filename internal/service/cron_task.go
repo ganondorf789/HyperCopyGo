@@ -17,6 +17,12 @@ type (
 		Delete(ctx context.Context, id int64) error
 		Detail(ctx context.Context, id int64) (res *v1.CronTaskDetailRes, err error)
 		List(ctx context.Context, in v1.CronTaskListReq) (res *v1.CronTaskListRes, err error)
+		// Execute 手动执行指定定时任务
+		Execute(ctx context.Context, id int64) (res *v1.CronTaskExecuteRes, err error)
+		// TaskTypes 返回所有已注册的可用任务类型
+		TaskTypes(ctx context.Context) (res *v1.CronTaskTypesRes, err error)
+		// StartAll 从数据库加载所有启用的定时任务，根据 cron_expr 注册到 gcron 调度器
+		StartAll(ctx context.Context)
 	}
 )
 

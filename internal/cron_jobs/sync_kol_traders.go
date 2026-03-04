@@ -35,14 +35,13 @@ type kolTradersResp struct {
 }
 
 func init() {
-	registerJob("sync_kol_traders", "0 */30 * * * *", SyncKolTraders)
+	Register("sync_kol_traders", SyncKolTraders)
 }
 
 // SyncKolTraders 从 KOL 排行榜 API 拉取全部推特 KOL 列表（自动翻页），
 // 根据 address 更新 twitterName、username、profilePicture、labels，
 // 并将其标记为推特 KOL。
-func SyncKolTraders(ctx context.Context) {
-	// 先重置所有 trader 的 KOL 标记
+func SyncKolTraders(ctx context.Context, _ string) {
 	_, err := dao.Traders.Ctx(ctx).
 		Where(do.Traders{IsTwitterKol: true}).
 		Data(do.Traders{IsTwitterKol: false}).

@@ -1,34 +1,14 @@
 package cron_jobs
 
-import (
-	"context"
+import "context"
 
-	"github.com/gogf/gf/v2/frame/g"
-	"github.com/gogf/gf/v2/os/gcron"
-)
+// TaskHandler 定时任务处理函数签名，params 为数据库中配置的 JSON 参数
+type TaskHandler func(ctx context.Context, params string)
 
-type cronJob struct {
-	Name     string
-	CronExpr string
-	Fn       func(ctx context.Context)
-}
+// Handlers 任务类型 → 处理函数 的注册表
+var Handlers = map[string]TaskHandler{}
 
-var jobs []cronJob
-
-func registerJob(name, cronExpr string, fn func(ctx context.Context)) {
-	jobs = append(jobs, cronJob{Name: name, CronExpr: cronExpr, Fn: fn})
-}
-
-// StartAll 启动所有已注册的定时任务
-func StartAll(ctx context.Context) {
-	for _, job := range jobs {
-		j := job
-		if _, err := gcron.Add(ctx, j.CronExpr, func(ctx context.Context) {
-			j.Fn(ctx)
-		}, j.Name); err != nil {
-			g.Log().Errorf(ctx, "注册定时任务 [%s] 失败: %v", j.Name, err)
-		} else {
-			g.Log().Infof(ctx, "定时任务 [%s] 已注册, cron=%s", j.Name, j.CronExpr)
-		}
-	}
+// Register 注册一个任务类型对应的处理函数
+func Register(taskType string, handler TaskHandler) {
+	Handlers[taskType] = handler
 }

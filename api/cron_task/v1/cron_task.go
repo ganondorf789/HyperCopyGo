@@ -61,3 +61,23 @@ type CronTaskListRes struct {
 	Total  int                  `json:"total"`
 	Page   int                  `json:"page"`
 }
+
+// 手动执行定时任务（管理员）
+type CronTaskExecuteReq struct {
+	g.Meta `path:"/cron-task/{id}/execute" tags:"CronTask" method:"post" summary:"手动执行定时任务" login_required:"true" admin_required:"true"`
+	Id     int64 `json:"id" in:"path" v:"required"`
+}
+type CronTaskExecuteRes struct {
+	g.Meta      `mime:"application/json"`
+	LastRunCost int64  `json:"lastRunCost"`
+	LastError   string `json:"lastError"`
+}
+
+// 可用任务类型列表（管理员）
+type CronTaskTypesReq struct {
+	g.Meta `path:"/cron-task-types" tags:"CronTask" method:"get" summary:"可用任务类型列表" login_required:"true" admin_required:"true"`
+}
+type CronTaskTypesRes struct {
+	g.Meta `mime:"application/json"`
+	Types  []string `json:"types"`
+}

@@ -24,13 +24,13 @@ type hotTradersResp struct {
 }
 
 func init() {
-	registerJob("sync_hot_traders", "0 */30 * * * *", SyncHotTraders)
+	Register("sync_hot_traders", SyncHotTraders)
 }
 
 // SyncHotTraders 从排行榜 API 拉取热门交易员列表，
 // 根据 address 更新 remark(→twitter_name)、userPhoto(→profile_picture)、labels，
 // 并将其标记为热门地址。
-func SyncHotTraders(ctx context.Context) {
+func SyncHotTraders(ctx context.Context, _ string) {
 	resp, err := g.Client().Get(ctx, hotTradersAPI)
 	if err != nil {
 		g.Log().Errorf(ctx, "SyncHotTraders: 请求排行榜 API 失败: %v", err)
@@ -53,7 +53,6 @@ func SyncHotTraders(ctx context.Context) {
 		return
 	}
 
-	// 先将所有 trader 的热门标记重置，再重新标记
 	_, err = dao.Traders.Ctx(ctx).
 		Where(do.Traders{IsHotAddress: true}).
 		Data(do.Traders{IsHotAddress: false}).
@@ -89,4 +88,3 @@ func SyncHotTraders(ctx context.Context) {
 
 	g.Log().Infof(ctx, "SyncHotTraders: 成功同步 %d 个热门交易员", len(result.Data))
 }
-
