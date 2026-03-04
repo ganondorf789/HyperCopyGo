@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	v1 "demo/api/copy_trading/v1"
+	"demo/internal/consts"
 	"demo/internal/dao"
 	"demo/internal/model"
 	"demo/internal/model/do"
@@ -21,6 +22,23 @@ func init() {
 type sCopyTrading struct{}
 
 func (s *sCopyTrading) Create(ctx context.Context, userId int64, in v1.CopyTradingCreateReq) (res *v1.CopyTradingCreateRes, err error) {
+	switch in.FollowType {
+	case consts.FollowTypeAuto: // 自动跟单：同一用户下 TargetWallet 不可重复
+		count, err := dao.CopyTrading.Ctx(ctx).
+			Where(do.CopyTrading{UserId: userId, TargetWallet: in.TargetWallet}).
+			Count()
+		if err != nil {
+			return nil, err
+		}
+		if count > 0 {
+			return nil, fmt.Errorf("该目标钱包已存在跟单配置")
+		}
+	case consts.FollowTypeCondition: // 条件跟单：FollowSymbol 必填
+		if in.FollowSymbol == "" {
+			return nil, fmt.Errorf("条件跟单必须指定跟单币种")
+		}
+	}
+
 	var data do.CopyTrading
 	if err = gconv.Scan(in, &data); err != nil {
 		return nil, err

@@ -16,4 +16,9 @@ const (
 	// 管理员角色
 	RoleAdmin      = "admin"
 	RoleSuperAdmin = "super_admin"
+
+	// 跟单类型
+	FollowTypeAuto      = 1 // 自动跟单
+	FollowTypeCondition = 2 // 条件跟单
+	FollowTypeRealtime  = 3 // 实时跟单
 )

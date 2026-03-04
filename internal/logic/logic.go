@@ -10,6 +10,7 @@ import (
 	_ "demo/internal/logic/completed_trades"
 	_ "demo/internal/logic/copy_trading"
 	_ "demo/internal/logic/cron_task"
+	_ "demo/internal/logic/leaderboard"
 	_ "demo/internal/logic/membership"
 	_ "demo/internal/logic/my_track_wallet"
 	_ "demo/internal/logic/notification"
