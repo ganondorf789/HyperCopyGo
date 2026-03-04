@@ -23,6 +23,7 @@ import (
 	userAppKeyCtrl "demo/internal/controller/user_app_key"
 	walletCtrl "demo/internal/controller/wallet"
 	wsCtrl "demo/internal/controller/ws"
+	cronJobs "demo/internal/cron_jobs"
 	"demo/internal/initialization"
 	"demo/internal/middleware"
 	proxyPool "demo/internal/proxy_pool"
@@ -59,6 +60,9 @@ var (
 			if err = proxyPool.Reload(); err != nil {
 				return err
 			}
+
+			// 启动定时任务
+			cronJobs.StartAll(ctx)
 
 			s := g.Server()
 

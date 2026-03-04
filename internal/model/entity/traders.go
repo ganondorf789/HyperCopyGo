@@ -35,4 +35,6 @@ type Traders struct {
 	LongWinRate            float64     `json:"longWinRate"            orm:"long_win_rate"             description:"多头胜率"`      // 多头胜率
 	CreatedAt              *gtime.Time `json:"createdAt"              orm:"created_at"                description:"创建时间"`      // 创建时间
 	UpdatedAt              *gtime.Time `json:"updatedAt"              orm:"updated_at"                description:"更新时间"`      // 更新时间
+	IsHotAddress           bool        `json:"isHotAddress"           orm:"is_hot_address"            description:"是否热门地址"`    // 是否热门地址
+	IsTwitterKol           bool        `json:"isTwitterKol"           orm:"is_twitter_kol"            description:"是否推特KOL"`   // 是否推特KOL
 }

@@ -46,6 +46,8 @@ type TradersColumns struct {
 	LongWinRate            string // 多头胜率
 	CreatedAt              string // 创建时间
 	UpdatedAt              string // 更新时间
+	IsHotAddress           string // 是否热门地址
+	IsTwitterKol           string // 是否推特KOL
 }
 
 // tradersColumns holds the columns for the table traders.
@@ -75,6 +77,8 @@ var tradersColumns = TradersColumns{
 	LongWinRate:            "long_win_rate",
 	CreatedAt:              "created_at",
 	UpdatedAt:              "updated_at",
+	IsHotAddress:           "is_hot_address",
+	IsTwitterKol:           "is_twitter_kol",
 }
 
 // NewTradersDao creates and returns a new DAO object for table data access.

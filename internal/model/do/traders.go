@@ -37,4 +37,6 @@ type Traders struct {
 	LongWinRate            any         // 多头胜率
 	CreatedAt              *gtime.Time // 创建时间
 	UpdatedAt              *gtime.Time // 更新时间
+	IsHotAddress           any         // 是否热门地址
+	IsTwitterKol           any         // 是否推特KOL
 }
