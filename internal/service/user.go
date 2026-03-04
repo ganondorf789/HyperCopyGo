@@ -7,7 +7,7 @@ import (
 )
 
 type IUser interface {
-	Register(ctx context.Context, in v1.UserRegisterReq) error
+	SendVerifyCode(ctx context.Context, in v1.SendVerifyCodeReq) error
 	Login(ctx context.Context, in v1.UserLoginReq) (res *v1.UserLoginRes, err error)
 	Profile(ctx context.Context, userId int64) (res *v1.UserProfileRes, err error)
 }

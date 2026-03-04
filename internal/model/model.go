@@ -3,7 +3,14 @@ package model
 // ==================== 配置 ====================
 
 type Config struct {
-	Jwt JwtConfig
+	Jwt      JwtConfig
+	SendGrid SendGridConfig
+}
+
+type SendGridConfig struct {
+	ApiKey    string `json:"apiKey"`
+	FromEmail string `json:"fromEmail"`
+	FromName  string `json:"fromName"`
 }
 
 type JwtConfig struct {

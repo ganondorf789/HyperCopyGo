@@ -52,6 +52,8 @@ require (
 	github.com/redis/go-redis/v9 v9.12.1 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/rs/zerolog v1.34.0 // indirect
+	github.com/sendgrid/rest v2.6.9+incompatible // indirect
+	github.com/sendgrid/sendgrid-go v3.16.1+incompatible // indirect
 	github.com/sonirico/vago v0.11.4 // indirect
 	github.com/sonirico/vago/lol v0.1.0 // indirect
 	github.com/supranational/blst v0.3.16 // indirect

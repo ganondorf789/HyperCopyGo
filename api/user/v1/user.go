@@ -2,22 +2,20 @@ package v1
 
 import "github.com/gogf/gf/v2/frame/g"
 
-// 用户注册（免鉴权）
-type UserRegisterReq struct {
-	g.Meta   `path:"/user/register" tags:"User" method:"post" summary:"用户注册"`
-	Username string `json:"username" v:"required|length:3,32#请输入用户名|用户名长度3-32位"`
-	Password string `json:"password" v:"required|length:6,32#请输入密码|密码长度6-32位"`
-	Nickname string `json:"nickname"`
+// 发送邮箱验证码（免鉴权）
+type SendVerifyCodeReq struct {
+	g.Meta `path:"/user/send-code" tags:"User" method:"post" summary:"发送邮箱验证码"`
+	Email  string `json:"email" v:"required|email#请输入邮箱|邮箱格式不正确"`
 }
-type UserRegisterRes struct {
+type SendVerifyCodeRes struct {
 	g.Meta `mime:"application/json"`
 }
 
-// 用户登录（免鉴权）
+// 邮箱验证码登录（免鉴权）
 type UserLoginReq struct {
-	g.Meta   `path:"/user/login" tags:"User" method:"post" summary:"用户登录"`
-	Username string `json:"username" v:"required#请输入用户名"`
-	Password string `json:"password" v:"required#请输入密码"`
+	g.Meta `path:"/user/login" tags:"User" method:"post" summary:"邮箱验证码登录"`
+	Email  string `json:"email" v:"required|email#请输入邮箱|邮箱格式不正确"`
+	Code   string `json:"code" v:"required|length:6,6#请输入验证码|验证码为6位数字"`
 }
 type UserLoginRes struct {
 	g.Meta `mime:"application/json"`

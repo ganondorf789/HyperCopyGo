@@ -26,6 +26,8 @@ type TradersColumns struct {
 	Username               string // 推特用户名
 	Address                string // 钱包地址
 	ProfilePicture         string // 头像链接
+	IsHotAddress           string // 是否热门地址
+	IsTwitterKol           string // 是否推特KOL
 	Labels                 string // 标签列表
 	SnapEffLeverage        string // 快照-有效杠杆
 	SnapLongPositionCount  string // 快照-多头持仓数
@@ -44,10 +46,9 @@ type TradersColumns struct {
 	ShortWinRate           string // 空头胜率
 	LongPnl                string // 多头盈亏
 	LongWinRate            string // 多头胜率
+	TotalPnl               string // 总盈亏
 	CreatedAt              string // 创建时间
 	UpdatedAt              string // 更新时间
-	IsHotAddress           string // 是否热门地址
-	IsTwitterKol           string // 是否推特KOL
 }
 
 // tradersColumns holds the columns for the table traders.
@@ -57,6 +58,8 @@ var tradersColumns = TradersColumns{
 	Username:               "username",
 	Address:                "address",
 	ProfilePicture:         "profile_picture",
+	IsHotAddress:           "is_hot_address",
+	IsTwitterKol:           "is_twitter_kol",
 	Labels:                 "labels",
 	SnapEffLeverage:        "snap_eff_leverage",
 	SnapLongPositionCount:  "snap_long_position_count",
@@ -75,10 +78,9 @@ var tradersColumns = TradersColumns{
 	ShortWinRate:           "short_win_rate",
 	LongPnl:                "long_pnl",
 	LongWinRate:            "long_win_rate",
+	TotalPnl:               "total_pnl",
 	CreatedAt:              "created_at",
 	UpdatedAt:              "updated_at",
-	IsHotAddress:           "is_hot_address",
-	IsTwitterKol:           "is_twitter_kol",
 }
 
 // NewTradersDao creates and returns a new DAO object for table data access.

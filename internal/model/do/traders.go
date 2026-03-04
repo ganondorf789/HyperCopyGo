@@ -17,6 +17,8 @@ type Traders struct {
 	Username               any         // 推特用户名
 	Address                any         // 钱包地址
 	ProfilePicture         any         // 头像链接
+	IsHotAddress           any         // 是否热门地址
+	IsTwitterKol           any         // 是否推特KOL
 	Labels                 []string    // 标签列表
 	SnapEffLeverage        any         // 快照-有效杠杆
 	SnapLongPositionCount  any         // 快照-多头持仓数
@@ -35,8 +37,7 @@ type Traders struct {
 	ShortWinRate           any         // 空头胜率
 	LongPnl                any         // 多头盈亏
 	LongWinRate            any         // 多头胜率
+	TotalPnl               any         // 总盈亏
 	CreatedAt              *gtime.Time // 创建时间
 	UpdatedAt              *gtime.Time // 更新时间
-	IsHotAddress           any         // 是否热门地址
-	IsTwitterKol           any         // 是否推特KOL
 }

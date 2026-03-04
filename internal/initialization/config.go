@@ -18,8 +18,16 @@ func InitConfig() (err error) {
 		return err
 	}
 
+	var sendGridConfig model.SendGridConfig
+	sendGridVar := g.Cfg().MustGet(ctx, "sendgrid")
+	err = sendGridVar.Scan(&sendGridConfig)
+	if err != nil {
+		return err
+	}
+
 	global.Config = &model.Config{
-		Jwt: jwtConfig,
+		Jwt:      jwtConfig,
+		SendGrid: sendGridConfig,
 	}
 	return nil
 }

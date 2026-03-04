@@ -15,6 +15,8 @@ type Traders struct {
 	Username               string      `json:"username"               orm:"username"                  description:"推特用户名"`     // 推特用户名
 	Address                string      `json:"address"                orm:"address"                   description:"钱包地址"`      // 钱包地址
 	ProfilePicture         string      `json:"profilePicture"         orm:"profile_picture"           description:"头像链接"`      // 头像链接
+	IsHotAddress           bool        `json:"isHotAddress"           orm:"is_hot_address"            description:"是否热门地址"`    // 是否热门地址
+	IsTwitterKol           bool        `json:"isTwitterKol"           orm:"is_twitter_kol"            description:"是否推特KOL"`   // 是否推特KOL
 	Labels                 []string    `json:"labels"                 orm:"labels"                    description:"标签列表"`      // 标签列表
 	SnapEffLeverage        float64     `json:"snapEffLeverage"        orm:"snap_eff_leverage"         description:"快照-有效杠杆"`   // 快照-有效杠杆
 	SnapLongPositionCount  int64       `json:"snapLongPositionCount"  orm:"snap_long_position_count"  description:"快照-多头持仓数"`  // 快照-多头持仓数
@@ -33,8 +35,7 @@ type Traders struct {
 	ShortWinRate           float64     `json:"shortWinRate"           orm:"short_win_rate"            description:"空头胜率"`      // 空头胜率
 	LongPnl                float64     `json:"longPnl"                orm:"long_pnl"                  description:"多头盈亏"`      // 多头盈亏
 	LongWinRate            float64     `json:"longWinRate"            orm:"long_win_rate"             description:"多头胜率"`      // 多头胜率
+	TotalPnl               float64     `json:"totalPnl"               orm:"total_pnl"                 description:"总盈亏"`       // 总盈亏
 	CreatedAt              *gtime.Time `json:"createdAt"              orm:"created_at"                description:"创建时间"`      // 创建时间
 	UpdatedAt              *gtime.Time `json:"updatedAt"              orm:"updated_at"                description:"更新时间"`      // 更新时间
-	IsHotAddress           bool        `json:"isHotAddress"           orm:"is_hot_address"            description:"是否热门地址"`    // 是否热门地址
-	IsTwitterKol           bool        `json:"isTwitterKol"           orm:"is_twitter_kol"            description:"是否推特KOL"`   // 是否推特KOL
 }

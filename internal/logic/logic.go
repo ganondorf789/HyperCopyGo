@@ -6,6 +6,7 @@ package logic
 
 import (
 	_ "demo/internal/logic/admin"
+	_ "demo/internal/logic/email"
 	_ "demo/internal/logic/app_version"
 	_ "demo/internal/logic/completed_trades"
 	_ "demo/internal/logic/copy_trading"

@@ -16,8 +16,8 @@ func New() *Controller {
 	return &Controller{}
 }
 
-func (c *Controller) UserRegister(ctx context.Context, req *v1.UserRegisterReq) (res *v1.UserRegisterRes, err error) {
-	err = service.User().Register(ctx, *req)
+func (c *Controller) SendVerifyCode(ctx context.Context, req *v1.SendVerifyCodeReq) (res *v1.SendVerifyCodeRes, err error) {
+	err = service.User().SendVerifyCode(ctx, *req)
 	return
 }
 
