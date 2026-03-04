@@ -18,4 +18,17 @@ type JwtConfig struct {
 	Expire int64  `json:"expire"`
 }
 
+// ==================== Trader ====================
+
+type PopularTraderItem struct {
+	Address           string   `json:"address"`
+	UserPhoto         string   `json:"userPhoto"`
+	WinRate           float64  `json:"winRate"`
+	RealizedPnl       float64  `json:"realizedPnl"`
+	AccountTotalValue float64  `json:"accountTotalValue"`
+	CurrentPosition   float64  `json:"currentPosition"`
+	Labels            []string `json:"labels"`
+	Remark            string   `json:"remark"`
+}
+
 // ==================== 管理员 ====================

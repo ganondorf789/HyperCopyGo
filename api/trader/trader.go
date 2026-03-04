@@ -1,0 +1,15 @@
+// =================================================================================
+// Code generated and maintained by GoFrame CLI tool. DO NOT EDIT.
+// =================================================================================
+
+package trader
+
+import (
+	"context"
+
+	"demo/api/trader/v1"
+)
+
+type ITraderV1 interface {
+	TraderPopular(ctx context.Context, req *v1.TraderPopularReq) (res *v1.TraderPopularRes, err error)
+}
