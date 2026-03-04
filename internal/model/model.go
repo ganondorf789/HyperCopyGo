@@ -31,4 +31,16 @@ type PopularTraderItem struct {
 	Remark            string   `json:"remark"`
 }
 
+type KolTraderItem struct {
+	TwitterName       string   `json:"twitterName"`
+	Username          string   `json:"username"`
+	Address           string   `json:"address"`
+	AccountTotalValue float64  `json:"accountTotalValue"`
+	WinRate           float64  `json:"winRate"`
+	PositionCount     float64  `json:"positionCount"`
+	TotalPnl          float64  `json:"totalPnl"`
+	ProfilePicture    string   `json:"profilePicture"`
+	Labels            []string `json:"labels"`
+}
+
 // ==================== 管理员 ====================
