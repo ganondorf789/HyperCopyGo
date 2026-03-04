@@ -11,6 +11,7 @@ import (
 )
 
 type IAdminV1 interface {
+	AdminInit(ctx context.Context, req *v1.AdminInitReq) (res *v1.AdminInitRes, err error)
 	AdminLogin(ctx context.Context, req *v1.AdminLoginReq) (res *v1.AdminLoginRes, err error)
 	AdminProfile(ctx context.Context, req *v1.AdminProfileReq) (res *v1.AdminProfileRes, err error)
 	AdminUserList(ctx context.Context, req *v1.AdminUserListReq) (res *v1.AdminUserListRes, err error)

@@ -2,6 +2,18 @@ package v1
 
 import "github.com/gogf/gf/v2/frame/g"
 
+// 创建初始管理员（免鉴权，仅当系统无管理员时可用）
+type AdminInitReq struct {
+	g.Meta   `path:"/admin/init" tags:"Admin" method:"post" summary:"创建初始管理员"`
+	Username string `json:"username" v:"required#请输入用户名"`
+	Password string `json:"password" v:"required|length:6,32#请输入密码|密码长度为6到32位"`
+	Realname string `json:"realname"`
+}
+type AdminInitRes struct {
+	g.Meta `mime:"application/json"`
+	Id     int64 `json:"id"`
+}
+
 // 管理员登录（免鉴权）
 type AdminLoginReq struct {
 	g.Meta   `path:"/admin/login" tags:"Admin" method:"post" summary:"管理员登录"`

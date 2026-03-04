@@ -12,4 +12,8 @@ const (
 	// 用户状态
 	UserStatusEnabled  = 1
 	UserStatusDisabled = 0
+
+	// 管理员角色
+	RoleAdmin      = "admin"
+	RoleSuperAdmin = "super_admin"
 )

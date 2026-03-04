@@ -21,6 +21,28 @@ func init() {
 
 type sAdmin struct{}
 
+func (s *sAdmin) Init(ctx context.Context, in v1.AdminInitReq) (res *v1.AdminInitRes, err error) {
+	count, err := dao.Admin.Ctx(ctx).Count()
+	if err != nil {
+		return nil, err
+	}
+	if count > 0 {
+		return nil, fmt.Errorf("系统已存在管理员，无法重复初始化")
+	}
+
+	id, err := dao.Admin.Ctx(ctx).Data(do.Admin{
+		Username: in.Username,
+		Password: encryptPassword(in.Password),
+		Realname: in.Realname,
+		Role:     consts.RoleSuperAdmin,
+		Status:   consts.UserStatusEnabled,
+	}).InsertAndGetId()
+	if err != nil {
+		return nil, err
+	}
+	return &v1.AdminInitRes{Id: id}, nil
+}
+
 func (s *sAdmin) Login(ctx context.Context, in v1.AdminLoginReq) (res *v1.AdminLoginRes, err error) {
 	var admin entity.Admin
 	err = dao.Admin.Ctx(ctx).
