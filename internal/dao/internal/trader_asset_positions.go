@@ -11,16 +11,16 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 )
 
-// NewPositionDao is the data access object for the table new_position.
-type NewPositionDao struct {
-	table    string             // table is the underlying table name of the DAO.
-	group    string             // group is the database configuration group name of the current DAO.
-	columns  NewPositionColumns // columns contains all the column names of Table for convenient usage.
-	handlers []gdb.ModelHandler // handlers for customized model modification.
+// TraderAssetPositionsDao is the data access object for the table trader_asset_positions.
+type TraderAssetPositionsDao struct {
+	table    string                      // table is the underlying table name of the DAO.
+	group    string                      // group is the database configuration group name of the current DAO.
+	columns  TraderAssetPositionsColumns // columns contains all the column names of Table for convenient usage.
+	handlers []gdb.ModelHandler          // handlers for customized model modification.
 }
 
-// NewPositionColumns defines and stores column names for the table new_position.
-type NewPositionColumns struct {
+// TraderAssetPositionsColumns defines and stores column names for the table trader_asset_positions.
+type TraderAssetPositionsColumns struct {
 	Id                    string // 主键ID
 	Address               string // 钱包地址
 	Coin                  string // 币种
@@ -41,8 +41,8 @@ type NewPositionColumns struct {
 	UpdatedAt             string // 更新时间
 }
 
-// newPositionColumns holds the columns for the table new_position.
-var newPositionColumns = NewPositionColumns{
+// traderAssetPositionsColumns holds the columns for the table trader_asset_positions.
+var traderAssetPositionsColumns = TraderAssetPositionsColumns{
 	Id:                    "id",
 	Address:               "address",
 	Coin:                  "coin",
@@ -63,38 +63,38 @@ var newPositionColumns = NewPositionColumns{
 	UpdatedAt:             "updated_at",
 }
 
-// NewNewPositionDao creates and returns a new DAO object for table data access.
-func NewNewPositionDao(handlers ...gdb.ModelHandler) *NewPositionDao {
-	return &NewPositionDao{
+// NewTraderAssetPositionsDao creates and returns a new DAO object for table data access.
+func NewTraderAssetPositionsDao(handlers ...gdb.ModelHandler) *TraderAssetPositionsDao {
+	return &TraderAssetPositionsDao{
 		group:    "default",
-		table:    "new_position",
-		columns:  newPositionColumns,
+		table:    "trader_asset_positions",
+		columns:  traderAssetPositionsColumns,
 		handlers: handlers,
 	}
 }
 
 // DB retrieves and returns the underlying raw database management object of the current DAO.
-func (dao *NewPositionDao) DB() gdb.DB {
+func (dao *TraderAssetPositionsDao) DB() gdb.DB {
 	return g.DB(dao.group)
 }
 
 // Table returns the table name of the current DAO.
-func (dao *NewPositionDao) Table() string {
+func (dao *TraderAssetPositionsDao) Table() string {
 	return dao.table
 }
 
 // Columns returns all column names of the current DAO.
-func (dao *NewPositionDao) Columns() NewPositionColumns {
+func (dao *TraderAssetPositionsDao) Columns() TraderAssetPositionsColumns {
 	return dao.columns
 }
 
 // Group returns the database configuration group name of the current DAO.
-func (dao *NewPositionDao) Group() string {
+func (dao *TraderAssetPositionsDao) Group() string {
 	return dao.group
 }
 
 // Ctx creates and returns a Model for the current DAO. It automatically sets the context for the current operation.
-func (dao *NewPositionDao) Ctx(ctx context.Context) *gdb.Model {
+func (dao *TraderAssetPositionsDao) Ctx(ctx context.Context) *gdb.Model {
 	model := dao.DB().Model(dao.table)
 	for _, handler := range dao.handlers {
 		model = handler(model)
@@ -108,6 +108,6 @@ func (dao *NewPositionDao) Ctx(ctx context.Context) *gdb.Model {
 //
 // Note: Do not commit or roll back the transaction in function f,
 // as it is automatically handled by this function.
-func (dao *NewPositionDao) Transaction(ctx context.Context, f func(ctx context.Context, tx gdb.TX) error) (err error) {
+func (dao *TraderAssetPositionsDao) Transaction(ctx context.Context, f func(ctx context.Context, tx gdb.TX) error) (err error) {
 	return dao.Ctx(ctx).Transaction(ctx, f)
 }

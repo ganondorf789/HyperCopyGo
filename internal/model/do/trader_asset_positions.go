@@ -9,9 +9,9 @@ import (
 	"github.com/gogf/gf/v2/os/gtime"
 )
 
-// NewPosition is the golang structure of table new_position for DAO operations like Where/Data.
-type NewPosition struct {
-	g.Meta                `orm:"table:new_position, do:true"`
+// TraderAssetPositions is the golang structure of table trader_asset_positions for DAO operations like Where/Data.
+type TraderAssetPositions struct {
+	g.Meta                `orm:"table:trader_asset_positions, do:true"`
 	Id                    any         // 主键ID
 	Address               any         // 钱包地址
 	Coin                  any         // 币种

@@ -8,8 +8,8 @@ import (
 	"github.com/gogf/gf/v2/os/gtime"
 )
 
-// NewPosition is the golang structure for table new_position.
-type NewPosition struct {
+// TraderAssetPositions is the golang structure for table trader_asset_positions.
+type TraderAssetPositions struct {
 	Id                    int64       `json:"id"                    orm:"id"                       description:"主键ID"`                 // 主键ID
 	Address               string      `json:"address"               orm:"address"                  description:"钱包地址"`                 // 钱包地址
 	Coin                  string      `json:"coin"                  orm:"coin"                     description:"币种"`                   // 币种

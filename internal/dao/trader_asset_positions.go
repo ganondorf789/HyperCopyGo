@@ -8,15 +8,15 @@ import (
 	"demo/internal/dao/internal"
 )
 
-// newPositionDao is the data access object for the table new_position.
+// traderAssetPositionsDao is the data access object for the table trader_asset_positions.
 // You can define custom methods on it to extend its functionality as needed.
-type newPositionDao struct {
-	*internal.NewPositionDao
+type traderAssetPositionsDao struct {
+	*internal.TraderAssetPositionsDao
 }
 
 var (
-	// NewPosition is a globally accessible object for table new_position operations.
-	NewPosition = newPositionDao{internal.NewNewPositionDao()}
+	// TraderAssetPositions is a globally accessible object for table trader_asset_positions operations.
+	TraderAssetPositions = traderAssetPositionsDao{internal.NewTraderAssetPositionsDao()}
 )
 
 // Add your custom methods and functionality below.
