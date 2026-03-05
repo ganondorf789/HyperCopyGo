@@ -27,7 +27,7 @@ var defaultPool = &Pool{}
 func Reload() error {
 	ctx := gctx.New()
 	var items []entity.ProxyPools
-	err := dao.ProxyPool.Ctx(ctx).
+	err := dao.ProxyPools.Ctx(ctx).
 		Where(entity.ProxyPools{Status: 1}).
 		Scan(&items)
 	if err != nil {
@@ -84,7 +84,7 @@ func Count() int {
 // ReloadWithCtx 带 context 的重新加载
 func ReloadWithCtx(ctx context.Context) error {
 	var items []entity.ProxyPools
-	err := dao.ProxyPool.Ctx(ctx).
+	err := dao.ProxyPools.Ctx(ctx).
 		Where(entity.ProxyPools{Status: 1}).
 		Scan(&items)
 	if err != nil {
