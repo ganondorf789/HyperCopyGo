@@ -78,3 +78,13 @@ type AdminUserDeleteReq struct {
 type AdminUserDeleteRes struct {
 	g.Meta `mime:"application/json"`
 }
+
+// 管理员按邮箱搜索用户（需管理员权限）
+type AdminUserSearchReq struct {
+	g.Meta `path:"/admin/users/search" tags:"Admin" method:"get" summary:"按邮箱搜索用户" login_required:"true" admin_required:"true"`
+	Email  string `json:"email" v:"required#请输入邮箱地址"`
+}
+type AdminUserSearchRes struct {
+	g.Meta `mime:"application/json"`
+	List   []AdminUserItem `json:"list"`
+}

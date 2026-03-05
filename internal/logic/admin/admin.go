@@ -125,6 +125,30 @@ func (s *sAdmin) UserList(ctx context.Context, in v1.AdminUserListReq) (res *v1.
 	}, nil
 }
 
+func (s *sAdmin) UserSearch(ctx context.Context, in v1.AdminUserSearchReq) (res *v1.AdminUserSearchRes, err error) {
+	var users []entity.User
+	err = dao.User.Ctx(ctx).
+		WhereLike("email", "%"+in.Email+"%").
+		OrderDesc(dao.User.Columns().Id).
+		Scan(&users)
+	if err != nil {
+		return nil, err
+	}
+
+	list := make([]v1.AdminUserItem, 0, len(users))
+	for _, u := range users {
+		list = append(list, v1.AdminUserItem{
+			Id:       u.Id,
+			Username: u.Username,
+			Nickname: u.Nickname,
+			Email:    u.Email,
+			Phone:    u.Phone,
+			Status:   u.Status,
+		})
+	}
+	return &v1.AdminUserSearchRes{List: list}, nil
+}
+
 func (s *sAdmin) UserSetStatus(ctx context.Context, in v1.AdminUserStatusReq) error {
 	_, err := dao.User.Ctx(ctx).
 		Where("id = ?", in.Id).
