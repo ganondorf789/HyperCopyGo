@@ -51,6 +51,14 @@ func AdminAuth(r *ghttp.Request) {
 	r.Middleware.Next()
 }
 
+// CORS 跨域中间件，允许所有域名
+func CORS(r *ghttp.Request) {
+	corsOptions := r.Response.DefaultCORSOptions()
+	corsOptions.AllowDomain = []string{"*"}
+	r.Response.CORS(corsOptions)
+	r.Middleware.Next()
+}
+
 func extractToken(r *ghttp.Request) string {
 	auth := r.GetHeader("Authorization")
 	if auth != "" && strings.HasPrefix(auth, "Bearer ") {

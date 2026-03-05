@@ -38,11 +38,8 @@ func (s *sCopyTrading) Create(ctx context.Context, userId int64, in v1.CopyTradi
 		}
 	}
 
-	var data entity.CopyTrading
-	if err = gconv.Scan(in, &data); err != nil {
-		return nil, err
-	}
-	data.UserId = userId
+	data := gconv.Map(in)
+	data["user_id"] = userId
 
 	id, err := dao.CopyTrading.Ctx(ctx).Data(data).InsertAndGetId()
 	if err != nil {
@@ -62,13 +59,9 @@ func (s *sCopyTrading) Update(ctx context.Context, userId int64, in v1.CopyTradi
 		return fmt.Errorf("跟单配置不存在")
 	}
 
-	var data entity.CopyTrading
-	if err = gconv.Scan(in, &data); err != nil {
-		return err
-	}
-	data.Id = 0
-	data.UserId = 0
-	data.TargetWallet = ""
+	data := gconv.Map(in)
+	delete(data, "id")
+	delete(data, "targetWallet")
 
 	_, err = dao.CopyTrading.Ctx(ctx).
 		Where("id = ? AND user_id = ?", in.Id, userId).

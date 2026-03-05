@@ -26,13 +26,13 @@ func init() {
 type sCronTask struct{}
 
 func (s *sCronTask) Create(ctx context.Context, in v1.CronTaskCreateReq) (res *v1.CronTaskCreateRes, err error) {
-	id, err := dao.CronTask.Ctx(ctx).Data(entity.CronTask{
-		Name:     in.Name,
-		CronExpr: in.CronExpr,
-		TaskType: in.TaskType,
-		Params:   in.Params,
-		Remark:   in.Remark,
-		Status:   in.Status,
+	id, err := dao.CronTask.Ctx(ctx).Data(g.Map{
+		"name":      in.Name,
+		"cron_expr": in.CronExpr,
+		"task_type": in.TaskType,
+		"params":    in.Params,
+		"remark":    in.Remark,
+		"status":    in.Status,
 	}).InsertAndGetId()
 	if err != nil {
 		return nil, err
@@ -51,13 +51,13 @@ func (s *sCronTask) Update(ctx context.Context, in v1.CronTaskUpdateReq) error {
 
 	_, err = dao.CronTask.Ctx(ctx).
 		Where("id = ?", in.Id).
-		Data(entity.CronTask{
-			Name:     in.Name,
-			CronExpr: in.CronExpr,
-			TaskType: in.TaskType,
-			Params:   in.Params,
-			Remark:   in.Remark,
-			Status:   in.Status,
+		Data(g.Map{
+			"name":      in.Name,
+			"cron_expr": in.CronExpr,
+			"task_type": in.TaskType,
+			"params":    in.Params,
+			"remark":    in.Remark,
+			"status":    in.Status,
 		}).
 		Update()
 	return err

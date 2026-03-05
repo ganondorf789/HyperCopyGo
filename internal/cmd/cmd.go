@@ -78,6 +78,7 @@ var (
 
 			// WebSocket 路由（不使用 MiddlewareHandlerResponse，避免干扰 WebSocket 升级）
 			s.Group("/api", func(group *ghttp.RouterGroup) {
+				group.Middleware(middleware.CORS)
 				group.Bind(ws.New())
 			})
 
@@ -86,6 +87,7 @@ var (
 				group.Middleware(ghttp.MiddlewareHandlerResponse)
 				group.Group("/api", func(group *ghttp.RouterGroup) {
 					group.Middleware(
+						middleware.CORS,
 						middleware.Auth,
 						middleware.AdminAuth,
 					)

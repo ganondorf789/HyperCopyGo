@@ -62,10 +62,10 @@ func (s *sUser) Login(ctx context.Context, in v1.UserLoginReq) (res *v1.UserLogi
 	}
 
 	if user.Id == 0 {
-		id, err := dao.User.Ctx(ctx).Data(entity.User{
-			Email:    in.Email,
-			Username: in.Email,
-			Status:   consts.UserStatusEnabled,
+		id, err := dao.User.Ctx(ctx).Data(g.Map{
+			"email":    in.Email,
+			"username": in.Email,
+			"status":   consts.UserStatusEnabled,
 		}).InsertAndGetId()
 		if err != nil {
 			return nil, err

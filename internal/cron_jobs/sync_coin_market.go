@@ -5,7 +5,6 @@ import (
 	"strconv"
 
 	"demo/internal/dao"
-	"demo/internal/model/entity"
 	proxyPool "demo/internal/proxy_pool"
 
 	"github.com/gogf/gf/v2/frame/g"
@@ -59,17 +58,17 @@ func SyncCoinMarket(ctx context.Context, _ string) {
 			changePercent24h = change24h / prevDayPx * 100
 		}
 
-		data := entity.CoinMarket{
-			Coin:             coin,
-			Price:            markPx,
-			Change24H:        change24h,
-			ChangePercent24H: changePercent24h,
-			Open24H:          prevDayPx,
-			Close24H:         markPx,
-			Volume24H:        dayBaseVlm,
-			QuoteVolume24H:   dayNtlVlm,
-			Funding:          funding,
-			OpenInterest:     openInterest,
+		data := g.Map{
+			"coin":               coin,
+			"price":              markPx,
+			"change_24h":         change24h,
+			"change_percent_24h": changePercent24h,
+			"open_24h":           prevDayPx,
+			"close_24h":          markPx,
+			"volume_24h":         dayBaseVlm,
+			"quote_volume_24h":   dayNtlVlm,
+			"funding":            funding,
+			"open_interest":      openInterest,
 		}
 
 		affected, err := dao.CoinMarket.Ctx(ctx).

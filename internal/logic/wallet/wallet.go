@@ -4,14 +4,15 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/gogf/gf/v2/frame/g"
+	hyperliquid "github.com/sonirico/go-hyperliquid"
+
 	v1 "demo/api/wallet/v1"
+	proxyPool "demo/internal/proxy_pool"
 	"demo/internal/dao"
 	"demo/internal/model"
 	"demo/internal/model/entity"
 	"demo/internal/service"
-	proxyPool "demo/internal/proxy_pool"
-
-	hyperliquid "github.com/sonirico/go-hyperliquid"
 )
 
 func init() {
@@ -32,12 +33,12 @@ func (s *sWallet) Create(ctx context.Context, userId int64, in v1.WalletCreateRe
 		return nil, fmt.Errorf("钱包地址已存在")
 	}
 
-	id, err := dao.Wallet.Ctx(ctx).Data(entity.Wallet{
-		UserId:           userId,
-		Address:          in.Address,
-		ApiWalletAddress: in.ApiWalletAddress,
-		ApiSecretKey:     in.ApiSecretKey,
-		Remark:           in.Remark,
+	id, err := dao.Wallet.Ctx(ctx).Data(g.Map{
+		"user_id":            userId,
+		"address":            in.Address,
+		"api_wallet_address": in.ApiWalletAddress,
+		"api_secret_key":     in.ApiSecretKey,
+		"remark":             in.Remark,
 	}).InsertAndGetId()
 	if err != nil {
 		return nil, err
@@ -58,7 +59,7 @@ func (s *sWallet) Update(ctx context.Context, userId int64, in v1.WalletUpdateRe
 	// 只允许编辑 Remark
 	_, err = dao.Wallet.Ctx(ctx).
 		Where("id = ? AND user_id = ?", in.Id, userId).
-		Data(entity.Wallet{Remark: in.Remark}).
+		Data(g.Map{"remark": in.Remark}).
 		Update()
 	return err
 }

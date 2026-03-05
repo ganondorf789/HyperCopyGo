@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/gogf/gf/v2/frame/g"
+
 	v1 "demo/api/notification/v1"
 	"demo/internal/dao"
 	"demo/internal/model"
@@ -29,14 +31,14 @@ func (s *sNotification) Update(ctx context.Context, in v1.NotificationUpdateReq)
 
 	_, err = dao.Notification.Ctx(ctx).
 		Where("id = ?", in.Id).
-		Data(entity.Notification{
-			Category: in.Category,
-			Title:    in.Title,
-			Content:  in.Content,
-			Level:    in.Level,
-			RefId:    in.RefId,
-			RefType:  in.RefType,
-			Status:   in.Status,
+		Data(g.Map{
+			"category": in.Category,
+			"title":    in.Title,
+			"content":  in.Content,
+			"level":    in.Level,
+			"ref_id":   in.RefId,
+			"ref_type": in.RefType,
+			"status":   in.Status,
 		}).
 		Update()
 	return err
@@ -93,15 +95,15 @@ func (s *sNotification) AdminList(ctx context.Context, in v1.NotificationAdminLi
 }
 
 func (s *sNotification) Send(ctx context.Context, in v1.NotificationSendReq) (res *v1.NotificationSendRes, err error) {
-	id, err := dao.Notification.Ctx(ctx).Data(entity.Notification{
-		UserId:   0,
-		Category: in.Category,
-		Title:    in.Title,
-		Content:  in.Content,
-		Level:    in.Level,
-		RefId:    in.RefId,
-		RefType:  in.RefType,
-		Status:   1,
+	id, err := dao.Notification.Ctx(ctx).Data(g.Map{
+		"user_id":  0,
+		"category": in.Category,
+		"title":    in.Title,
+		"content":  in.Content,
+		"level":    in.Level,
+		"ref_id":   in.RefId,
+		"ref_type": in.RefType,
+		"status":   1,
 	}).InsertAndGetId()
 	if err != nil {
 		return nil, err

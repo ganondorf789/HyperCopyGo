@@ -8,6 +8,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/gogf/gf/v2/frame/g"
+
 	v1 "demo/api/proxy_pool/v1"
 	"demo/internal/dao"
 	"demo/internal/model"
@@ -22,13 +24,13 @@ func init() {
 type sProxyPool struct{}
 
 func (s *sProxyPool) Create(ctx context.Context, in v1.ProxyPoolCreateReq) (res *v1.ProxyPoolCreateRes, err error) {
-	id, err := dao.ProxyPools.Ctx(ctx).Data(entity.ProxyPools{
-		Host:     in.Host,
-		Port:     strconv.Itoa(in.Port),
-		Username: in.Username,
-		Password: in.Password,
-		Status:   1,
-		Remark:   in.Remark,
+	id, err := dao.ProxyPools.Ctx(ctx).Data(g.Map{
+		"host":     in.Host,
+		"port":     strconv.Itoa(in.Port),
+		"username": in.Username,
+		"password": in.Password,
+		"status":   1,
+		"remark":   in.Remark,
 	}).InsertAndGetId()
 	if err != nil {
 		return nil, err
@@ -45,27 +47,27 @@ func (s *sProxyPool) Update(ctx context.Context, in v1.ProxyPoolUpdateReq) error
 		return fmt.Errorf("代理不存在")
 	}
 
-	data := entity.ProxyPools{}
+	data := g.Map{}
 	if in.Host != "" {
-		data.Host = in.Host
+		data["host"] = in.Host
 	}
 	if in.Port != 0 {
-		data.Port = strconv.Itoa(in.Port)
+		data["port"] = strconv.Itoa(in.Port)
 	}
 	if in.Username != "" {
-		data.Username = in.Username
+		data["username"] = in.Username
 	}
 	if in.Password != "" {
-		data.Password = in.Password
+		data["password"] = in.Password
 	}
 	if in.Status != nil {
-		data.Status = *in.Status
+		data["status"] = *in.Status
 	}
 	if in.Remark != "" {
-		data.Remark = in.Remark
+		data["remark"] = in.Remark
 	}
 
-	_, err = dao.ProxyPools.Ctx(ctx).Where("id = ?", in.Id).Data(data).OmitEmpty().Update()
+	_, err = dao.ProxyPools.Ctx(ctx).Where("id = ?", in.Id).Data(data).Update()
 	return err
 }
 
@@ -148,12 +150,12 @@ func (s *sProxyPool) ImportFromCSV(ctx context.Context, in v1.ProxyPoolImportCSV
 			continue
 		}
 
-		_, insertErr := dao.ProxyPools.Ctx(ctx).Data(entity.ProxyPools{
-			Host:     host,
-			Port:     portStr,
-			Username: username,
-			Password: password,
-			Status:   1,
+		_, insertErr := dao.ProxyPools.Ctx(ctx).Data(g.Map{
+			"host":     host,
+			"port":     portStr,
+			"username": username,
+			"password": password,
+			"status":   1,
 		}).InsertAndGetId()
 		if insertErr != nil {
 			skipped++

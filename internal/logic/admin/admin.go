@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/gogf/gf/v2/crypto/gmd5"
+	"github.com/gogf/gf/v2/frame/g"
 
 	v1 "demo/api/admin/v1"
 	"demo/internal/consts"
@@ -29,12 +30,12 @@ func (s *sAdmin) Init(ctx context.Context, in v1.AdminInitReq) (res *v1.AdminIni
 		return nil, fmt.Errorf("系统已存在管理员，无法重复初始化")
 	}
 
-	id, err := dao.Admin.Ctx(ctx).Data(entity.Admin{
-		Username: in.Username,
-		Password: encryptPassword(in.Password),
-		Realname: in.Realname,
-		Role:     consts.RoleSuperAdmin,
-		Status:   consts.UserStatusEnabled,
+	id, err := dao.Admin.Ctx(ctx).Data(g.Map{
+		"username": in.Username,
+		"password": encryptPassword(in.Password),
+		"realname": in.Realname,
+		"role":     consts.RoleSuperAdmin,
+		"status":   consts.UserStatusEnabled,
 	}).InsertAndGetId()
 	if err != nil {
 		return nil, err
@@ -127,7 +128,7 @@ func (s *sAdmin) UserList(ctx context.Context, in v1.AdminUserListReq) (res *v1.
 func (s *sAdmin) UserSetStatus(ctx context.Context, in v1.AdminUserStatusReq) error {
 	_, err := dao.User.Ctx(ctx).
 		Where("id = ?", in.Id).
-		Data(entity.User{Status: in.Status}).
+		Data(g.Map{"status": in.Status}).
 		Update()
 	return err
 }

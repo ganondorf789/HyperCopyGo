@@ -4,13 +4,14 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/os/gtime"
+
 	v1 "demo/api/membership/v1"
 	"demo/internal/dao"
 	"demo/internal/model"
 	"demo/internal/model/entity"
 	"demo/internal/service"
-
-	"github.com/gogf/gf/v2/os/gtime"
 )
 
 func init() {
@@ -31,12 +32,12 @@ func (s *sMembership) Create(ctx context.Context, in v1.MembershipCreateReq) (re
 		return nil, fmt.Errorf("该用户已有未过期的会员，无法重复创建")
 	}
 
-	id, err := dao.Membership.Ctx(ctx).Data(entity.Membership{
-		UserId:   in.UserId,
-		Level:    in.Level,
-		StartAt:  in.StartAt,
-		ExpireAt: in.ExpireAt,
-		Status:   in.Status,
+	id, err := dao.Membership.Ctx(ctx).Data(g.Map{
+		"user_id":   in.UserId,
+		"level":     in.Level,
+		"start_at":  in.StartAt,
+		"expire_at": in.ExpireAt,
+		"status":    in.Status,
 	}).InsertAndGetId()
 	if err != nil {
 		return nil, err
@@ -55,11 +56,11 @@ func (s *sMembership) Update(ctx context.Context, in v1.MembershipUpdateReq) err
 
 	_, err = dao.Membership.Ctx(ctx).
 		Where("id = ?", in.Id).
-		Data(entity.Membership{
-			Level:    in.Level,
-			StartAt:  in.StartAt,
-			ExpireAt: in.ExpireAt,
-			Status:   in.Status,
+		Data(g.Map{
+			"level":     in.Level,
+			"start_at":  in.StartAt,
+			"expire_at": in.ExpireAt,
+			"status":    in.Status,
 		}).
 		Update()
 	return err

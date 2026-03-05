@@ -6,7 +6,6 @@ import (
 	"fmt"
 
 	"demo/internal/dao"
-	"demo/internal/model/entity"
 
 	"github.com/gogf/gf/v2/frame/g"
 )
@@ -84,17 +83,17 @@ func SyncKolTraders(ctx context.Context, _ string) {
 				continue
 			}
 
-			_, err = dao.Traders.Ctx(ctx).
-				Where("address = ?", item.Address).
-				Data(entity.Traders{
-					TwitterName:    item.TwitterName,
-					Username:       item.Username,
-					ProfilePicture: item.ProfilePicture,
-					Labels:         item.Labels,
-					IsTwitterKol:   true,
-				}).
-				OmitEmpty().
-				Update()
+		_, err = dao.Traders.Ctx(ctx).
+			Where("address = ?", item.Address).
+			Data(g.Map{
+				"twitter_name":    item.TwitterName,
+				"username":        item.Username,
+				"profile_picture": item.ProfilePicture,
+				"labels":          item.Labels,
+				"is_twitter_kol":  true,
+			}).
+			OmitEmpty().
+			Update()
 			if err != nil {
 				g.Log().Errorf(ctx, "SyncKolTraders: 更新 trader(%s) 失败: %v", item.Address, err)
 				continue

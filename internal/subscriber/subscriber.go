@@ -8,7 +8,6 @@ import (
 
 	"demo/internal/dao"
 	"demo/internal/model"
-	"demo/internal/model/entity"
 	"demo/internal/websocket"
 
 	"github.com/gogf/gf/v2/frame/g"
@@ -69,12 +68,7 @@ func handleNewPosition(ctx context.Context, payload string) {
 		return
 	}
 
-	var newPos entity.TraderAssetPositions
-	if err := gconv.Scan(evt, &newPos); err != nil {
-		g.Log().Errorf(ctx, "[subscriber] convert new_position error: %v", err)
-		return
-	}
-	id, err := dao.TraderAssetPositions.Ctx(ctx).Data(newPos).InsertAndGetId()
+	id, err := dao.TraderAssetPositions.Ctx(ctx).Data(gconv.Map(evt)).InsertAndGetId()
 	if err != nil {
 		g.Log().Errorf(ctx, "[subscriber] insert new_position error: %v", err)
 		return
@@ -114,13 +108,13 @@ func handleMarketAlert(ctx context.Context, payload string) {
 	content := fmt.Sprintf("%d new positions opened in the last %d minutes (threshold: %d)",
 		alert.Count, alert.Minutes, alert.Threshold)
 
-	id, err := dao.Notification.Ctx(ctx).Data(entity.Notification{
-		UserId:   0,
-		Category: "market",
-		Title:    title,
-		Content:  content,
-		Level:    1,
-		Status:   1,
+	id, err := dao.Notification.Ctx(ctx).Data(g.Map{
+		"user_id":  0,
+		"category": "market",
+		"title":    title,
+		"content":  content,
+		"level":    1,
+		"status":   1,
 	}).InsertAndGetId()
 	if err != nil {
 		g.Log().Errorf(ctx, "[subscriber] insert notification error: %v", err)

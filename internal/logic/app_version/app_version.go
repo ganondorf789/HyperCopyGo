@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/gogf/gf/v2/frame/g"
+
 	v1 "demo/api/app_version/v1"
 	"demo/internal/dao"
 	"demo/internal/model"
@@ -26,15 +28,15 @@ func (s *sAppVersion) Create(ctx context.Context, in v1.AppVersionCreateReq) (re
 		return nil, fmt.Errorf("平台 %s 已存在", in.Platform)
 	}
 
-	id, err := dao.AppVersion.Ctx(ctx).Data(entity.AppVersion{
-		Platform:       in.Platform,
-		VersionName:    in.VersionName,
-		VersionCode:    in.VersionCode,
-		DownloadUrl:    in.DownloadUrl,
-		ChangeLog:      in.ChangeLog,
-		ForceUpdate:    in.ForceUpdate,
-		MinVersionCode: in.MinVersionCode,
-		Status:         in.Status,
+	id, err := dao.AppVersion.Ctx(ctx).Data(g.Map{
+		"platform":         in.Platform,
+		"version_name":     in.VersionName,
+		"version_code":     in.VersionCode,
+		"download_url":     in.DownloadUrl,
+		"change_log":       in.ChangeLog,
+		"force_update":     in.ForceUpdate,
+		"min_version_code": in.MinVersionCode,
+		"status":           in.Status,
 	}).InsertAndGetId()
 	if err != nil {
 		return nil, err
@@ -53,15 +55,15 @@ func (s *sAppVersion) Update(ctx context.Context, in v1.AppVersionUpdateReq) err
 
 	_, err = dao.AppVersion.Ctx(ctx).
 		Where("id = ?", in.Id).
-		Data(entity.AppVersion{
-			Platform:       in.Platform,
-			VersionName:    in.VersionName,
-			VersionCode:    in.VersionCode,
-			DownloadUrl:    in.DownloadUrl,
-			ChangeLog:      in.ChangeLog,
-			ForceUpdate:    in.ForceUpdate,
-			MinVersionCode: in.MinVersionCode,
-			Status:         in.Status,
+		Data(g.Map{
+			"platform":         in.Platform,
+			"version_name":     in.VersionName,
+			"version_code":     in.VersionCode,
+			"download_url":     in.DownloadUrl,
+			"change_log":       in.ChangeLog,
+			"force_update":     in.ForceUpdate,
+			"min_version_code": in.MinVersionCode,
+			"status":           in.Status,
 		}).
 		Update()
 	return err

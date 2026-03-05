@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 
 	"demo/internal/dao"
-	"demo/internal/model/entity"
 
 	"github.com/gogf/gf/v2/frame/g"
 )
@@ -67,19 +66,18 @@ func SyncHotTraders(ctx context.Context, _ string) {
 			continue
 		}
 
-		updateData := entity.Traders{
-			TwitterName:  item.Remark,
-			IsHotAddress: true,
-			Labels:       item.Labels,
+		updateData := g.Map{
+			"twitter_name":  item.Remark,
+			"is_hot_address": true,
+			"labels":        item.Labels,
 		}
 		if item.UserPhoto != nil {
-			updateData.ProfilePicture = *item.UserPhoto
+			updateData["profile_picture"] = *item.UserPhoto
 		}
 
 		_, err = dao.Traders.Ctx(ctx).
 			Where("address = ?", item.Address).
 			Data(updateData).
-			OmitEmpty().
 			Update()
 		if err != nil {
 			g.Log().Errorf(ctx, "SyncHotTraders: 更新 trader(%s) 失败: %v", item.Address, err)

@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 
 	"demo/internal/dao"
-	"demo/internal/model/entity"
 
 	"github.com/gogf/gf/v2/frame/g"
 )
@@ -84,12 +83,12 @@ func SyncLeaderboard(ctx context.Context, _ string) {
 			}
 		}
 
-		data := entity.Leaderboard{
-			EthAddress:   row.EthAddress,
-			AccountValue: accountValue,
-			Pnl:          pnl,
-			Roi:          roi,
-			Vlm:          vlm,
+		data := g.Map{
+			"eth_address":   row.EthAddress,
+			"account_value": accountValue,
+			"pnl":           pnl,
+			"roi":           roi,
+			"vlm":           vlm,
 		}
 
 		affected, err := dao.Leaderboard.Ctx(ctx).

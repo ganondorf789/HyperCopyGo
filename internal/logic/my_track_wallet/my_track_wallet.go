@@ -6,15 +6,16 @@ import (
 	"math"
 	"strings"
 
+	"github.com/gogf/gf/v2/frame/g"
+	hyperliquid "github.com/sonirico/go-hyperliquid"
+
 	v1 "demo/api/my_track_wallet/v1"
+	proxyPool "demo/internal/proxy_pool"
 	"demo/internal/dao"
 	"demo/internal/model"
 	"demo/internal/model/entity"
 	"demo/internal/service"
 	"demo/utility"
-	proxyPool "demo/internal/proxy_pool"
-
-	hyperliquid "github.com/sonirico/go-hyperliquid"
 )
 
 func init() {
@@ -26,12 +27,12 @@ type sMyTrackWallet struct{}
 func (s *sMyTrackWallet) Create(ctx context.Context, userId int64, in v1.MyTrackWalletCreateReq) (res *v1.MyTrackWalletCreateRes, err error) {
 	ids := make([]int64, 0, len(in.Records))
 	for _, r := range in.Records {
-		id, err := dao.MyTrackWallet.Ctx(ctx).Data(entity.MyTrackWallet{
-			UserId:       userId,
-			Wallet:       r.Wallet,
-			Remark:       r.Remark,
-			EnableNotify: r.EnableNotify,
-			NotifyAction: r.NotifyAction,
+		id, err := dao.MyTrackWallet.Ctx(ctx).Data(g.Map{
+			"user_id":       userId,
+			"wallet":        r.Wallet,
+			"remark":        r.Remark,
+			"enable_notify": r.EnableNotify,
+			"notify_action": r.NotifyAction,
 		}).InsertAndGetId()
 		if err != nil {
 			return nil, err
@@ -52,21 +53,20 @@ func (s *sMyTrackWallet) Update(ctx context.Context, userId int64, in v1.MyTrack
 		return fmt.Errorf("跟踪钱包不存在")
 	}
 
-	data := entity.MyTrackWallet{
-		Remark:       in.Remark,
-		NotifyAction: in.NotifyAction,
+	data := g.Map{
+		"remark":        in.Remark,
+		"notify_action": in.NotifyAction,
 	}
 	if in.EnableNotify != nil {
-		data.EnableNotify = *in.EnableNotify
+		data["enable_notify"] = *in.EnableNotify
 	}
 	if in.Lang != "" {
-		data.Lang = in.Lang
+		data["lang"] = in.Lang
 	}
 
 	_, err = dao.MyTrackWallet.Ctx(ctx).
 		Where("id = ? AND user_id = ?", in.Id, userId).
 		Data(data).
-		OmitEmpty().
 		Update()
 	return err
 }

@@ -6,7 +6,6 @@ import (
 	"sync"
 
 	"demo/internal/dao"
-	"demo/internal/model/entity"
 	proxyPool "demo/internal/proxy_pool"
 
 	"github.com/gogf/gf/v2/frame/g"
@@ -109,15 +108,15 @@ func SyncWhaleAnchor(ctx context.Context, _ string) {
 		depthComp := 0.30 * depths[i]
 		threshold := math.Max(volComp, math.Max(oiComp, depthComp))
 
-		data := entity.WhaleAnchor{
-			Symbol:         c.coin,
-			Volume24H:      c.dayNtlVlm,
-			OpenInterest:   c.openInterestUSD,
-			Depth1Pct:      depths[i],
-			ValVolume:      volComp,
-			ValOi:          oiComp,
-			ValDepth:       depthComp,
-			WhaleThreshold: threshold,
+		data := g.Map{
+			"symbol":          c.coin,
+			"volume_24h":      c.dayNtlVlm,
+			"open_interest":   c.openInterestUSD,
+			"depth_1pct":      depths[i],
+			"val_volume":      volComp,
+			"val_oi":          oiComp,
+			"val_depth":       depthComp,
+			"whale_threshold": threshold,
 		}
 
 		affected, err := dao.WhaleAnchor.Ctx(ctx).

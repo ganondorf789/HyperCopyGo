@@ -4,14 +4,15 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/text/gstr"
+	"github.com/gogf/gf/v2/util/grand"
+
 	v1 "demo/api/user_app_key/v1"
 	"demo/internal/dao"
 	"demo/internal/model"
 	"demo/internal/model/entity"
 	"demo/internal/service"
-
-	"github.com/gogf/gf/v2/text/gstr"
-	"github.com/gogf/gf/v2/util/grand"
 )
 
 func init() {
@@ -35,13 +36,13 @@ func (s *sUserAppKey) Create(ctx context.Context, in v1.UserAppKeyCreateReq) (re
 	appId := gstr.ToUpper(grand.S(16))
 	appSecret := grand.S(32)
 
-	id, err := dao.UserAppKey.Ctx(ctx).Data(entity.UserAppKey{
-		UserId:    in.UserId,
-		AppId:     appId,
-		AppSecret: appSecret,
-		Remark:    in.Remark,
-		ExpireAt:  in.ExpireAt,
-		Status:    in.Status,
+	id, err := dao.UserAppKey.Ctx(ctx).Data(g.Map{
+		"user_id":    in.UserId,
+		"app_id":     appId,
+		"app_secret": appSecret,
+		"remark":     in.Remark,
+		"expire_at":  in.ExpireAt,
+		"status":     in.Status,
 	}).InsertAndGetId()
 	if err != nil {
 		return nil, err
@@ -65,7 +66,7 @@ func (s *sUserAppKey) RefreshSecret(ctx context.Context, in v1.UserAppKeyRefresh
 	appSecret := grand.S(32)
 	_, err = dao.UserAppKey.Ctx(ctx).
 		Where("id = ?", in.Id).
-		Data(entity.UserAppKey{AppSecret: appSecret}).
+		Data(g.Map{"app_secret": appSecret}).
 		Update()
 	if err != nil {
 		return nil, err
@@ -84,10 +85,10 @@ func (s *sUserAppKey) Update(ctx context.Context, in v1.UserAppKeyUpdateReq) err
 
 	_, err = dao.UserAppKey.Ctx(ctx).
 		Where("id = ?", in.Id).
-		Data(entity.UserAppKey{
-			Remark:   in.Remark,
-			ExpireAt: in.ExpireAt,
-			Status:   in.Status,
+		Data(g.Map{
+			"remark":    in.Remark,
+			"expire_at": in.ExpireAt,
+			"status":    in.Status,
 		}).
 		Update()
 	return err
