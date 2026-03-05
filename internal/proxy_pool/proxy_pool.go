@@ -28,7 +28,7 @@ func Reload() error {
 	ctx := gctx.New()
 	var items []entity.ProxyPools
 	err := dao.ProxyPools.Ctx(ctx).
-		Where(entity.ProxyPools{Status: 1}).
+		Where("status = ?", 1).
 		Scan(&items)
 	if err != nil {
 		return err
@@ -85,7 +85,7 @@ func Count() int {
 func ReloadWithCtx(ctx context.Context) error {
 	var items []entity.ProxyPools
 	err := dao.ProxyPools.Ctx(ctx).
-		Where(entity.ProxyPools{Status: 1}).
+		Where("status = ?", 1).
 		Scan(&items)
 	if err != nil {
 		return err

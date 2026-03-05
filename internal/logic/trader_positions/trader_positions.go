@@ -20,10 +20,10 @@ func (s *sTraderPositions) List(ctx context.Context, in v1.TraderPositionsListRe
 	m := dao.TraderPositions.Ctx(ctx)
 
 	if in.Address != "" {
-		m = m.Where(entity.TraderPositions{Address: in.Address})
+		m = m.Where("address = ?", in.Address)
 	}
 	if in.Coin != "" {
-		m = m.Where(entity.TraderPositions{Coin: in.Coin})
+		m = m.Where("coin = ?", in.Coin)
 	}
 	if in.Direction == "long" {
 		m = m.Where("szi > 0")

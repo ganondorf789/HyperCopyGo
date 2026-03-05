@@ -37,7 +37,7 @@ func (s *sProxyPool) Create(ctx context.Context, in v1.ProxyPoolCreateReq) (res 
 }
 
 func (s *sProxyPool) Update(ctx context.Context, in v1.ProxyPoolUpdateReq) error {
-	count, err := dao.ProxyPools.Ctx(ctx).Where(entity.ProxyPools{Id: in.Id}).Count()
+	count, err := dao.ProxyPools.Ctx(ctx).Where("id = ?", in.Id).Count()
 	if err != nil {
 		return err
 	}
@@ -65,12 +65,12 @@ func (s *sProxyPool) Update(ctx context.Context, in v1.ProxyPoolUpdateReq) error
 		data.Remark = in.Remark
 	}
 
-	_, err = dao.ProxyPools.Ctx(ctx).Where(entity.ProxyPools{Id: in.Id}).Data(data).OmitEmpty().Update()
+	_, err = dao.ProxyPools.Ctx(ctx).Where("id = ?", in.Id).Data(data).OmitEmpty().Update()
 	return err
 }
 
 func (s *sProxyPool) Delete(ctx context.Context, id int64) error {
-	_, err := dao.ProxyPools.Ctx(ctx).Where(entity.ProxyPools{Id: id}).Delete()
+	_, err := dao.ProxyPools.Ctx(ctx).Where("id = ?", id).Delete()
 	return err
 }
 

@@ -93,7 +93,7 @@ func SyncLeaderboard(ctx context.Context, _ string) {
 		}
 
 		affected, err := dao.Leaderboard.Ctx(ctx).
-			Where(entity.Leaderboard{EthAddress: row.EthAddress}).
+			Where("eth_address = ?", row.EthAddress).
 			Data(data).
 			UpdateAndGetAffected()
 		if err != nil {

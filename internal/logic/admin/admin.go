@@ -45,7 +45,7 @@ func (s *sAdmin) Init(ctx context.Context, in v1.AdminInitReq) (res *v1.AdminIni
 func (s *sAdmin) Login(ctx context.Context, in v1.AdminLoginReq) (res *v1.AdminLoginRes, err error) {
 	var admin entity.Admin
 	err = dao.Admin.Ctx(ctx).
-		Where(entity.Admin{Username: in.Username}).
+		Where("username = ?", in.Username).
 		Scan(&admin)
 	if err != nil {
 		return nil, err
@@ -70,7 +70,7 @@ func (s *sAdmin) Login(ctx context.Context, in v1.AdminLoginReq) (res *v1.AdminL
 func (s *sAdmin) Profile(ctx context.Context, adminId int64) (res *v1.AdminProfileRes, err error) {
 	var admin entity.Admin
 	err = dao.Admin.Ctx(ctx).
-		Where(entity.Admin{Id: adminId}).
+		Where("id = ?", adminId).
 		Scan(&admin)
 	if err != nil {
 		return nil, err
@@ -89,7 +89,7 @@ func (s *sAdmin) Profile(ctx context.Context, adminId int64) (res *v1.AdminProfi
 func (s *sAdmin) UserList(ctx context.Context, in v1.AdminUserListReq) (res *v1.AdminUserListRes, err error) {
 	m := dao.User.Ctx(ctx)
 	if in.Status >= 0 {
-		m = m.Where(entity.User{Status: in.Status})
+		m = m.Where("status = ?", in.Status)
 	}
 
 	total, err := m.Count()
@@ -126,7 +126,7 @@ func (s *sAdmin) UserList(ctx context.Context, in v1.AdminUserListReq) (res *v1.
 
 func (s *sAdmin) UserSetStatus(ctx context.Context, in v1.AdminUserStatusReq) error {
 	_, err := dao.User.Ctx(ctx).
-		Where(entity.User{Id: in.Id}).
+		Where("id = ?", in.Id).
 		Data(entity.User{Status: in.Status}).
 		Update()
 	return err
@@ -134,7 +134,7 @@ func (s *sAdmin) UserSetStatus(ctx context.Context, in v1.AdminUserStatusReq) er
 
 func (s *sAdmin) UserDelete(ctx context.Context, id int64) error {
 	_, err := dao.User.Ctx(ctx).
-		Where(entity.User{Id: id}).
+		Where("id = ?", id).
 		Delete()
 	return err
 }

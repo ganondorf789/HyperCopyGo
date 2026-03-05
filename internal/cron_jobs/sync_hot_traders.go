@@ -54,7 +54,7 @@ func SyncHotTraders(ctx context.Context, _ string) {
 	}
 
 	_, err = dao.Traders.Ctx(ctx).
-		Where(entity.Traders{IsHotAddress: true}).
+		Where("is_hot_address = ?", true).
 		Data(g.Map{"is_hot_address": false}).
 		Update()
 	if err != nil {
@@ -77,7 +77,7 @@ func SyncHotTraders(ctx context.Context, _ string) {
 		}
 
 		_, err = dao.Traders.Ctx(ctx).
-			Where(entity.Traders{Address: item.Address}).
+			Where("address = ?", item.Address).
 			Data(updateData).
 			OmitEmpty().
 			Update()

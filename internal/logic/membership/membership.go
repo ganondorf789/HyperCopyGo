@@ -21,7 +21,7 @@ type sMembership struct{}
 
 func (s *sMembership) Create(ctx context.Context, in v1.MembershipCreateReq) (res *v1.MembershipCreateRes, err error) {
 	count, err := dao.Membership.Ctx(ctx).
-		Where(entity.Membership{UserId: in.UserId, Status: 1}).
+		Where("user_id = ? AND status = ?", in.UserId, 1).
 		WhereGTE(dao.Membership.Columns().ExpireAt, gtime.Now()).
 		Count()
 	if err != nil {
@@ -45,7 +45,7 @@ func (s *sMembership) Create(ctx context.Context, in v1.MembershipCreateReq) (re
 }
 
 func (s *sMembership) Update(ctx context.Context, in v1.MembershipUpdateReq) error {
-	count, err := dao.Membership.Ctx(ctx).Where(entity.Membership{Id: in.Id}).Count()
+	count, err := dao.Membership.Ctx(ctx).Where("id = ?", in.Id).Count()
 	if err != nil {
 		return err
 	}
@@ -54,7 +54,7 @@ func (s *sMembership) Update(ctx context.Context, in v1.MembershipUpdateReq) err
 	}
 
 	_, err = dao.Membership.Ctx(ctx).
-		Where(entity.Membership{Id: in.Id}).
+		Where("id = ?", in.Id).
 		Data(entity.Membership{
 			Level:    in.Level,
 			StartAt:  in.StartAt,
@@ -66,13 +66,13 @@ func (s *sMembership) Update(ctx context.Context, in v1.MembershipUpdateReq) err
 }
 
 func (s *sMembership) Delete(ctx context.Context, id int64) error {
-	_, err := dao.Membership.Ctx(ctx).Where(entity.Membership{Id: id}).Delete()
+	_, err := dao.Membership.Ctx(ctx).Where("id = ?", id).Delete()
 	return err
 }
 
 func (s *sMembership) Detail(ctx context.Context, id int64) (res *v1.MembershipDetailRes, err error) {
 	var item entity.Membership
-	err = dao.Membership.Ctx(ctx).Where(entity.Membership{Id: id}).Scan(&item)
+	err = dao.Membership.Ctx(ctx).Where("id = ?", id).Scan(&item)
 	if err != nil {
 		return nil, err
 	}
@@ -87,13 +87,13 @@ func (s *sMembership) Detail(ctx context.Context, id int64) (res *v1.MembershipD
 func (s *sMembership) List(ctx context.Context, in v1.MembershipListReq) (res *v1.MembershipListRes, err error) {
 	m := dao.Membership.Ctx(ctx)
 	if in.UserId > 0 {
-		m = m.Where(entity.Membership{UserId: in.UserId})
+		m = m.Where("user_id = ?", in.UserId)
 	}
 	if in.Level >= 0 {
-		m = m.Where(entity.Membership{Level: in.Level})
+		m = m.Where("level = ?", in.Level)
 	}
 	if in.Status >= 0 {
-		m = m.Where(entity.Membership{Status: in.Status})
+		m = m.Where("status = ?", in.Status)
 	}
 
 	total, err := m.Count()

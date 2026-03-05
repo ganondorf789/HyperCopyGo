@@ -21,13 +21,13 @@ func (s *sCompletedTrades) List(ctx context.Context, in v1.CompletedTradesListRe
 	m := dao.CompletedTrades.Ctx(ctx)
 
 	if in.Address != "" {
-		m = m.Where(entity.CompletedTrades{Address: in.Address})
+		m = m.Where("address = ?", in.Address)
 	}
 	if in.Coin != "" {
-		m = m.Where(entity.CompletedTrades{Coin: in.Coin})
+		m = m.Where("coin = ?", in.Coin)
 	}
 	if in.Direction != "" {
-		m = m.Where(entity.CompletedTrades{Direction: in.Direction})
+		m = m.Where("direction = ?", in.Direction)
 	}
 
 	switch in.Window {

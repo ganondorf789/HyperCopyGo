@@ -24,7 +24,7 @@ func (s *sCopyTrading) Create(ctx context.Context, userId int64, in v1.CopyTradi
 	switch in.FollowType {
 	case consts.FollowTypeAuto: // 自动跟单：同一用户下 TargetWallet 不可重复
 		count, err := dao.CopyTrading.Ctx(ctx).
-			Where(entity.CopyTrading{UserId: userId, TargetWallet: in.TargetWallet}).
+			Where("user_id = ? AND target_wallet = ?", userId, in.TargetWallet).
 			Count()
 		if err != nil {
 			return nil, err
@@ -53,7 +53,7 @@ func (s *sCopyTrading) Create(ctx context.Context, userId int64, in v1.CopyTradi
 
 func (s *sCopyTrading) Update(ctx context.Context, userId int64, in v1.CopyTradingUpdateReq) error {
 	count, err := dao.CopyTrading.Ctx(ctx).
-		Where(entity.CopyTrading{Id: in.Id, UserId: userId}).
+		Where("id = ? AND user_id = ?", in.Id, userId).
 		Count()
 	if err != nil {
 		return err
@@ -71,7 +71,7 @@ func (s *sCopyTrading) Update(ctx context.Context, userId int64, in v1.CopyTradi
 	data.TargetWallet = ""
 
 	_, err = dao.CopyTrading.Ctx(ctx).
-		Where(entity.CopyTrading{Id: in.Id, UserId: userId}).
+		Where("id = ? AND user_id = ?", in.Id, userId).
 		Data(data).
 		OmitEmpty().
 		Update()
@@ -80,7 +80,7 @@ func (s *sCopyTrading) Update(ctx context.Context, userId int64, in v1.CopyTradi
 
 func (s *sCopyTrading) Delete(ctx context.Context, userId int64, id int64) error {
 	_, err := dao.CopyTrading.Ctx(ctx).
-		Where(entity.CopyTrading{Id: id, UserId: userId}).
+		Where("id = ? AND user_id = ?", id, userId).
 		Delete()
 	return err
 }
@@ -88,7 +88,7 @@ func (s *sCopyTrading) Delete(ctx context.Context, userId int64, id int64) error
 func (s *sCopyTrading) Detail(ctx context.Context, userId int64, id int64) (res *v1.CopyTradingDetailRes, err error) {
 	var item entity.CopyTrading
 	err = dao.CopyTrading.Ctx(ctx).
-		Where(entity.CopyTrading{Id: id, UserId: userId}).
+		Where("id = ? AND user_id = ?", id, userId).
 		Scan(&item)
 	if err != nil {
 		return nil, err
@@ -102,9 +102,9 @@ func (s *sCopyTrading) Detail(ctx context.Context, userId int64, id int64) (res 
 }
 
 func (s *sCopyTrading) List(ctx context.Context, userId int64, in v1.CopyTradingListReq) (res *v1.CopyTradingListRes, err error) {
-	m := dao.CopyTrading.Ctx(ctx).Where(entity.CopyTrading{UserId: userId})
+	m := dao.CopyTrading.Ctx(ctx).Where("user_id = ?", userId)
 	if in.Status >= 0 {
-		m = m.Where(entity.CopyTrading{Status: int64(in.Status)})
+		m = m.Where("status = ?", in.Status)
 	}
 
 	total, err := m.Count()

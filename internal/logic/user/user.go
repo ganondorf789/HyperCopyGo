@@ -55,7 +55,7 @@ func (s *sUser) Login(ctx context.Context, in v1.UserLoginReq) (res *v1.UserLogi
 
 	var user entity.User
 	err = dao.User.Ctx(ctx).
-		Where(entity.User{Email: in.Email}).
+		Where("email = ?", in.Email).
 		Scan(&user)
 	if err != nil {
 		return nil, err
@@ -87,7 +87,7 @@ func (s *sUser) Login(ctx context.Context, in v1.UserLoginReq) (res *v1.UserLogi
 func (s *sUser) Profile(ctx context.Context, userId int64) (res *v1.UserProfileRes, err error) {
 	var user entity.User
 	err = dao.User.Ctx(ctx).
-		Where(entity.User{Id: userId}).
+		Where("id = ?", userId).
 		Scan(&user)
 	if err != nil {
 		return nil, err

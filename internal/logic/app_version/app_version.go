@@ -18,7 +18,7 @@ func init() {
 type sAppVersion struct{}
 
 func (s *sAppVersion) Create(ctx context.Context, in v1.AppVersionCreateReq) (res *v1.AppVersionCreateRes, err error) {
-	count, err := dao.AppVersion.Ctx(ctx).Where(entity.AppVersion{Platform: in.Platform}).Count()
+	count, err := dao.AppVersion.Ctx(ctx).Where("platform = ?", in.Platform).Count()
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +43,7 @@ func (s *sAppVersion) Create(ctx context.Context, in v1.AppVersionCreateReq) (re
 }
 
 func (s *sAppVersion) Update(ctx context.Context, in v1.AppVersionUpdateReq) error {
-	count, err := dao.AppVersion.Ctx(ctx).Where(entity.AppVersion{Id: in.Id}).Count()
+	count, err := dao.AppVersion.Ctx(ctx).Where("id = ?", in.Id).Count()
 	if err != nil {
 		return err
 	}
@@ -52,7 +52,7 @@ func (s *sAppVersion) Update(ctx context.Context, in v1.AppVersionUpdateReq) err
 	}
 
 	_, err = dao.AppVersion.Ctx(ctx).
-		Where(entity.AppVersion{Id: in.Id}).
+		Where("id = ?", in.Id).
 		Data(entity.AppVersion{
 			Platform:       in.Platform,
 			VersionName:    in.VersionName,
@@ -68,17 +68,17 @@ func (s *sAppVersion) Update(ctx context.Context, in v1.AppVersionUpdateReq) err
 }
 
 func (s *sAppVersion) Delete(ctx context.Context, id int64) error {
-	_, err := dao.AppVersion.Ctx(ctx).Where(entity.AppVersion{Id: id}).Delete()
+	_, err := dao.AppVersion.Ctx(ctx).Where("id = ?", id).Delete()
 	return err
 }
 
 func (s *sAppVersion) List(ctx context.Context, in v1.AppVersionListReq) (res *v1.AppVersionListRes, err error) {
 	m := dao.AppVersion.Ctx(ctx)
 	if in.Platform != "" {
-		m = m.Where(entity.AppVersion{Platform: in.Platform})
+		m = m.Where("platform = ?", in.Platform)
 	}
 	if in.Status >= 0 {
-		m = m.Where(entity.AppVersion{Status: in.Status})
+		m = m.Where("status = ?", in.Status)
 	}
 
 	total, err := m.Count()
@@ -123,7 +123,7 @@ func (s *sAppVersion) List(ctx context.Context, in v1.AppVersionListReq) (res *v
 func (s *sAppVersion) Check(ctx context.Context, in v1.AppVersionCheckReq) (res *v1.AppVersionCheckRes, err error) {
 	var latest entity.AppVersion
 	err = dao.AppVersion.Ctx(ctx).
-		Where(entity.AppVersion{Platform: in.Platform, Status: 1}).
+		Where("platform = ? AND status = ?", in.Platform, 1).
 		OrderDesc(dao.AppVersion.Columns().VersionCode).
 		Scan(&latest)
 	if err != nil {

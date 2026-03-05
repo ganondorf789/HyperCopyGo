@@ -24,10 +24,10 @@ func (s *sPosition) List(ctx context.Context, in v1.PositionListReq) (res *v1.Po
 
 	// Coin 筛选
 	if in.User != "" {
-		m = m.Where(entity.Position{User: in.User})
+		m = m.Where("\"user\" = ?", in.User)
 	}
 	if in.Symbol != "" {
-		m = m.Where(entity.Position{Symbol: in.Symbol})
+		m = m.Where("symbol = ?", in.Symbol)
 	}
 
 	// Direction 筛选: long (position_size > 0) / short (position_size < 0)

@@ -43,7 +43,7 @@ func init() {
 // 并将其标记为推特 KOL。
 func SyncKolTraders(ctx context.Context, _ string) {
 	_, err := dao.Traders.Ctx(ctx).
-		Where(entity.Traders{IsTwitterKol: true}).
+		Where("is_twitter_kol = ?", true).
 		Data(g.Map{"is_twitter_kol": false}).
 		Update()
 	if err != nil {
@@ -85,7 +85,7 @@ func SyncKolTraders(ctx context.Context, _ string) {
 			}
 
 			_, err = dao.Traders.Ctx(ctx).
-				Where(entity.Traders{Address: item.Address}).
+				Where("address = ?", item.Address).
 				Data(entity.Traders{
 					TwitterName:    item.TwitterName,
 					Username:       item.Username,

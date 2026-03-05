@@ -73,7 +73,7 @@ func SyncCoinMarket(ctx context.Context, _ string) {
 		}
 
 		affected, err := dao.CoinMarket.Ctx(ctx).
-			Where(entity.CoinMarket{Coin: coin}).
+			Where("coin = ?", coin).
 			Data(data).
 			UpdateAndGetAffected()
 		if err != nil {

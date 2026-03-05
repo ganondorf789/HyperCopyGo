@@ -121,7 +121,7 @@ func SyncWhaleAnchor(ctx context.Context, _ string) {
 		}
 
 		affected, err := dao.WhaleAnchor.Ctx(ctx).
-			Where(entity.WhaleAnchor{Symbol: c.coin}).
+			Where("symbol = ?", c.coin).
 			Data(data).
 			UpdateAndGetAffected()
 		if err != nil {

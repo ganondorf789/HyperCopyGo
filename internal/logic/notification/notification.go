@@ -19,7 +19,7 @@ func init() {
 type sNotification struct{}
 
 func (s *sNotification) Update(ctx context.Context, in v1.NotificationUpdateReq) error {
-	count, err := dao.Notification.Ctx(ctx).Where(entity.Notification{Id: in.Id}).Count()
+	count, err := dao.Notification.Ctx(ctx).Where("id = ?", in.Id).Count()
 	if err != nil {
 		return err
 	}
@@ -28,7 +28,7 @@ func (s *sNotification) Update(ctx context.Context, in v1.NotificationUpdateReq)
 	}
 
 	_, err = dao.Notification.Ctx(ctx).
-		Where(entity.Notification{Id: in.Id}).
+		Where("id = ?", in.Id).
 		Data(entity.Notification{
 			Category: in.Category,
 			Title:    in.Title,
@@ -43,17 +43,17 @@ func (s *sNotification) Update(ctx context.Context, in v1.NotificationUpdateReq)
 }
 
 func (s *sNotification) Delete(ctx context.Context, id int64) error {
-	_, err := dao.Notification.Ctx(ctx).Where(entity.Notification{Id: id}).Delete()
+	_, err := dao.Notification.Ctx(ctx).Where("id = ?", id).Delete()
 	return err
 }
 
 func (s *sNotification) AdminList(ctx context.Context, in v1.NotificationAdminListReq) (res *v1.NotificationAdminListRes, err error) {
 	m := dao.Notification.Ctx(ctx)
 	if in.Category != "" {
-		m = m.Where(entity.Notification{Category: in.Category})
+		m = m.Where("category = ?", in.Category)
 	}
 	if in.Status >= 0 {
-		m = m.Where(entity.Notification{Status: in.Status})
+		m = m.Where("status = ?", in.Status)
 	}
 
 	total, err := m.Count()
@@ -194,7 +194,7 @@ func (s *sNotification) Summary(ctx context.Context, userId int64) (res *v1.Noti
 func (s *sNotification) List(ctx context.Context, userId int64, in v1.NotificationListReq) (res *v1.NotificationListRes, err error) {
 	m := dao.Notification.Ctx(ctx).
 		Where("(user_id = ? OR user_id = 0)", userId).
-		Where(entity.Notification{Category: in.Category, Status: 1})
+		Where("category = ? AND status = ?", in.Category, 1)
 
 	total, err := m.Count()
 	if err != nil {
@@ -218,7 +218,7 @@ func (s *sNotification) List(ctx context.Context, userId int64, in v1.Notificati
 		}
 		var reads []entity.NotificationRead
 		err = dao.NotificationRead.Ctx(ctx).
-			Where(entity.NotificationRead{UserId: userId}).
+			Where("user_id = ?", userId).
 			Where("notification_id IN(?)", ids).
 			Scan(&reads)
 		if err != nil {
@@ -254,7 +254,7 @@ func (s *sNotification) List(ctx context.Context, userId int64, in v1.Notificati
 func (s *sNotification) Read(ctx context.Context, userId int64, ids []int64) error {
 	for _, nid := range ids {
 		count, err := dao.NotificationRead.Ctx(ctx).
-			Where(entity.NotificationRead{UserId: userId, NotificationId: nid}).
+			Where("user_id = ? AND notification_id = ?", userId, nid).
 			Count()
 		if err != nil {
 			return err
