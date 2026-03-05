@@ -22,6 +22,7 @@ import (
 	"demo/internal/controller/trader_performance"
 	"demo/internal/controller/trader_positions"
 	"demo/internal/controller/user"
+	"demo/internal/controller/system_setting"
 	"demo/internal/controller/user_app_key"
 	"demo/internal/controller/wallet"
 	"demo/internal/controller/ws"
@@ -48,6 +49,7 @@ import (
 	_ "demo/internal/logic/trader_performance"
 	_ "demo/internal/logic/trader_positions"
 	_ "demo/internal/logic/user"
+	_ "demo/internal/logic/system_setting"
 	_ "demo/internal/logic/user_app_key"
 	_ "demo/internal/logic/wallet"
 )
@@ -104,8 +106,9 @@ var (
 						my_track_wallet.NewV1(),
 						notification.NewV1(),
 						position.NewV1(),
-						proxy_pool.NewV1(),
-						trader.NewV1(),
+					proxy_pool.NewV1(),
+					system_setting.NewV1(),
+					trader.NewV1(),
 						trader_performance.NewV1(),
 						trader_positions.NewV1(),
 						user_app_key.NewV1(),

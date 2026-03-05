@@ -22,14 +22,13 @@ func init() {
 type sWallet struct{}
 
 func (s *sWallet) Create(ctx context.Context, userId int64, in v1.WalletCreateReq) (res *v1.WalletCreateRes, err error) {
-	var existing entity.Wallet
-	err = dao.Wallet.Ctx(ctx).
+	count, err := dao.Wallet.Ctx(ctx).
 		Where("user_id = ? AND address = ?", userId, in.Address).
-		Scan(&existing)
+		Count()
 	if err != nil {
 		return nil, err
 	}
-	if existing.Id != 0 {
+	if count > 0 {
 		return nil, fmt.Errorf("钱包地址已存在")
 	}
 

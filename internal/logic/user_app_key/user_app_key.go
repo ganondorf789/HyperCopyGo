@@ -22,14 +22,13 @@ func init() {
 type sUserAppKey struct{}
 
 func (s *sUserAppKey) Create(ctx context.Context, in v1.UserAppKeyCreateReq) (res *v1.UserAppKeyCreateRes, err error) {
-	var existing entity.UserAppKey
-	err = dao.UserAppKey.Ctx(ctx).
+	count, err := dao.UserAppKey.Ctx(ctx).
 		Where("user_id = ?", in.UserId).
-		Scan(&existing)
+		Count()
 	if err != nil {
 		return nil, err
 	}
-	if existing.Id != 0 {
+	if count > 0 {
 		return nil, fmt.Errorf("该用户已存在AppKey")
 	}
 
