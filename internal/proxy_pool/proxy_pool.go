@@ -16,7 +16,7 @@ import (
 
 // Pool IP 代理池，从数据库加载，轮询分配
 type Pool struct {
-	proxies []entity.ProxyPool
+	proxies []entity.ProxyPools
 	index   atomic.Uint64
 	mu      sync.RWMutex
 }
@@ -26,9 +26,9 @@ var defaultPool = &Pool{}
 // Reload 从数据库重新加载所有启用的代理
 func Reload() error {
 	ctx := gctx.New()
-	var items []entity.ProxyPool
+	var items []entity.ProxyPools
 	err := dao.ProxyPool.Ctx(ctx).
-		Where(entity.ProxyPool{Status: 1}).
+		Where(entity.ProxyPools{Status: 1}).
 		Scan(&items)
 	if err != nil {
 		return err
@@ -40,7 +40,7 @@ func Reload() error {
 }
 
 // Get 轮询获取一个代理，无可用代理返回 nil
-func Get() *entity.ProxyPool {
+func Get() *entity.ProxyPools {
 	defaultPool.mu.RLock()
 	defer defaultPool.mu.RUnlock()
 
@@ -53,7 +53,7 @@ func Get() *entity.ProxyPool {
 }
 
 // ProxyURL 返回代理的 http URL 字符串
-func ProxyURL(p *entity.ProxyPool) string {
+func ProxyURL(p *entity.ProxyPools) string {
 	return fmt.Sprintf("http://%s:%s@%s:%d", p.Username, p.Password, p.Host, p.Port)
 }
 
@@ -83,9 +83,9 @@ func Count() int {
 
 // ReloadWithCtx 带 context 的重新加载
 func ReloadWithCtx(ctx context.Context) error {
-	var items []entity.ProxyPool
+	var items []entity.ProxyPools
 	err := dao.ProxyPool.Ctx(ctx).
-		Where(entity.ProxyPool{Status: 1}).
+		Where(entity.ProxyPools{Status: 1}).
 		Scan(&items)
 	if err != nil {
 		return err

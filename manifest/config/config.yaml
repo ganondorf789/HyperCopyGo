@@ -1,0 +1,32 @@
+server:
+  address: ":8000"
+  openapiPath: "/api.json"
+  swaggerPath: "/swagger"
+
+logger:
+  level: "prod"
+  path: "logs/var"
+  stdout: true
+
+database:
+  logger:
+    path: "logs/sql"
+    level: "prod"
+    stdout: true
+  default:
+    link: "pgsql:postgres:postgres@tcp(127.0.0.1:5432)/hypercopy?sslmode=disable"
+    debug: false
+
+redis:
+  default:
+    address: 127.0.0.1:6379
+    db: 0
+
+jwt:
+  secret: "your-secret-key"
+  expire: 86400
+
+sendgrid:
+  apiKey: "your-sendgrid-api-key"
+  fromEmail: "no-reply@example.com"
+  fromName: "HyperCopy"

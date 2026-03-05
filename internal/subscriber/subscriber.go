@@ -69,12 +69,12 @@ func handleNewPosition(ctx context.Context, payload string) {
 		return
 	}
 
-	var newPos entity.NewPosition
+	var newPos entity.TraderAssetPositions
 	if err := gconv.Scan(evt, &newPos); err != nil {
 		g.Log().Errorf(ctx, "[subscriber] convert new_position error: %v", err)
 		return
 	}
-	id, err := dao.NewPosition.Ctx(ctx).Data(newPos).InsertAndGetId()
+	id, err := dao.TraderAssetPositions.Ctx(ctx).Data(newPos).InsertAndGetId()
 	if err != nil {
 		g.Log().Errorf(ctx, "[subscriber] insert new_position error: %v", err)
 		return
