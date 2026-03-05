@@ -36,7 +36,7 @@ type TraderStatistics struct {
 	ShortWinRate       any         // 空仓胜率
 	UnrealizedPnl      any         // 未实现盈亏
 	AvgLeverage        any         // 平均杠杆
+	Coins              []string    // 交易过的币种
 	CreatedAt          *gtime.Time // 创建时间
 	UpdatedAt          *gtime.Time // 更新时间
-	Coins              []string    // 交易过的币种
 }
