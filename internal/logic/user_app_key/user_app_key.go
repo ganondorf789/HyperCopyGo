@@ -7,7 +7,6 @@ import (
 	v1 "demo/api/user_app_key/v1"
 	"demo/internal/dao"
 	"demo/internal/model"
-	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
 
@@ -24,7 +23,7 @@ type sUserAppKey struct{}
 func (s *sUserAppKey) Create(ctx context.Context, in v1.UserAppKeyCreateReq) (res *v1.UserAppKeyCreateRes, err error) {
 	var existing entity.UserAppKey
 	err = dao.UserAppKey.Ctx(ctx).
-		Where(do.UserAppKey{UserId: in.UserId}).
+		Where(entity.UserAppKey{UserId: in.UserId}).
 		Scan(&existing)
 	if err != nil {
 		return nil, err
@@ -36,7 +35,7 @@ func (s *sUserAppKey) Create(ctx context.Context, in v1.UserAppKeyCreateReq) (re
 	appId := gstr.ToUpper(grand.S(16))
 	appSecret := grand.S(32)
 
-	id, err := dao.UserAppKey.Ctx(ctx).Data(do.UserAppKey{
+	id, err := dao.UserAppKey.Ctx(ctx).Data(entity.UserAppKey{
 		UserId:    in.UserId,
 		AppId:     appId,
 		AppSecret: appSecret,
@@ -55,7 +54,7 @@ func (s *sUserAppKey) Create(ctx context.Context, in v1.UserAppKeyCreateReq) (re
 }
 
 func (s *sUserAppKey) RefreshSecret(ctx context.Context, in v1.UserAppKeyRefreshSecretReq) (res *v1.UserAppKeyRefreshSecretRes, err error) {
-	count, err := dao.UserAppKey.Ctx(ctx).Where(do.UserAppKey{Id: in.Id}).Count()
+	count, err := dao.UserAppKey.Ctx(ctx).Where(entity.UserAppKey{Id: in.Id}).Count()
 	if err != nil {
 		return nil, err
 	}
@@ -65,8 +64,8 @@ func (s *sUserAppKey) RefreshSecret(ctx context.Context, in v1.UserAppKeyRefresh
 
 	appSecret := grand.S(32)
 	_, err = dao.UserAppKey.Ctx(ctx).
-		Where(do.UserAppKey{Id: in.Id}).
-		Data(do.UserAppKey{AppSecret: appSecret}).
+		Where(entity.UserAppKey{Id: in.Id}).
+		Data(entity.UserAppKey{AppSecret: appSecret}).
 		Update()
 	if err != nil {
 		return nil, err
@@ -75,7 +74,7 @@ func (s *sUserAppKey) RefreshSecret(ctx context.Context, in v1.UserAppKeyRefresh
 }
 
 func (s *sUserAppKey) Update(ctx context.Context, in v1.UserAppKeyUpdateReq) error {
-	count, err := dao.UserAppKey.Ctx(ctx).Where(do.UserAppKey{Id: in.Id}).Count()
+	count, err := dao.UserAppKey.Ctx(ctx).Where(entity.UserAppKey{Id: in.Id}).Count()
 	if err != nil {
 		return err
 	}
@@ -84,8 +83,8 @@ func (s *sUserAppKey) Update(ctx context.Context, in v1.UserAppKeyUpdateReq) err
 	}
 
 	_, err = dao.UserAppKey.Ctx(ctx).
-		Where(do.UserAppKey{Id: in.Id}).
-		Data(do.UserAppKey{
+		Where(entity.UserAppKey{Id: in.Id}).
+		Data(entity.UserAppKey{
 			Remark:   in.Remark,
 			ExpireAt: in.ExpireAt,
 			Status:   in.Status,
@@ -95,13 +94,13 @@ func (s *sUserAppKey) Update(ctx context.Context, in v1.UserAppKeyUpdateReq) err
 }
 
 func (s *sUserAppKey) Delete(ctx context.Context, id int64) error {
-	_, err := dao.UserAppKey.Ctx(ctx).Where(do.UserAppKey{Id: id}).Delete()
+	_, err := dao.UserAppKey.Ctx(ctx).Where(entity.UserAppKey{Id: id}).Delete()
 	return err
 }
 
 func (s *sUserAppKey) Detail(ctx context.Context, id int64) (res *v1.UserAppKeyDetailRes, err error) {
 	var item entity.UserAppKey
-	err = dao.UserAppKey.Ctx(ctx).Where(do.UserAppKey{Id: id}).Scan(&item)
+	err = dao.UserAppKey.Ctx(ctx).Where(entity.UserAppKey{Id: id}).Scan(&item)
 	if err != nil {
 		return nil, err
 	}
@@ -116,10 +115,10 @@ func (s *sUserAppKey) Detail(ctx context.Context, id int64) (res *v1.UserAppKeyD
 func (s *sUserAppKey) List(ctx context.Context, in v1.UserAppKeyListReq) (res *v1.UserAppKeyListRes, err error) {
 	m := dao.UserAppKey.Ctx(ctx)
 	if in.UserId > 0 {
-		m = m.Where(do.UserAppKey{UserId: in.UserId})
+		m = m.Where(entity.UserAppKey{UserId: in.UserId})
 	}
 	if in.Status >= 0 {
-		m = m.Where(do.UserAppKey{Status: in.Status})
+		m = m.Where(entity.UserAppKey{Status: in.Status})
 	}
 
 	total, err := m.Count()

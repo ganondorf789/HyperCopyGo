@@ -7,7 +7,6 @@ import (
 	v1 "demo/api/wallet/v1"
 	"demo/internal/dao"
 	"demo/internal/model"
-	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
 	proxyPool "demo/internal/proxy_pool"
@@ -24,7 +23,7 @@ type sWallet struct{}
 func (s *sWallet) Create(ctx context.Context, userId int64, in v1.WalletCreateReq) (res *v1.WalletCreateRes, err error) {
 	var existing entity.Wallet
 	err = dao.Wallet.Ctx(ctx).
-		Where(do.Wallet{UserId: userId, Address: in.Address}).
+		Where(entity.Wallet{UserId: userId, Address: in.Address}).
 		Scan(&existing)
 	if err != nil {
 		return nil, err
@@ -33,7 +32,7 @@ func (s *sWallet) Create(ctx context.Context, userId int64, in v1.WalletCreateRe
 		return nil, fmt.Errorf("钱包地址已存在")
 	}
 
-	id, err := dao.Wallet.Ctx(ctx).Data(do.Wallet{
+	id, err := dao.Wallet.Ctx(ctx).Data(entity.Wallet{
 		UserId:           userId,
 		Address:          in.Address,
 		ApiWalletAddress: in.ApiWalletAddress,
@@ -48,7 +47,7 @@ func (s *sWallet) Create(ctx context.Context, userId int64, in v1.WalletCreateRe
 
 func (s *sWallet) Update(ctx context.Context, userId int64, in v1.WalletUpdateReq) error {
 	count, err := dao.Wallet.Ctx(ctx).
-		Where(do.Wallet{Id: in.Id, UserId: userId}).
+		Where(entity.Wallet{Id: in.Id, UserId: userId}).
 		Count()
 	if err != nil {
 		return err
@@ -58,15 +57,15 @@ func (s *sWallet) Update(ctx context.Context, userId int64, in v1.WalletUpdateRe
 	}
 	// 只允许编辑 Remark
 	_, err = dao.Wallet.Ctx(ctx).
-		Where(do.Wallet{Id: in.Id, UserId: userId}).
-		Data(do.Wallet{Remark: in.Remark}).
+		Where(entity.Wallet{Id: in.Id, UserId: userId}).
+		Data(entity.Wallet{Remark: in.Remark}).
 		Update()
 	return err
 }
 
 func (s *sWallet) Delete(ctx context.Context, userId int64, id int64) error {
 	_, err := dao.Wallet.Ctx(ctx).
-		Where(do.Wallet{Id: id, UserId: userId}).
+		Where(entity.Wallet{Id: id, UserId: userId}).
 		Delete()
 	return err
 }
@@ -74,7 +73,7 @@ func (s *sWallet) Delete(ctx context.Context, userId int64, id int64) error {
 func (s *sWallet) Detail(ctx context.Context, userId int64, id int64) (res *v1.WalletDetailRes, err error) {
 	var item entity.Wallet
 	err = dao.Wallet.Ctx(ctx).
-		Where(do.Wallet{Id: id, UserId: userId}).
+		Where(entity.Wallet{Id: id, UserId: userId}).
 		Scan(&item)
 	if err != nil {
 		return nil, err
@@ -87,7 +86,7 @@ func (s *sWallet) Detail(ctx context.Context, userId int64, id int64) (res *v1.W
 }
 
 func (s *sWallet) List(ctx context.Context, userId int64, in v1.WalletListReq) (res *v1.WalletListRes, err error) {
-	m := dao.Wallet.Ctx(ctx).Where(do.Wallet{UserId: userId})
+	m := dao.Wallet.Ctx(ctx).Where(entity.Wallet{UserId: userId})
 
 	total, err := m.Count()
 	if err != nil {

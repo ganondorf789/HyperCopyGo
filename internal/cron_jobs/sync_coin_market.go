@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"demo/internal/dao"
-	"demo/internal/model/do"
+	"demo/internal/model/entity"
 	proxyPool "demo/internal/proxy_pool"
 
 	"github.com/gogf/gf/v2/frame/g"
@@ -59,7 +59,7 @@ func SyncCoinMarket(ctx context.Context, _ string) {
 			changePercent24h = change24h / prevDayPx * 100
 		}
 
-		data := do.CoinMarket{
+		data := entity.CoinMarket{
 			Coin:             coin,
 			Price:            markPx,
 			Change24H:        change24h,
@@ -73,7 +73,7 @@ func SyncCoinMarket(ctx context.Context, _ string) {
 		}
 
 		affected, err := dao.CoinMarket.Ctx(ctx).
-			Where(do.CoinMarket{Coin: coin}).
+			Where(entity.CoinMarket{Coin: coin}).
 			Data(data).
 			UpdateAndGetAffected()
 		if err != nil {

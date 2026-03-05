@@ -9,7 +9,6 @@ import (
 	v1 "demo/api/position/v1"
 	"demo/internal/dao"
 	"demo/internal/model"
-	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
 )
@@ -25,10 +24,10 @@ func (s *sPosition) List(ctx context.Context, in v1.PositionListReq) (res *v1.Po
 
 	// Coin 筛选
 	if in.User != "" {
-		m = m.Where(do.Position{User: in.User})
+		m = m.Where(entity.Position{User: in.User})
 	}
 	if in.Symbol != "" {
-		m = m.Where(do.Position{Symbol: in.Symbol})
+		m = m.Where(entity.Position{Symbol: in.Symbol})
 	}
 
 	// Direction 筛选: long (position_size > 0) / short (position_size < 0)

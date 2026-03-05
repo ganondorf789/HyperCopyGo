@@ -9,7 +9,6 @@ import (
 	v1 "demo/api/my_track_wallet/v1"
 	"demo/internal/dao"
 	"demo/internal/model"
-	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
 	"demo/utility"
@@ -27,7 +26,7 @@ type sMyTrackWallet struct{}
 func (s *sMyTrackWallet) Create(ctx context.Context, userId int64, in v1.MyTrackWalletCreateReq) (res *v1.MyTrackWalletCreateRes, err error) {
 	ids := make([]int64, 0, len(in.Records))
 	for _, r := range in.Records {
-		id, err := dao.MyTrackWallet.Ctx(ctx).Data(do.MyTrackWallet{
+		id, err := dao.MyTrackWallet.Ctx(ctx).Data(entity.MyTrackWallet{
 			UserId:       userId,
 			Wallet:       r.Wallet,
 			Remark:       r.Remark,
@@ -44,7 +43,7 @@ func (s *sMyTrackWallet) Create(ctx context.Context, userId int64, in v1.MyTrack
 
 func (s *sMyTrackWallet) Update(ctx context.Context, userId int64, in v1.MyTrackWalletUpdateReq) error {
 	count, err := dao.MyTrackWallet.Ctx(ctx).
-		Where(do.MyTrackWallet{Id: in.Id, UserId: userId}).
+		Where(entity.MyTrackWallet{Id: in.Id, UserId: userId}).
 		Count()
 	if err != nil {
 		return err
@@ -53,7 +52,7 @@ func (s *sMyTrackWallet) Update(ctx context.Context, userId int64, in v1.MyTrack
 		return fmt.Errorf("跟踪钱包不存在")
 	}
 
-	data := do.MyTrackWallet{
+	data := entity.MyTrackWallet{
 		Remark:       in.Remark,
 		NotifyAction: in.NotifyAction,
 	}
@@ -65,15 +64,16 @@ func (s *sMyTrackWallet) Update(ctx context.Context, userId int64, in v1.MyTrack
 	}
 
 	_, err = dao.MyTrackWallet.Ctx(ctx).
-		Where(do.MyTrackWallet{Id: in.Id, UserId: userId}).
+		Where(entity.MyTrackWallet{Id: in.Id, UserId: userId}).
 		Data(data).
+		OmitEmpty().
 		Update()
 	return err
 }
 
 func (s *sMyTrackWallet) Delete(ctx context.Context, userId int64, id int64) error {
 	_, err := dao.MyTrackWallet.Ctx(ctx).
-		Where(do.MyTrackWallet{Id: id, UserId: userId}).
+		Where(entity.MyTrackWallet{Id: id, UserId: userId}).
 		Delete()
 	return err
 }
@@ -81,7 +81,7 @@ func (s *sMyTrackWallet) Delete(ctx context.Context, userId int64, id int64) err
 func (s *sMyTrackWallet) Detail(ctx context.Context, userId int64, id int64) (res *v1.MyTrackWalletDetailRes, err error) {
 	var item entity.MyTrackWallet
 	err = dao.MyTrackWallet.Ctx(ctx).
-		Where(do.MyTrackWallet{Id: id, UserId: userId}).
+		Where(entity.MyTrackWallet{Id: id, UserId: userId}).
 		Scan(&item)
 	if err != nil {
 		return nil, err
@@ -94,7 +94,7 @@ func (s *sMyTrackWallet) Detail(ctx context.Context, userId int64, id int64) (re
 }
 
 func (s *sMyTrackWallet) List(ctx context.Context, userId int64, in v1.MyTrackWalletListReq) (res *v1.MyTrackWalletListRes, err error) {
-	m := dao.MyTrackWallet.Ctx(ctx).Where(do.MyTrackWallet{UserId: userId})
+	m := dao.MyTrackWallet.Ctx(ctx).Where(entity.MyTrackWallet{UserId: userId})
 
 	total, err := m.Count()
 	if err != nil {
@@ -245,7 +245,7 @@ func (s *sMyTrackWallet) entityToItem(ctx context.Context, e entity.MyTrackWalle
 func (s *sMyTrackWallet) Export(ctx context.Context, userId int64) (res *v1.MyTrackWalletExportRes, err error) {
 	var items []entity.MyTrackWallet
 	err = dao.MyTrackWallet.Ctx(ctx).
-		Where(do.MyTrackWallet{UserId: userId}).
+		Where(entity.MyTrackWallet{UserId: userId}).
 		Scan(&items)
 	if err != nil {
 		return nil, err
@@ -276,7 +276,7 @@ func (s *sMyTrackWallet) Import(ctx context.Context, userId int64, in v1.MyTrack
 	// 查询当前用户已有的钱包地址，避免重复
 	var existing []entity.MyTrackWallet
 	err = dao.MyTrackWallet.Ctx(ctx).
-		Where(do.MyTrackWallet{UserId: userId}).
+		Where(entity.MyTrackWallet{UserId: userId}).
 		Scan(&existing)
 	if err != nil {
 		return nil, err
@@ -291,7 +291,7 @@ func (s *sMyTrackWallet) Import(ctx context.Context, userId int64, in v1.MyTrack
 		if existMap[strings.ToLower(w)] {
 			continue // 跳过已存在的
 		}
-		id, err := dao.MyTrackWallet.Ctx(ctx).Data(do.MyTrackWallet{
+		id, err := dao.MyTrackWallet.Ctx(ctx).Data(entity.MyTrackWallet{
 			UserId: userId,
 			Wallet: w,
 		}).InsertAndGetId()

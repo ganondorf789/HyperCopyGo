@@ -7,7 +7,6 @@ import (
 	v1 "demo/api/app_version/v1"
 	"demo/internal/dao"
 	"demo/internal/model"
-	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
 )
@@ -19,7 +18,7 @@ func init() {
 type sAppVersion struct{}
 
 func (s *sAppVersion) Create(ctx context.Context, in v1.AppVersionCreateReq) (res *v1.AppVersionCreateRes, err error) {
-	count, err := dao.AppVersion.Ctx(ctx).Where(do.AppVersion{Platform: in.Platform}).Count()
+	count, err := dao.AppVersion.Ctx(ctx).Where(entity.AppVersion{Platform: in.Platform}).Count()
 	if err != nil {
 		return nil, err
 	}
@@ -27,7 +26,7 @@ func (s *sAppVersion) Create(ctx context.Context, in v1.AppVersionCreateReq) (re
 		return nil, fmt.Errorf("平台 %s 已存在", in.Platform)
 	}
 
-	id, err := dao.AppVersion.Ctx(ctx).Data(do.AppVersion{
+	id, err := dao.AppVersion.Ctx(ctx).Data(entity.AppVersion{
 		Platform:       in.Platform,
 		VersionName:    in.VersionName,
 		VersionCode:    in.VersionCode,
@@ -44,7 +43,7 @@ func (s *sAppVersion) Create(ctx context.Context, in v1.AppVersionCreateReq) (re
 }
 
 func (s *sAppVersion) Update(ctx context.Context, in v1.AppVersionUpdateReq) error {
-	count, err := dao.AppVersion.Ctx(ctx).Where(do.AppVersion{Id: in.Id}).Count()
+	count, err := dao.AppVersion.Ctx(ctx).Where(entity.AppVersion{Id: in.Id}).Count()
 	if err != nil {
 		return err
 	}
@@ -53,8 +52,8 @@ func (s *sAppVersion) Update(ctx context.Context, in v1.AppVersionUpdateReq) err
 	}
 
 	_, err = dao.AppVersion.Ctx(ctx).
-		Where(do.AppVersion{Id: in.Id}).
-		Data(do.AppVersion{
+		Where(entity.AppVersion{Id: in.Id}).
+		Data(entity.AppVersion{
 			Platform:       in.Platform,
 			VersionName:    in.VersionName,
 			VersionCode:    in.VersionCode,
@@ -69,17 +68,17 @@ func (s *sAppVersion) Update(ctx context.Context, in v1.AppVersionUpdateReq) err
 }
 
 func (s *sAppVersion) Delete(ctx context.Context, id int64) error {
-	_, err := dao.AppVersion.Ctx(ctx).Where(do.AppVersion{Id: id}).Delete()
+	_, err := dao.AppVersion.Ctx(ctx).Where(entity.AppVersion{Id: id}).Delete()
 	return err
 }
 
 func (s *sAppVersion) List(ctx context.Context, in v1.AppVersionListReq) (res *v1.AppVersionListRes, err error) {
 	m := dao.AppVersion.Ctx(ctx)
 	if in.Platform != "" {
-		m = m.Where(do.AppVersion{Platform: in.Platform})
+		m = m.Where(entity.AppVersion{Platform: in.Platform})
 	}
 	if in.Status >= 0 {
-		m = m.Where(do.AppVersion{Status: in.Status})
+		m = m.Where(entity.AppVersion{Status: in.Status})
 	}
 
 	total, err := m.Count()
@@ -124,7 +123,7 @@ func (s *sAppVersion) List(ctx context.Context, in v1.AppVersionListReq) (res *v
 func (s *sAppVersion) Check(ctx context.Context, in v1.AppVersionCheckReq) (res *v1.AppVersionCheckRes, err error) {
 	var latest entity.AppVersion
 	err = dao.AppVersion.Ctx(ctx).
-		Where(do.AppVersion{Platform: in.Platform, Status: 1}).
+		Where(entity.AppVersion{Platform: in.Platform, Status: 1}).
 		OrderDesc(dao.AppVersion.Columns().VersionCode).
 		Scan(&latest)
 	if err != nil {

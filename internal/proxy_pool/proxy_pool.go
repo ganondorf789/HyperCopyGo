@@ -9,7 +9,6 @@ import (
 	"sync/atomic"
 
 	"demo/internal/dao"
-	"demo/internal/model/do"
 	"demo/internal/model/entity"
 
 	"github.com/gogf/gf/v2/os/gctx"
@@ -29,7 +28,7 @@ func Reload() error {
 	ctx := gctx.New()
 	var items []entity.ProxyPool
 	err := dao.ProxyPool.Ctx(ctx).
-		Where(do.ProxyPool{Status: 1}).
+		Where(entity.ProxyPool{Status: 1}).
 		Scan(&items)
 	if err != nil {
 		return err
@@ -86,7 +85,7 @@ func Count() int {
 func ReloadWithCtx(ctx context.Context) error {
 	var items []entity.ProxyPool
 	err := dao.ProxyPool.Ctx(ctx).
-		Where(do.ProxyPool{Status: 1}).
+		Where(entity.ProxyPool{Status: 1}).
 		Scan(&items)
 	if err != nil {
 		return err

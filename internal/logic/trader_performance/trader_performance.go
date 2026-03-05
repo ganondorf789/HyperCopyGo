@@ -9,7 +9,6 @@ import (
 	v1 "demo/api/trader_performance/v1"
 	"demo/internal/dao"
 	"demo/internal/model"
-	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
 )
@@ -21,7 +20,7 @@ func init() {
 type sTraderPerformance struct{}
 
 func (s *sTraderPerformance) Performance(ctx context.Context, in v1.TraderPerformanceReq) (res *v1.TraderPerformanceRes, err error) {
-	m := dao.CompletedTrades.Ctx(ctx).Where(do.CompletedTrades{Address: in.Address})
+	m := dao.CompletedTrades.Ctx(ctx).Where(entity.CompletedTrades{Address: in.Address})
 
 	switch in.Window {
 	case "day":
@@ -130,7 +129,7 @@ func (s *sTraderPerformance) Summary(ctx context.Context, in v1.TraderPerformanc
 
 	windowStart := time.Now().Add(-7 * 24 * time.Hour).UnixMilli()
 	tradesQuery := dao.CompletedTrades.Ctx(ctx).
-		Where(do.CompletedTrades{Address: in.Address}).
+		Where(entity.CompletedTrades{Address: in.Address}).
 		Where("end_time >= ?", windowStart)
 
 	var trades []entity.CompletedTrades
@@ -177,7 +176,7 @@ func (s *sTraderPerformance) Summary(ctx context.Context, in v1.TraderPerformanc
 	}
 
 	ordersQuery := dao.TraderOrders.Ctx(ctx).
-		Where(do.TraderOrders{Address: in.Address}).
+		Where(entity.TraderOrders{Address: in.Address}).
 		Where("timestamp >= ?", windowStart)
 	orderCount, err := ordersQuery.Count()
 	if err != nil {

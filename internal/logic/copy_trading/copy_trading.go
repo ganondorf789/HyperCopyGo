@@ -8,7 +8,6 @@ import (
 	"demo/internal/consts"
 	"demo/internal/dao"
 	"demo/internal/model"
-	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
 
@@ -25,7 +24,7 @@ func (s *sCopyTrading) Create(ctx context.Context, userId int64, in v1.CopyTradi
 	switch in.FollowType {
 	case consts.FollowTypeAuto: // 自动跟单：同一用户下 TargetWallet 不可重复
 		count, err := dao.CopyTrading.Ctx(ctx).
-			Where(do.CopyTrading{UserId: userId, TargetWallet: in.TargetWallet}).
+			Where(entity.CopyTrading{UserId: userId, TargetWallet: in.TargetWallet}).
 			Count()
 		if err != nil {
 			return nil, err
@@ -39,7 +38,7 @@ func (s *sCopyTrading) Create(ctx context.Context, userId int64, in v1.CopyTradi
 		}
 	}
 
-	var data do.CopyTrading
+	var data entity.CopyTrading
 	if err = gconv.Scan(in, &data); err != nil {
 		return nil, err
 	}
@@ -54,7 +53,7 @@ func (s *sCopyTrading) Create(ctx context.Context, userId int64, in v1.CopyTradi
 
 func (s *sCopyTrading) Update(ctx context.Context, userId int64, in v1.CopyTradingUpdateReq) error {
 	count, err := dao.CopyTrading.Ctx(ctx).
-		Where(do.CopyTrading{Id: in.Id, UserId: userId}).
+		Where(entity.CopyTrading{Id: in.Id, UserId: userId}).
 		Count()
 	if err != nil {
 		return err
@@ -63,24 +62,25 @@ func (s *sCopyTrading) Update(ctx context.Context, userId int64, in v1.CopyTradi
 		return fmt.Errorf("跟单配置不存在")
 	}
 
-	var data do.CopyTrading
+	var data entity.CopyTrading
 	if err = gconv.Scan(in, &data); err != nil {
 		return err
 	}
-	data.Id = nil
-	data.UserId = nil
-	data.TargetWallet = nil
+	data.Id = 0
+	data.UserId = 0
+	data.TargetWallet = ""
 
 	_, err = dao.CopyTrading.Ctx(ctx).
-		Where(do.CopyTrading{Id: in.Id, UserId: userId}).
+		Where(entity.CopyTrading{Id: in.Id, UserId: userId}).
 		Data(data).
+		OmitEmpty().
 		Update()
 	return err
 }
 
 func (s *sCopyTrading) Delete(ctx context.Context, userId int64, id int64) error {
 	_, err := dao.CopyTrading.Ctx(ctx).
-		Where(do.CopyTrading{Id: id, UserId: userId}).
+		Where(entity.CopyTrading{Id: id, UserId: userId}).
 		Delete()
 	return err
 }
@@ -88,7 +88,7 @@ func (s *sCopyTrading) Delete(ctx context.Context, userId int64, id int64) error
 func (s *sCopyTrading) Detail(ctx context.Context, userId int64, id int64) (res *v1.CopyTradingDetailRes, err error) {
 	var item entity.CopyTrading
 	err = dao.CopyTrading.Ctx(ctx).
-		Where(do.CopyTrading{Id: id, UserId: userId}).
+		Where(entity.CopyTrading{Id: id, UserId: userId}).
 		Scan(&item)
 	if err != nil {
 		return nil, err
@@ -102,9 +102,9 @@ func (s *sCopyTrading) Detail(ctx context.Context, userId int64, id int64) (res 
 }
 
 func (s *sCopyTrading) List(ctx context.Context, userId int64, in v1.CopyTradingListReq) (res *v1.CopyTradingListRes, err error) {
-	m := dao.CopyTrading.Ctx(ctx).Where(do.CopyTrading{UserId: userId})
+	m := dao.CopyTrading.Ctx(ctx).Where(entity.CopyTrading{UserId: userId})
 	if in.Status >= 0 {
-		m = m.Where(do.CopyTrading{Status: in.Status})
+		m = m.Where(entity.CopyTrading{Status: in.Status})
 	}
 
 	total, err := m.Count()

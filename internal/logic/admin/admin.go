@@ -9,7 +9,6 @@ import (
 	v1 "demo/api/admin/v1"
 	"demo/internal/consts"
 	"demo/internal/dao"
-	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
 	"demo/utility"
@@ -30,7 +29,7 @@ func (s *sAdmin) Init(ctx context.Context, in v1.AdminInitReq) (res *v1.AdminIni
 		return nil, fmt.Errorf("系统已存在管理员，无法重复初始化")
 	}
 
-	id, err := dao.Admin.Ctx(ctx).Data(do.Admin{
+	id, err := dao.Admin.Ctx(ctx).Data(entity.Admin{
 		Username: in.Username,
 		Password: encryptPassword(in.Password),
 		Realname: in.Realname,
@@ -46,7 +45,7 @@ func (s *sAdmin) Init(ctx context.Context, in v1.AdminInitReq) (res *v1.AdminIni
 func (s *sAdmin) Login(ctx context.Context, in v1.AdminLoginReq) (res *v1.AdminLoginRes, err error) {
 	var admin entity.Admin
 	err = dao.Admin.Ctx(ctx).
-		Where(do.Admin{Username: in.Username}).
+		Where(entity.Admin{Username: in.Username}).
 		Scan(&admin)
 	if err != nil {
 		return nil, err
@@ -71,7 +70,7 @@ func (s *sAdmin) Login(ctx context.Context, in v1.AdminLoginReq) (res *v1.AdminL
 func (s *sAdmin) Profile(ctx context.Context, adminId int64) (res *v1.AdminProfileRes, err error) {
 	var admin entity.Admin
 	err = dao.Admin.Ctx(ctx).
-		Where(do.Admin{Id: adminId}).
+		Where(entity.Admin{Id: adminId}).
 		Scan(&admin)
 	if err != nil {
 		return nil, err
@@ -90,7 +89,7 @@ func (s *sAdmin) Profile(ctx context.Context, adminId int64) (res *v1.AdminProfi
 func (s *sAdmin) UserList(ctx context.Context, in v1.AdminUserListReq) (res *v1.AdminUserListRes, err error) {
 	m := dao.User.Ctx(ctx)
 	if in.Status >= 0 {
-		m = m.Where(do.User{Status: in.Status})
+		m = m.Where(entity.User{Status: in.Status})
 	}
 
 	total, err := m.Count()
@@ -127,15 +126,15 @@ func (s *sAdmin) UserList(ctx context.Context, in v1.AdminUserListReq) (res *v1.
 
 func (s *sAdmin) UserSetStatus(ctx context.Context, in v1.AdminUserStatusReq) error {
 	_, err := dao.User.Ctx(ctx).
-		Where(do.User{Id: in.Id}).
-		Data(do.User{Status: in.Status}).
+		Where(entity.User{Id: in.Id}).
+		Data(entity.User{Status: in.Status}).
 		Update()
 	return err
 }
 
 func (s *sAdmin) UserDelete(ctx context.Context, id int64) error {
 	_, err := dao.User.Ctx(ctx).
-		Where(do.User{Id: id}).
+		Where(entity.User{Id: id}).
 		Delete()
 	return err
 }

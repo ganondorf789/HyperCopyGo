@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 
 	"demo/internal/dao"
-	"demo/internal/model/do"
+	"demo/internal/model/entity"
 
 	"github.com/gogf/gf/v2/frame/g"
 )
@@ -54,8 +54,8 @@ func SyncHotTraders(ctx context.Context, _ string) {
 	}
 
 	_, err = dao.Traders.Ctx(ctx).
-		Where(do.Traders{IsHotAddress: true}).
-		Data(do.Traders{IsHotAddress: false}).
+		Where(entity.Traders{IsHotAddress: true}).
+		Data(g.Map{"is_hot_address": false}).
 		Update()
 	if err != nil {
 		g.Log().Errorf(ctx, "SyncHotTraders: 重置热门标记失败: %v", err)
@@ -67,7 +67,7 @@ func SyncHotTraders(ctx context.Context, _ string) {
 			continue
 		}
 
-		updateData := do.Traders{
+		updateData := entity.Traders{
 			TwitterName:  item.Remark,
 			IsHotAddress: true,
 			Labels:       item.Labels,
@@ -77,8 +77,9 @@ func SyncHotTraders(ctx context.Context, _ string) {
 		}
 
 		_, err = dao.Traders.Ctx(ctx).
-			Where(do.Traders{Address: item.Address}).
+			Where(entity.Traders{Address: item.Address}).
 			Data(updateData).
+			OmitEmpty().
 			Update()
 		if err != nil {
 			g.Log().Errorf(ctx, "SyncHotTraders: 更新 trader(%s) 失败: %v", item.Address, err)

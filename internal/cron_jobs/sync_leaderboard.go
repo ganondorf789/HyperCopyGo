@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 
 	"demo/internal/dao"
-	"demo/internal/model/do"
+	"demo/internal/model/entity"
 
 	"github.com/gogf/gf/v2/frame/g"
 )
@@ -84,7 +84,7 @@ func SyncLeaderboard(ctx context.Context, _ string) {
 			}
 		}
 
-		data := do.Leaderboard{
+		data := entity.Leaderboard{
 			EthAddress:   row.EthAddress,
 			AccountValue: accountValue,
 			Pnl:          pnl,
@@ -93,7 +93,7 @@ func SyncLeaderboard(ctx context.Context, _ string) {
 		}
 
 		affected, err := dao.Leaderboard.Ctx(ctx).
-			Where(do.Leaderboard{EthAddress: row.EthAddress}).
+			Where(entity.Leaderboard{EthAddress: row.EthAddress}).
 			Data(data).
 			UpdateAndGetAffected()
 		if err != nil {

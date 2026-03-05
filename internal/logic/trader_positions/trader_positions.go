@@ -6,7 +6,6 @@ import (
 	v1 "demo/api/trader_positions/v1"
 	"demo/internal/dao"
 	"demo/internal/model"
-	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
 )
@@ -21,10 +20,10 @@ func (s *sTraderPositions) List(ctx context.Context, in v1.TraderPositionsListRe
 	m := dao.TraderPositions.Ctx(ctx)
 
 	if in.Address != "" {
-		m = m.Where(do.TraderPositions{Address: in.Address})
+		m = m.Where(entity.TraderPositions{Address: in.Address})
 	}
 	if in.Coin != "" {
-		m = m.Where(do.TraderPositions{Coin: in.Coin})
+		m = m.Where(entity.TraderPositions{Coin: in.Coin})
 	}
 	if in.Direction == "long" {
 		m = m.Where("szi > 0")

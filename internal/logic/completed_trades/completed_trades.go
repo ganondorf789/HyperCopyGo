@@ -7,7 +7,6 @@ import (
 	v1 "demo/api/completed_trades/v1"
 	"demo/internal/dao"
 	"demo/internal/model"
-	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
 )
@@ -22,13 +21,13 @@ func (s *sCompletedTrades) List(ctx context.Context, in v1.CompletedTradesListRe
 	m := dao.CompletedTrades.Ctx(ctx)
 
 	if in.Address != "" {
-		m = m.Where(do.CompletedTrades{Address: in.Address})
+		m = m.Where(entity.CompletedTrades{Address: in.Address})
 	}
 	if in.Coin != "" {
-		m = m.Where(do.CompletedTrades{Coin: in.Coin})
+		m = m.Where(entity.CompletedTrades{Coin: in.Coin})
 	}
 	if in.Direction != "" {
-		m = m.Where(do.CompletedTrades{Direction: in.Direction})
+		m = m.Where(entity.CompletedTrades{Direction: in.Direction})
 	}
 
 	switch in.Window {

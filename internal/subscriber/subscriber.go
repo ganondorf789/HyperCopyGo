@@ -8,7 +8,7 @@ import (
 
 	"demo/internal/dao"
 	"demo/internal/model"
-	"demo/internal/model/do"
+	"demo/internal/model/entity"
 	"demo/internal/websocket"
 
 	"github.com/gogf/gf/v2/frame/g"
@@ -68,7 +68,7 @@ func handleNewPosition(ctx context.Context, payload string) {
 		return
 	}
 
-	id, err := dao.NewPosition.Ctx(ctx).Data(do.NewPosition{
+	id, err := dao.NewPosition.Ctx(ctx).Data(entity.NewPosition{
 		Address:               evt.Address,
 		Coin:                  evt.Coin,
 		Szi:                   evt.Szi,
@@ -124,7 +124,7 @@ func handleMarketAlert(ctx context.Context, payload string) {
 	content := fmt.Sprintf("%d new positions opened in the last %d minutes (threshold: %d)",
 		alert.Count, alert.Minutes, alert.Threshold)
 
-	id, err := dao.Notification.Ctx(ctx).Data(do.Notification{
+	id, err := dao.Notification.Ctx(ctx).Data(entity.Notification{
 		UserId:   0,
 		Category: "market",
 		Title:    title,

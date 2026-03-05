@@ -7,7 +7,6 @@ import (
 	v1 "demo/api/membership/v1"
 	"demo/internal/dao"
 	"demo/internal/model"
-	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
 
@@ -22,7 +21,7 @@ type sMembership struct{}
 
 func (s *sMembership) Create(ctx context.Context, in v1.MembershipCreateReq) (res *v1.MembershipCreateRes, err error) {
 	count, err := dao.Membership.Ctx(ctx).
-		Where(do.Membership{UserId: in.UserId, Status: 1}).
+		Where(entity.Membership{UserId: in.UserId, Status: 1}).
 		WhereGTE(dao.Membership.Columns().ExpireAt, gtime.Now()).
 		Count()
 	if err != nil {
@@ -32,7 +31,7 @@ func (s *sMembership) Create(ctx context.Context, in v1.MembershipCreateReq) (re
 		return nil, fmt.Errorf("该用户已有未过期的会员，无法重复创建")
 	}
 
-	id, err := dao.Membership.Ctx(ctx).Data(do.Membership{
+	id, err := dao.Membership.Ctx(ctx).Data(entity.Membership{
 		UserId:   in.UserId,
 		Level:    in.Level,
 		StartAt:  in.StartAt,
@@ -46,7 +45,7 @@ func (s *sMembership) Create(ctx context.Context, in v1.MembershipCreateReq) (re
 }
 
 func (s *sMembership) Update(ctx context.Context, in v1.MembershipUpdateReq) error {
-	count, err := dao.Membership.Ctx(ctx).Where(do.Membership{Id: in.Id}).Count()
+	count, err := dao.Membership.Ctx(ctx).Where(entity.Membership{Id: in.Id}).Count()
 	if err != nil {
 		return err
 	}
@@ -55,8 +54,8 @@ func (s *sMembership) Update(ctx context.Context, in v1.MembershipUpdateReq) err
 	}
 
 	_, err = dao.Membership.Ctx(ctx).
-		Where(do.Membership{Id: in.Id}).
-		Data(do.Membership{
+		Where(entity.Membership{Id: in.Id}).
+		Data(entity.Membership{
 			Level:    in.Level,
 			StartAt:  in.StartAt,
 			ExpireAt: in.ExpireAt,
@@ -67,13 +66,13 @@ func (s *sMembership) Update(ctx context.Context, in v1.MembershipUpdateReq) err
 }
 
 func (s *sMembership) Delete(ctx context.Context, id int64) error {
-	_, err := dao.Membership.Ctx(ctx).Where(do.Membership{Id: id}).Delete()
+	_, err := dao.Membership.Ctx(ctx).Where(entity.Membership{Id: id}).Delete()
 	return err
 }
 
 func (s *sMembership) Detail(ctx context.Context, id int64) (res *v1.MembershipDetailRes, err error) {
 	var item entity.Membership
-	err = dao.Membership.Ctx(ctx).Where(do.Membership{Id: id}).Scan(&item)
+	err = dao.Membership.Ctx(ctx).Where(entity.Membership{Id: id}).Scan(&item)
 	if err != nil {
 		return nil, err
 	}
@@ -88,13 +87,13 @@ func (s *sMembership) Detail(ctx context.Context, id int64) (res *v1.MembershipD
 func (s *sMembership) List(ctx context.Context, in v1.MembershipListReq) (res *v1.MembershipListRes, err error) {
 	m := dao.Membership.Ctx(ctx)
 	if in.UserId > 0 {
-		m = m.Where(do.Membership{UserId: in.UserId})
+		m = m.Where(entity.Membership{UserId: in.UserId})
 	}
 	if in.Level >= 0 {
-		m = m.Where(do.Membership{Level: in.Level})
+		m = m.Where(entity.Membership{Level: in.Level})
 	}
 	if in.Status >= 0 {
-		m = m.Where(do.Membership{Status: in.Status})
+		m = m.Where(entity.Membership{Status: in.Status})
 	}
 
 	total, err := m.Count()

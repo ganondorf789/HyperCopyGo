@@ -7,7 +7,6 @@ import (
 	v1 "demo/api/proxy_pool/v1"
 	"demo/internal/dao"
 	"demo/internal/model"
-	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
 )
@@ -19,7 +18,7 @@ func init() {
 type sProxyPool struct{}
 
 func (s *sProxyPool) Create(ctx context.Context, in v1.ProxyPoolCreateReq) (res *v1.ProxyPoolCreateRes, err error) {
-	id, err := dao.ProxyPools.Ctx(ctx).Data(do.ProxyPool{
+	id, err := dao.ProxyPools.Ctx(ctx).Data(entity.ProxyPool{
 		Host:     in.Host,
 		Port:     in.Port,
 		Username: in.Username,
@@ -34,7 +33,7 @@ func (s *sProxyPool) Create(ctx context.Context, in v1.ProxyPoolCreateReq) (res 
 }
 
 func (s *sProxyPool) Update(ctx context.Context, in v1.ProxyPoolUpdateReq) error {
-	count, err := dao.ProxyPools.Ctx(ctx).Where(do.ProxyPool{Id: in.Id}).Count()
+	count, err := dao.ProxyPools.Ctx(ctx).Where(entity.ProxyPool{Id: in.Id}).Count()
 	if err != nil {
 		return err
 	}
@@ -42,7 +41,7 @@ func (s *sProxyPool) Update(ctx context.Context, in v1.ProxyPoolUpdateReq) error
 		return fmt.Errorf("代理不存在")
 	}
 
-	data := do.ProxyPool{}
+	data := entity.ProxyPool{}
 	if in.Host != "" {
 		data.Host = in.Host
 	}
@@ -62,12 +61,12 @@ func (s *sProxyPool) Update(ctx context.Context, in v1.ProxyPoolUpdateReq) error
 		data.Remark = in.Remark
 	}
 
-	_, err = dao.ProxyPools.Ctx(ctx).Where(do.ProxyPool{Id: in.Id}).Data(data).Update()
+	_, err = dao.ProxyPools.Ctx(ctx).Where(entity.ProxyPool{Id: in.Id}).Data(data).OmitEmpty().Update()
 	return err
 }
 
 func (s *sProxyPool) Delete(ctx context.Context, id int64) error {
-	_, err := dao.ProxyPools.Ctx(ctx).Where(do.ProxyPool{Id: id}).Delete()
+	_, err := dao.ProxyPools.Ctx(ctx).Where(entity.ProxyPool{Id: id}).Delete()
 	return err
 }
 

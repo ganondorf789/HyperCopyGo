@@ -10,7 +10,6 @@ import (
 	cronJobs "demo/internal/cron_jobs"
 	"demo/internal/dao"
 	"demo/internal/model"
-	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
 
@@ -27,7 +26,7 @@ func init() {
 type sCronTask struct{}
 
 func (s *sCronTask) Create(ctx context.Context, in v1.CronTaskCreateReq) (res *v1.CronTaskCreateRes, err error) {
-	id, err := dao.CronTask.Ctx(ctx).Data(do.CronTask{
+	id, err := dao.CronTask.Ctx(ctx).Data(entity.CronTask{
 		Name:     in.Name,
 		CronExpr: in.CronExpr,
 		TaskType: in.TaskType,
@@ -42,7 +41,7 @@ func (s *sCronTask) Create(ctx context.Context, in v1.CronTaskCreateReq) (res *v
 }
 
 func (s *sCronTask) Update(ctx context.Context, in v1.CronTaskUpdateReq) error {
-	count, err := dao.CronTask.Ctx(ctx).Where(do.CronTask{Id: in.Id}).Count()
+	count, err := dao.CronTask.Ctx(ctx).Where(entity.CronTask{Id: in.Id}).Count()
 	if err != nil {
 		return err
 	}
@@ -51,8 +50,8 @@ func (s *sCronTask) Update(ctx context.Context, in v1.CronTaskUpdateReq) error {
 	}
 
 	_, err = dao.CronTask.Ctx(ctx).
-		Where(do.CronTask{Id: in.Id}).
-		Data(do.CronTask{
+		Where(entity.CronTask{Id: in.Id}).
+		Data(entity.CronTask{
 			Name:     in.Name,
 			CronExpr: in.CronExpr,
 			TaskType: in.TaskType,
@@ -65,13 +64,13 @@ func (s *sCronTask) Update(ctx context.Context, in v1.CronTaskUpdateReq) error {
 }
 
 func (s *sCronTask) Delete(ctx context.Context, id int64) error {
-	_, err := dao.CronTask.Ctx(ctx).Where(do.CronTask{Id: id}).Delete()
+	_, err := dao.CronTask.Ctx(ctx).Where(entity.CronTask{Id: id}).Delete()
 	return err
 }
 
 func (s *sCronTask) Detail(ctx context.Context, id int64) (res *v1.CronTaskDetailRes, err error) {
 	var item entity.CronTask
-	err = dao.CronTask.Ctx(ctx).Where(do.CronTask{Id: id}).Scan(&item)
+	err = dao.CronTask.Ctx(ctx).Where(entity.CronTask{Id: id}).Scan(&item)
 	if err != nil {
 		return nil, err
 	}
@@ -86,10 +85,10 @@ func (s *sCronTask) Detail(ctx context.Context, id int64) (res *v1.CronTaskDetai
 func (s *sCronTask) List(ctx context.Context, in v1.CronTaskListReq) (res *v1.CronTaskListRes, err error) {
 	m := dao.CronTask.Ctx(ctx)
 	if in.TaskType != "" {
-		m = m.Where(do.CronTask{TaskType: in.TaskType})
+		m = m.Where(entity.CronTask{TaskType: in.TaskType})
 	}
 	if in.Status >= 0 {
-		m = m.Where(do.CronTask{Status: in.Status})
+		m = m.Where(entity.CronTask{Status: in.Status})
 	}
 
 	total, err := m.Count()
@@ -120,7 +119,7 @@ func (s *sCronTask) List(ctx context.Context, in v1.CronTaskListReq) (res *v1.Cr
 // Execute 手动执行指定定时任务
 func (s *sCronTask) Execute(ctx context.Context, id int64) (res *v1.CronTaskExecuteRes, err error) {
 	var task entity.CronTask
-	err = dao.CronTask.Ctx(ctx).Where(do.CronTask{Id: id}).Scan(&task)
+	err = dao.CronTask.Ctx(ctx).Where(entity.CronTask{Id: id}).Scan(&task)
 	if err != nil {
 		return nil, err
 	}
@@ -154,7 +153,7 @@ func (s *sCronTask) TaskTypes(ctx context.Context) (res *v1.CronTaskTypesRes, er
 // StartAll 从数据库加载所有启用的定时任务，根据 cron_expr 注册到 gcron 调度器
 func (s *sCronTask) StartAll(ctx context.Context) {
 	var items []entity.CronTask
-	err := dao.CronTask.Ctx(ctx).Where(do.CronTask{Status: 1}).Scan(&items)
+	err := dao.CronTask.Ctx(ctx).Where(entity.CronTask{Status: 1}).Scan(&items)
 	if err != nil {
 		g.Log().Errorf(ctx, "StartAll: 加载定时任务失败: %v", err)
 		return
@@ -195,7 +194,7 @@ func (s *sCronTask) runTask(ctx context.Context, task entity.CronTask, handler c
 	costMs = time.Since(start).Milliseconds()
 
 	_, err := dao.CronTask.Ctx(ctx).
-		Where(do.CronTask{Id: task.Id}).
+		Where(entity.CronTask{Id: task.Id}).
 		Data(g.Map{
 			dao.CronTask.Columns().LastRunAt:   gtime.Now(),
 			dao.CronTask.Columns().LastRunCost: costMs,

@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"demo/internal/dao"
-	"demo/internal/model/do"
+	"demo/internal/model/entity"
 
 	"github.com/gogf/gf/v2/frame/g"
 )
@@ -43,8 +43,8 @@ func init() {
 // 并将其标记为推特 KOL。
 func SyncKolTraders(ctx context.Context, _ string) {
 	_, err := dao.Traders.Ctx(ctx).
-		Where(do.Traders{IsTwitterKol: true}).
-		Data(do.Traders{IsTwitterKol: false}).
+		Where(entity.Traders{IsTwitterKol: true}).
+		Data(g.Map{"is_twitter_kol": false}).
 		Update()
 	if err != nil {
 		g.Log().Errorf(ctx, "SyncKolTraders: 重置 KOL 标记失败: %v", err)
@@ -85,14 +85,15 @@ func SyncKolTraders(ctx context.Context, _ string) {
 			}
 
 			_, err = dao.Traders.Ctx(ctx).
-				Where(do.Traders{Address: item.Address}).
-				Data(do.Traders{
+				Where(entity.Traders{Address: item.Address}).
+				Data(entity.Traders{
 					TwitterName:    item.TwitterName,
 					Username:       item.Username,
 					ProfilePicture: item.ProfilePicture,
 					Labels:         item.Labels,
 					IsTwitterKol:   true,
 				}).
+				OmitEmpty().
 				Update()
 			if err != nil {
 				g.Log().Errorf(ctx, "SyncKolTraders: 更新 trader(%s) 失败: %v", item.Address, err)

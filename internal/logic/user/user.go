@@ -9,7 +9,6 @@ import (
 	v1 "demo/api/user/v1"
 	"demo/internal/consts"
 	"demo/internal/dao"
-	"demo/internal/model/do"
 	"demo/internal/model/entity"
 	"demo/internal/service"
 	"demo/utility"
@@ -56,14 +55,14 @@ func (s *sUser) Login(ctx context.Context, in v1.UserLoginReq) (res *v1.UserLogi
 
 	var user entity.User
 	err = dao.User.Ctx(ctx).
-		Where(do.User{Email: in.Email}).
+		Where(entity.User{Email: in.Email}).
 		Scan(&user)
 	if err != nil {
 		return nil, err
 	}
 
 	if user.Id == 0 {
-		id, err := dao.User.Ctx(ctx).Data(do.User{
+		id, err := dao.User.Ctx(ctx).Data(entity.User{
 			Email:    in.Email,
 			Username: in.Email,
 			Status:   consts.UserStatusEnabled,
@@ -88,7 +87,7 @@ func (s *sUser) Login(ctx context.Context, in v1.UserLoginReq) (res *v1.UserLogi
 func (s *sUser) Profile(ctx context.Context, userId int64) (res *v1.UserProfileRes, err error) {
 	var user entity.User
 	err = dao.User.Ctx(ctx).
-		Where(do.User{Id: userId}).
+		Where(entity.User{Id: userId}).
 		Scan(&user)
 	if err != nil {
 		return nil, err
