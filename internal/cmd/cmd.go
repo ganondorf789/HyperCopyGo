@@ -102,7 +102,7 @@ var (
 						myTrackWalletCtrl.New(),
 						notificationCtrl.NewV1(),
 						positionCtrl.New(),
-						proxyPoolCtrl.New(),
+						proxyPoolCtrl.NewV1(),
 						traderCtrl.NewV1(),
 						traderPerformanceCtrl.NewV1(),
 						traderPositionsCtrl.NewV1(),

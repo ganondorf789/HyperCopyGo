@@ -3,3 +3,13 @@
 // =================================================================================
 
 package proxy_pool
+
+import (
+	"demo/api/proxy_pool"
+)
+
+type ControllerV1 struct{}
+
+func NewV1() proxy_pool.IProxyPoolV1 {
+	return &ControllerV1{}
+}

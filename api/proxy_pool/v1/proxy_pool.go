@@ -4,6 +4,7 @@ import (
 	"demo/internal/model"
 
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/net/ghttp"
 )
 
 // 创建代理（需管理员权限）
@@ -34,6 +35,17 @@ type ProxyPoolDeleteReq struct {
 }
 type ProxyPoolDeleteRes struct {
 	g.Meta `mime:"application/json"`
+}
+
+// 导入代理CSV（需管理员权限）
+type ProxyPoolImportCSVReq struct {
+	g.Meta `path:"/proxy-pool/import" tags:"ProxyPool" method:"post" summary:"导入代理CSV" login_required:"true" admin_required:"true"`
+	File   *ghttp.UploadFile `json:"file" type:"file" v:"required"`
+}
+type ProxyPoolImportCSVRes struct {
+	g.Meta  `mime:"application/json"`
+	Created int `json:"created"`
+	Skipped int `json:"skipped"`
 }
 
 // 获取代理列表（需管理员权限）
