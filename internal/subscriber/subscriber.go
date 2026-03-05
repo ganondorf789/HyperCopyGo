@@ -12,6 +12,7 @@ import (
 	"demo/internal/websocket"
 
 	"github.com/gogf/gf/v2/frame/g"
+	"github.com/gogf/gf/v2/util/gconv"
 )
 
 const (
@@ -68,23 +69,12 @@ func handleNewPosition(ctx context.Context, payload string) {
 		return
 	}
 
-	id, err := dao.NewPosition.Ctx(ctx).Data(entity.NewPosition{
-		Address:               evt.Address,
-		Coin:                  evt.Coin,
-		Szi:                   evt.Szi,
-		LeverageType:          evt.LeverageType,
-		Leverage:              evt.Leverage,
-		EntryPx:               evt.EntryPx,
-		PositionValue:         evt.PositionValue,
-		UnrealizedPnl:         evt.UnrealizedPnl,
-		ReturnOnEquity:        evt.ReturnOnEquity,
-		LiquidationPx:         evt.LiquidationPx,
-		MarginUsed:            evt.MarginUsed,
-		MaxLeverage:           evt.MaxLeverage,
-		CumFundingAllTime:     evt.CumFundingAllTime,
-		CumFundingSinceOpen:   evt.CumFundingSinceOpen,
-		CumFundingSinceChange: evt.CumFundingSinceChange,
-	}).InsertAndGetId()
+	var newPos entity.NewPosition
+	if err := gconv.Scan(evt, &newPos); err != nil {
+		g.Log().Errorf(ctx, "[subscriber] convert new_position error: %v", err)
+		return
+	}
+	id, err := dao.NewPosition.Ctx(ctx).Data(newPos).InsertAndGetId()
 	if err != nil {
 		g.Log().Errorf(ctx, "[subscriber] insert new_position error: %v", err)
 		return

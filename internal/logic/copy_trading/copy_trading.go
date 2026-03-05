@@ -104,7 +104,7 @@ func (s *sCopyTrading) Detail(ctx context.Context, userId int64, id int64) (res 
 func (s *sCopyTrading) List(ctx context.Context, userId int64, in v1.CopyTradingListReq) (res *v1.CopyTradingListRes, err error) {
 	m := dao.CopyTrading.Ctx(ctx).Where(entity.CopyTrading{UserId: userId})
 	if in.Status >= 0 {
-		m = m.Where(entity.CopyTrading{Status: in.Status})
+		m = m.Where(entity.CopyTrading{Status: int64(in.Status)})
 	}
 
 	total, err := m.Count()
