@@ -24,7 +24,7 @@ func (s *sPosition) List(ctx context.Context, in v1.PositionListReq) (res *v1.Po
 
 	// Coin 筛选
 	if in.User != "" {
-		m = m.Where("\"user\" = ?", in.User)
+		m = m.Where("user = ?", in.User)
 	}
 	if in.Symbol != "" {
 		m = m.Where("symbol = ?", in.Symbol)
