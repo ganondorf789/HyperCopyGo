@@ -7,7 +7,7 @@ import (
 	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/gogf/gf/v2/os/gcmd"
 
-	"demo/internal/controller/admin"
+	adminCtrl "demo/internal/controller/admin"
 	appVersionCtrl "demo/internal/controller/app_version"
 	copyTradingCtrl "demo/internal/controller/copy_trading"
 	cronTaskCtrl "demo/internal/controller/cron_task"
@@ -21,7 +21,7 @@ import (
 	traderCtrl "demo/internal/controller/trader"
 	traderPerformanceCtrl "demo/internal/controller/trader_performance"
 	traderPositionsCtrl "demo/internal/controller/trader_positions"
-	"demo/internal/controller/user"
+	userCtrl "demo/internal/controller/user"
 	userAppKeyCtrl "demo/internal/controller/user_app_key"
 	walletCtrl "demo/internal/controller/wallet"
 	wsCtrl "demo/internal/controller/ws"
@@ -90,18 +90,18 @@ var (
 						middleware.AdminAuth,
 					)
 					group.Bind(
-						user.New(),
-						admin.New(),
+						userCtrl.NewV1(),
+						adminCtrl.NewV1(),
 						appVersionCtrl.NewV1(),
 						completedTradesCtrl.NewV1(),
-					cronTaskCtrl.NewV1(),
-					copyTradingCtrl.New(),
-					leaderboardCtrl.NewV1(),
-					walletCtrl.New(),
+						cronTaskCtrl.NewV1(),
+						copyTradingCtrl.NewV1(),
+						leaderboardCtrl.NewV1(),
+						walletCtrl.NewV1(),
 						membershipCtrl.NewV1(),
-						myTrackWalletCtrl.New(),
+						myTrackWalletCtrl.NewV1(),
 						notificationCtrl.NewV1(),
-						positionCtrl.New(),
+						positionCtrl.NewV1(),
 						proxyPoolCtrl.NewV1(),
 						traderCtrl.NewV1(),
 						traderPerformanceCtrl.NewV1(),

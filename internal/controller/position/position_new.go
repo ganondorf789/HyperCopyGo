@@ -3,3 +3,13 @@
 // =================================================================================
 
 package position
+
+import (
+	"demo/api/position"
+)
+
+type ControllerV1 struct{}
+
+func NewV1() position.IPositionV1 {
+	return &ControllerV1{}
+}
