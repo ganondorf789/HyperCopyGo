@@ -1,4 +1,4 @@
-﻿// ==========================================================================
+// ==========================================================================
 // Code generated and maintained by GoFrame CLI tool. DO NOT EDIT.
 // ==========================================================================
 
@@ -9,6 +9,7 @@ import (
 	_ "demo/internal/logic/app_version"
 	_ "demo/internal/logic/copy_trade_config"
 	_ "demo/internal/logic/copy_trade_config_grpc"
+	_ "demo/internal/logic/copy_trading_grpc"
 	_ "demo/internal/logic/cron_task"
 	_ "demo/internal/logic/email"
 	_ "demo/internal/logic/leaderboard"

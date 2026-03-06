@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package copy_trading_grpc.v1;
+
+option go_package = "demo/api/copy_trading_grpc/v1";
+
+service CopyTradingService {
+  rpc GetCopyTradingDetail(GetCopyTradingDetailReq) returns (GetCopyTradingDetailRes);
+  rpc GetCopyTradingList(GetCopyTradingListReq) returns (GetCopyTradingListRes);
+}
+
+message GetCopyTradingDetailReq {
+  string app_id     = 1;
+  string app_secret = 2;
+  int64  id         = 3;
+}
+
+message GetCopyTradingDetailRes {
+  CopyTradingItem item = 1;
+}
+
+message GetCopyTradingListReq {
+  string app_id          = 1;
+  string app_secret      = 2;
+  int64  copy_trading_id = 3;
+  int32  page            = 4;
+  int32  page_size       = 5;
+}
+
+message GetCopyTradingListRes {
+  repeated CopyTradingItem list = 1;
+  int32 total                   = 2;
+  int32 page                    = 3;
+}
+
+message CopyTradingItem {
+  int64  id                                = 1;
+  int64  copy_trading_id                   = 2;
+  int64  user_id                           = 3;
+  string target_wallet                     = 4;
+  string target_wallet_platform            = 5;
+  string remark                            = 6;
+  int64  follow_type                       = 7;
+  int64  follow_once                       = 8;
+  string position_conditions               = 9;
+  string trader_conditions                 = 10;
+  string tag_account_value                 = 11;
+  string tag_profit_scale                  = 12;
+  string tag_direction                     = 13;
+  string tag_trading_rhythm                = 14;
+  string tag_profit_status                 = 15;
+  repeated string tag_trading_styles       = 16;
+  string trader_metric_period              = 17;
+  int64  follow_margin_mode                = 18;
+  string follow_symbol                     = 19;
+  int64  leverage                          = 20;
+  int64  margin_mode                       = 21;
+  int64  follow_model                      = 22;
+  double follow_model_value                = 23;
+  double min_value                         = 24;
+  double max_value                         = 25;
+  double max_margin_usage                  = 26;
+  double tp_value                          = 27;
+  double sl_value                          = 28;
+  int64  opt_reverse_follow_order          = 29;
+  int64  opt_followup_decrease             = 30;
+  int64  opt_followup_increase             = 31;
+  int64  opt_forced_liquidation_protection = 32;
+  int64  opt_position_increase_opening     = 33;
+  int64  opt_slippage_protection           = 34;
+  string symbol_list_type                  = 35;
+  string symbol_list                       = 36;
+  string main_wallet                       = 37;
+  string main_wallet_platform              = 38;
+  int64  copy_trading_status               = 39;
+  string copy_trading_created_at           = 40;
+  string copy_trading_updated_at           = 41;
+  string trader_address                    = 42;
+  string trader_coin                       = 43;
+  double trader_szi                        = 44;
+  string trader_leverage_type              = 45;
+  int64  trader_leverage                   = 46;
+  double trader_entry_px                   = 47;
+  double trader_position_value             = 48;
+  int64  execute_status                    = 49;
+  string order_status                      = 50;
+  string error_msg                         = 51;
+  string created_at                        = 52;
+  string updated_at                        = 53;
+}
