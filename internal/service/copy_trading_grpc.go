@@ -3,11 +3,11 @@ package service
 import (
 	"context"
 
-	"demo/internal/model"
+	v1 "demo/api/copy_trading_grpc/v1"
 )
 
 type ICopyTradingGrpc interface {
-	GetAutoCopyTradingList(ctx context.Context, appId, appSecret string) (list []model.CopyTradingItem, err error)
+	GetAutoCopyTradingList(ctx context.Context, appId, appSecret string) (list []*v1.CopyTradingItem, err error)
 }
 
 var localCopyTradingGrpc ICopyTradingGrpc

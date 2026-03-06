@@ -26,8 +26,6 @@ type GetAutoCopyTradingListReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	AppId         string                 `protobuf:"bytes,1,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
 	AppSecret     string                 `protobuf:"bytes,2,opt,name=app_secret,json=appSecret,proto3" json:"app_secret,omitempty"`
-	Page          int32                  `protobuf:"varint,3,opt,name=page,proto3" json:"page,omitempty"`
-	PageSize      int32                  `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -76,25 +74,10 @@ func (x *GetAutoCopyTradingListReq) GetAppSecret() string {
 	return ""
 }
 
-func (x *GetAutoCopyTradingListReq) GetPage() int32 {
-	if x != nil {
-		return x.Page
-	}
-	return 0
-}
-
-func (x *GetAutoCopyTradingListReq) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
 type GetAutoCopyTradingListRes struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	List          []*CopyTradingItem     `protobuf:"bytes,1,rep,name=list,proto3" json:"list,omitempty"`
 	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
-	Page          int32                  `protobuf:"varint,3,opt,name=page,proto3" json:"page,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -139,13 +122,6 @@ func (x *GetAutoCopyTradingListRes) GetList() []*CopyTradingItem {
 func (x *GetAutoCopyTradingListRes) GetTotal() int32 {
 	if x != nil {
 		return x.Total
-	}
-	return 0
-}
-
-func (x *GetAutoCopyTradingListRes) GetPage() int32 {
-	if x != nil {
-		return x.Page
 	}
 	return 0
 }
@@ -510,17 +486,14 @@ var File_copy_trading_grpc_v1_copy_trading_proto protoreflect.FileDescriptor
 
 const file_copy_trading_grpc_v1_copy_trading_proto_rawDesc = "" +
 	"\n" +
-	"'copy_trading_grpc/v1/copy_trading.proto\x12\x14copy_trading_grpc.v1\"\x82\x01\n" +
+	"'copy_trading_grpc/v1/copy_trading.proto\x12\x14copy_trading_grpc.v1\"Q\n" +
 	"\x19GetAutoCopyTradingListReq\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12\x1d\n" +
 	"\n" +
-	"app_secret\x18\x02 \x01(\tR\tappSecret\x12\x12\n" +
-	"\x04page\x18\x03 \x01(\x05R\x04page\x12\x1b\n" +
-	"\tpage_size\x18\x04 \x01(\x05R\bpageSize\"\x80\x01\n" +
+	"app_secret\x18\x02 \x01(\tR\tappSecret\"l\n" +
 	"\x19GetAutoCopyTradingListRes\x129\n" +
 	"\x04list\x18\x01 \x03(\v2%.copy_trading_grpc.v1.CopyTradingItemR\x04list\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\x12\x12\n" +
-	"\x04page\x18\x03 \x01(\x05R\x04page\"\xd8\f\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\"\xd8\f\n" +
 	"\x0fCopyTradingItem\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\x03R\x06userId\x12#\n" +

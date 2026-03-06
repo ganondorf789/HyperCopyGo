@@ -11,14 +11,11 @@ service CopyTradingService {
 message GetAutoCopyTradingListReq {
   string app_id     = 1;
   string app_secret = 2;
-  int32  page       = 3;
-  int32  page_size  = 4;
 }
 
 message GetAutoCopyTradingListRes {
-  repeated CopyTradingItem list = 1;
+  repeated CopyTradingItem list  = 1;
   int32 total                   = 2;
-  int32 page                    = 3;
 }
 
 message CopyTradingItem {
