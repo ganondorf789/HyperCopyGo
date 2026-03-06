@@ -37,17 +37,10 @@ func (s *sCopyTradingGrpc) GetCopyTradingDetail(ctx context.Context, appId, appS
 	return entityToProto(item), nil
 }
 
-func (s *sCopyTradingGrpc) GetCopyTradingList(ctx context.Context, appId, appSecret string, copyTradingId int64, page, pageSize int32) (list []*v1.CopyTradingItem, total int32, err error) {
+func (s *sCopyTradingGrpc) GetCopyTradingList(ctx context.Context, appId, appSecret string, copyTradingId int64) (list []*v1.CopyTradingItem, err error) {
 	userId, err := validateAppKey(ctx, appId, appSecret)
 	if err != nil {
-		return nil, 0, err
-	}
-
-	if page <= 0 {
-		page = 1
-	}
-	if pageSize <= 0 {
-		pageSize = 20
+		return nil, err
 	}
 
 	m := dao.CopyTrading.Ctx(ctx).Where("user_id = ?", userId)
@@ -55,24 +48,17 @@ func (s *sCopyTradingGrpc) GetCopyTradingList(ctx context.Context, appId, appSec
 		m = m.Where("copy_trading_id = ?", copyTradingId)
 	}
 
-	count, err := m.Count()
-	if err != nil {
-		return nil, 0, err
-	}
-
 	var items []entity.CopyTrading
-	err = m.Page(int(page), int(pageSize)).
-		OrderDesc(dao.CopyTrading.Columns().Id).
-		Scan(&items)
+	err = m.OrderDesc(dao.CopyTrading.Columns().Id).Scan(&items)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 
 	list = make([]*v1.CopyTradingItem, 0, len(items))
 	for _, e := range items {
 		list = append(list, entityToProto(e))
 	}
-	return list, int32(count), nil
+	return list, nil
 }
 
 func validateAppKey(ctx context.Context, appId, appSecret string) (int64, error) {

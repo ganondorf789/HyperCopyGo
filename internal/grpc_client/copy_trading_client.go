@@ -40,13 +40,11 @@ func (c *CopyTradingClient) GetCopyTradingDetail(ctx context.Context, id int64) 
 	return res, nil
 }
 
-func (c *CopyTradingClient) GetCopyTradingList(ctx context.Context, copyTradingId int64, page, pageSize int32) (*pb.GetCopyTradingListRes, error) {
+func (c *CopyTradingClient) GetCopyTradingList(ctx context.Context, copyTradingId int64) (*pb.GetCopyTradingListRes, error) {
 	res, err := c.client.GetCopyTradingList(ctx, &pb.GetCopyTradingListReq{
 		AppId:         c.appId,
 		AppSecret:     c.appSecret,
 		CopyTradingId: copyTradingId,
-		Page:          page,
-		PageSize:      pageSize,
 	})
 	if err != nil {
 		g.Log().Errorf(ctx, "GetCopyTradingList rpc error: %v", err)

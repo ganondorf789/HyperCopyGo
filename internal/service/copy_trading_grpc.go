@@ -8,7 +8,7 @@ import (
 
 type ICopyTradingGrpc interface {
 	GetCopyTradingDetail(ctx context.Context, appId, appSecret string, id int64) (*v1.CopyTradingItem, error)
-	GetCopyTradingList(ctx context.Context, appId, appSecret string, copyTradingId int64, page, pageSize int32) (list []*v1.CopyTradingItem, total int32, err error)
+	GetCopyTradingList(ctx context.Context, appId, appSecret string, copyTradingId int64) (list []*v1.CopyTradingItem, err error)
 }
 
 var localCopyTradingGrpc ICopyTradingGrpc

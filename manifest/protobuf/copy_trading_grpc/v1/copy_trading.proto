@@ -23,14 +23,10 @@ message GetCopyTradingListReq {
   string app_id          = 1;
   string app_secret      = 2;
   int64  copy_trading_id = 3;
-  int32  page            = 4;
-  int32  page_size       = 5;
 }
 
 message GetCopyTradingListRes {
   repeated CopyTradingItem list = 1;
-  int32 total                   = 2;
-  int32 page                    = 3;
 }
 
 message CopyTradingItem {
