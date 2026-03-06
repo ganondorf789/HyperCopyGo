@@ -2,7 +2,9 @@ package copy_trading_grpc
 
 import (
 	"context"
+
 	v1 "demo/api/copy_trading_grpc/v1"
+	"demo/internal/service"
 
 	"github.com/gogf/gf/contrib/rpc/grpcx/v2"
 	"github.com/gogf/gf/v2/errors/gcode"
@@ -27,4 +29,12 @@ func (*Controller) GetCopyTradingList(ctx context.Context, req *v1.GetCopyTradin
 
 func (*Controller) CreateCopyTrading(ctx context.Context, req *v1.CreateCopyTradingReq) (res *v1.CreateCopyTradingRes, err error) {
 	return nil, gerror.NewCode(gcode.CodeNotImplemented)
+}
+
+func (*Controller) SendCopyTradingNotification(ctx context.Context, req *v1.SendCopyTradingNotificationReq) (res *v1.SendCopyTradingNotificationRes, err error) {
+	id, err := service.CopyTradingGrpc().SendCopyTradingNotification(ctx, req.AppId, req.AppSecret, req)
+	if err != nil {
+		return nil, err
+	}
+	return &v1.SendCopyTradingNotificationRes{Id: id}, nil
 }

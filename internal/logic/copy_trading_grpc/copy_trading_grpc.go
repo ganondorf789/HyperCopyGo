@@ -4,11 +4,15 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/gogf/gf/v2/frame/g"
+
 	v1 "demo/api/copy_trading_grpc/v1"
 	"demo/internal/consts"
 	"demo/internal/dao"
+	"demo/internal/model"
 	"demo/internal/model/entity"
 	"demo/internal/service"
+	"demo/internal/websocket"
 )
 
 func init() {
@@ -133,6 +137,41 @@ func (s *sCopyTradingGrpc) GetCopyTradingList(ctx context.Context, appId, appSec
 		list = append(list, entityToProto(e))
 	}
 	return list, nil
+}
+
+func (s *sCopyTradingGrpc) SendCopyTradingNotification(ctx context.Context, appId, appSecret string, in *v1.SendCopyTradingNotificationReq) (int64, error) {
+	userId, err := validateAppKey(ctx, appId, appSecret)
+	if err != nil {
+		return 0, err
+	}
+
+	id, err := dao.Notification.Ctx(ctx).Data(g.Map{
+		"user_id":  userId,
+		"category": consts.NotificationCategoryCopyTrading,
+		"title":    in.Title,
+		"content":  in.Content,
+		"level":    in.Level,
+		"ref_id":   in.RefId,
+		"ref_type": in.RefType,
+		"status":   1,
+	}).InsertAndGetId()
+	if err != nil {
+		return 0, err
+	}
+
+	hub := websocket.GetHub()
+	hub.SendToUser(userId, websocket.WsMessage{
+		Type: "notification",
+		Data: model.MarketAlertBroadcast{
+			Id:       id,
+			Category: consts.NotificationCategoryCopyTrading,
+			Title:    in.Title,
+			Content:  in.Content,
+			Level:    int(in.Level),
+		},
+	})
+
+	return id, nil
 }
 
 func validateAppKey(ctx context.Context, appId, appSecret string) (int64, error) {

@@ -21,4 +21,20 @@ const (
 	FollowTypeAuto      = 1 // 自动跟单
 	FollowTypeCondition = 2 // 条件跟单
 	FollowTypeRealtime  = 3 // 实时跟单
+
+	// 通知类型
+	NotificationCategoryPublic      = "public"
+	NotificationCategoryCopyTrading = "copy_trading"
+	NotificationCategoryWhale       = "whale"
+	NotificationCategoryTrack      = "track"
+	NotificationCategoryMarket     = "market"
 )
+
+// NotificationCategories 所有通知分类，保证 1 级页面固定顺序
+var NotificationCategories = []string{
+	NotificationCategoryPublic,
+	NotificationCategoryCopyTrading,
+	NotificationCategoryWhale,
+	NotificationCategoryTrack,
+	NotificationCategoryMarket,
+}

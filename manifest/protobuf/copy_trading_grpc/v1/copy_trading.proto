@@ -8,6 +8,7 @@ service CopyTradingService {
   rpc CreateCopyTrading(CreateCopyTradingReq) returns (CreateCopyTradingRes);
   rpc GetCopyTradingDetail(GetCopyTradingDetailReq) returns (GetCopyTradingDetailRes);
   rpc GetCopyTradingList(GetCopyTradingListReq) returns (GetCopyTradingListRes);
+  rpc SendCopyTradingNotification(SendCopyTradingNotificationReq) returns (SendCopyTradingNotificationRes);
 }
 
 message CreateCopyTradingReq {
@@ -45,6 +46,20 @@ message GetCopyTradingListReq {
 
 message GetCopyTradingListRes {
   repeated CopyTradingItem list = 1;
+}
+
+message SendCopyTradingNotificationReq {
+  string app_id     = 1;
+  string app_secret = 2;
+  string title      = 3;
+  string content    = 4;
+  int64  ref_id     = 5;
+  string ref_type   = 6;
+  int32  level      = 7;
+}
+
+message SendCopyTradingNotificationRes {
+  int64 id = 1;
 }
 
 message CopyTradingItem {

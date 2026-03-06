@@ -10,6 +10,7 @@ type ICopyTradingGrpc interface {
 	CreateCopyTrading(ctx context.Context, appId, appSecret string, in *v1.CreateCopyTradingReq) (int64, error)
 	GetCopyTradingDetail(ctx context.Context, appId, appSecret string, id int64) (*v1.CopyTradingItem, error)
 	GetCopyTradingList(ctx context.Context, appId, appSecret string, copyTradingId int64) (list []*v1.CopyTradingItem, err error)
+	SendCopyTradingNotification(ctx context.Context, appId, appSecret string, in *v1.SendCopyTradingNotificationReq) (int64, error)
 }
 
 var localCopyTradingGrpc ICopyTradingGrpc

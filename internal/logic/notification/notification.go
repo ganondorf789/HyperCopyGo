@@ -7,6 +7,7 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 
 	v1 "demo/api/notification/v1"
+	"demo/internal/consts"
 	"demo/internal/dao"
 	"demo/internal/model"
 	"demo/internal/model/entity"
@@ -124,8 +125,6 @@ func (s *sNotification) Send(ctx context.Context, in v1.NotificationSendReq) (re
 	return &v1.NotificationSendRes{Id: id}, nil
 }
 
-// allCategories 所有通知分类，保证 1 级页面固定顺序
-var allCategories = []string{"public", "copy_trading", "whale", "track", "market"}
 
 // summaryRow 原生 SQL 聚合行
 type summaryRow struct {
@@ -181,8 +180,8 @@ func (s *sNotification) Summary(ctx context.Context, userId int64) (res *v1.Noti
 	}
 
 	// 3. 组装固定顺序的分类列表
-	categories := make([]model.NotificationCategorySummary, 0, len(allCategories))
-	for _, cat := range allCategories {
+	categories := make([]model.NotificationCategorySummary, 0, len(consts.NotificationCategories))
+	for _, cat := range consts.NotificationCategories {
 		categories = append(categories, model.NotificationCategorySummary{
 			Category:    cat,
 			UnreadCount: unreadMap[cat],

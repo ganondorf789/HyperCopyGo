@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"time"
 
+	"demo/internal/consts"
 	"demo/internal/dao"
 	"demo/internal/model"
 	"demo/internal/websocket"
@@ -110,7 +111,7 @@ func handleMarketAlert(ctx context.Context, payload string) {
 
 	id, err := dao.Notification.Ctx(ctx).Data(g.Map{
 		"user_id":  0,
-		"category": "market",
+		"category": consts.NotificationCategoryMarket,
 		"title":    title,
 		"content":  content,
 		"level":    1,
@@ -126,7 +127,7 @@ func handleMarketAlert(ctx context.Context, payload string) {
 		Type: "notification",
 		Data: model.MarketAlertBroadcast{
 			Id:       id,
-			Category: "market",
+			Category: consts.NotificationCategoryMarket,
 			Title:    title,
 			Content:  content,
 			Level:    1,
