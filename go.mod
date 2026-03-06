@@ -5,9 +5,13 @@ go 1.25.3
 require (
 	github.com/gogf/gf/contrib/drivers/pgsql/v2 v2.10.0
 	github.com/gogf/gf/contrib/nosql/redis/v2 v2.10.0
+	github.com/gogf/gf/contrib/rpc/grpcx/v2 v2.10.0
 	github.com/gogf/gf/v2 v2.10.0
 	github.com/golang-jwt/jwt/v5 v5.3.1
+	github.com/sendgrid/sendgrid-go v3.16.1+incompatible
 	github.com/sonirico/go-hyperliquid v0.33.1
+	google.golang.org/grpc v1.64.1
+	google.golang.org/protobuf v1.36.11
 )
 
 require (
@@ -32,6 +36,7 @@ require (
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
+	github.com/gogf/gf/contrib/registry/file/v2 v2.10.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/grokify/html-strip-tags-go v0.1.0 // indirect
@@ -53,7 +58,6 @@ require (
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/rs/zerolog v1.34.0 // indirect
 	github.com/sendgrid/rest v2.6.9+incompatible // indirect
-	github.com/sendgrid/sendgrid-go v3.16.1+incompatible // indirect
 	github.com/sonirico/vago v0.11.4 // indirect
 	github.com/sonirico/vago/lol v0.1.0 // indirect
 	github.com/supranational/blst v0.3.16 // indirect
@@ -73,6 +77,7 @@ require (
 	golang.org/x/sync v0.17.0 // indirect
 	golang.org/x/sys v0.39.0 // indirect
 	golang.org/x/text v0.29.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240318140521-94a12d6c2237 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	howett.net/plist v1.0.1 // indirect
 )

@@ -14,5 +14,6 @@ import (
 )
 
 func main() {
+	cmd.Main.AddCommand(&cmd.Grpc)
 	cmd.Main.Run(gctx.GetInitCtx())
 }

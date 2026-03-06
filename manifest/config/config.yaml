@@ -3,6 +3,15 @@ server:
   openapiPath: "/api.json"
   swaggerPath: "/swagger"
 
+grpc:
+  name: "hypercopy"
+  address: ":9000"
+  logPath: "logs/grpc"
+  logStdout: true
+  errorLogEnabled: true
+  accessLogEnabled: true
+  errorStack: true
+
 logger:
   level: "prod"
   path: "logs/var"
