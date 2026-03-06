@@ -7,11 +7,11 @@ import (
 	hyperliquid "github.com/sonirico/go-hyperliquid"
 
 	v1 "demo/api/wallet_grpc/v1"
-	"demo/internal/consts"
 	"demo/internal/dao"
 	"demo/internal/model/entity"
 	proxyPool "demo/internal/proxy_pool"
 	"demo/internal/service"
+	"demo/utility"
 )
 
 func init() {
@@ -21,7 +21,7 @@ func init() {
 type sWalletGrpc struct{}
 
 func (s *sWalletGrpc) GetWalletList(ctx context.Context, appId, appSecret string) (list []*v1.WalletItem, err error) {
-	userId, err := validateAppKey(ctx, appId, appSecret)
+	userId, err := utility.ValidateAppKey(ctx, appId, appSecret)
 	if err != nil {
 		return nil, err
 	}
@@ -40,20 +40,6 @@ func (s *sWalletGrpc) GetWalletList(ctx context.Context, appId, appSecret string
 		list = append(list, entityToProto(ctx, e))
 	}
 	return list, nil
-}
-
-func validateAppKey(ctx context.Context, appId, appSecret string) (int64, error) {
-	var appKey entity.UserAppKey
-	err := dao.UserAppKey.Ctx(ctx).
-		Where("app_id = ? AND app_secret = ? AND status = ?", appId, appSecret, consts.UserStatusEnabled).
-		Scan(&appKey)
-	if err != nil {
-		return 0, err
-	}
-	if appKey.Id == 0 {
-		return 0, fmt.Errorf("invalid app credentials")
-	}
-	return appKey.UserId, nil
 }
 
 func entityToProto(ctx context.Context, e entity.Wallet) *v1.WalletItem {

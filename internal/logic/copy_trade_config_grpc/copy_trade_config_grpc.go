@@ -1,14 +1,14 @@
-﻿package copy_trade_config_grpc
+package copy_trade_config_grpc
 
 import (
 	"context"
-	"fmt"
 
 	v1 "demo/api/copy_trade_config_grpc/v1"
 	"demo/internal/consts"
 	"demo/internal/dao"
 	"demo/internal/model/entity"
 	"demo/internal/service"
+	"demo/utility"
 )
 
 func init() {
@@ -18,20 +18,14 @@ func init() {
 type sCopyTradeConfigGrpc struct{}
 
 func (s *sCopyTradeConfigGrpc) GetAutoCopyTradeConfigList(ctx context.Context, appId, appSecret string) (list []*v1.CopyTradeConfigItem, err error) {
-	var appKey entity.UserAppKey
-	err = dao.UserAppKey.Ctx(ctx).
-		Where("app_id = ? AND app_secret = ? AND status = ?", appId, appSecret, consts.UserStatusEnabled).
-		Scan(&appKey)
+	userId, err := utility.ValidateAppKey(ctx, appId, appSecret)
 	if err != nil {
 		return nil, err
-	}
-	if appKey.Id == 0 {
-		return nil, fmt.Errorf("invalid app credentials")
 	}
 
 	var items []entity.CopyTradeConfig
 	err = dao.CopyTradeConfig.Ctx(ctx).
-		Where("user_id = ?", appKey.UserId).
+		Where("user_id = ?", userId).
 		Where("follow_type = ?", consts.FollowTypeAuto).
 		OrderDesc(dao.CopyTradeConfig.Columns().Id).
 		Scan(&items)

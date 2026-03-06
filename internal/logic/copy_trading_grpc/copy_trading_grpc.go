@@ -13,6 +13,7 @@ import (
 	"demo/internal/model/entity"
 	"demo/internal/service"
 	"demo/internal/websocket"
+	"demo/utility"
 )
 
 func init() {
@@ -22,7 +23,7 @@ func init() {
 type sCopyTradingGrpc struct{}
 
 func (s *sCopyTradingGrpc) CreateCopyTrading(ctx context.Context, appId, appSecret string, in *v1.CreateCopyTradingReq) (int64, error) {
-	userId, err := validateAppKey(ctx, appId, appSecret)
+	userId, err := utility.ValidateAppKey(ctx, appId, appSecret)
 	if err != nil {
 		return 0, err
 	}
@@ -96,7 +97,7 @@ func (s *sCopyTradingGrpc) CreateCopyTrading(ctx context.Context, appId, appSecr
 }
 
 func (s *sCopyTradingGrpc) GetCopyTradingDetail(ctx context.Context, appId, appSecret string, id int64) (*v1.CopyTradingItem, error) {
-	userId, err := validateAppKey(ctx, appId, appSecret)
+	userId, err := utility.ValidateAppKey(ctx, appId, appSecret)
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +117,7 @@ func (s *sCopyTradingGrpc) GetCopyTradingDetail(ctx context.Context, appId, appS
 }
 
 func (s *sCopyTradingGrpc) GetCopyTradingList(ctx context.Context, appId, appSecret string, copyTradingId int64) (list []*v1.CopyTradingItem, err error) {
-	userId, err := validateAppKey(ctx, appId, appSecret)
+	userId, err := utility.ValidateAppKey(ctx, appId, appSecret)
 	if err != nil {
 		return nil, err
 	}
@@ -140,7 +141,7 @@ func (s *sCopyTradingGrpc) GetCopyTradingList(ctx context.Context, appId, appSec
 }
 
 func (s *sCopyTradingGrpc) SendCopyTradingNotification(ctx context.Context, appId, appSecret string, in *v1.SendCopyTradingNotificationReq) (int64, error) {
-	userId, err := validateAppKey(ctx, appId, appSecret)
+	userId, err := utility.ValidateAppKey(ctx, appId, appSecret)
 	if err != nil {
 		return 0, err
 	}
@@ -172,20 +173,6 @@ func (s *sCopyTradingGrpc) SendCopyTradingNotification(ctx context.Context, appI
 	})
 
 	return id, nil
-}
-
-func validateAppKey(ctx context.Context, appId, appSecret string) (int64, error) {
-	var appKey entity.UserAppKey
-	err := dao.UserAppKey.Ctx(ctx).
-		Where("app_id = ? AND app_secret = ? AND status = ?", appId, appSecret, consts.UserStatusEnabled).
-		Scan(&appKey)
-	if err != nil {
-		return 0, err
-	}
-	if appKey.Id == 0 {
-		return 0, fmt.Errorf("invalid app credentials")
-	}
-	return appKey.UserId, nil
 }
 
 func entityToProto(e entity.CopyTrading) *v1.CopyTradingItem {
