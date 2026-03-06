@@ -61,6 +61,28 @@ func (s *sLeaderboard) Volume(ctx context.Context) (res *v1.LeaderboardVolumeRes
 	return &v1.LeaderboardVolumeRes{List: list}, nil
 }
 
+func (s *sLeaderboard) HotCoin(ctx context.Context) (res *v1.HotCoinRes, err error) {
+	hotCoins, err := dao.HotCoin.Ctx(ctx).Fields("coin").Array()
+	if err != nil {
+		return nil, err
+	}
+	if len(hotCoins) == 0 {
+		return &v1.HotCoinRes{List: make([]entity.CoinMarket, 0)}, nil
+	}
+
+	var list []entity.CoinMarket
+	err = dao.CoinMarket.Ctx(ctx).
+		WhereIn(dao.CoinMarket.Columns().Coin, hotCoins).
+		Scan(&list)
+	if err != nil {
+		return nil, err
+	}
+	if list == nil {
+		list = make([]entity.CoinMarket, 0)
+	}
+	return &v1.HotCoinRes{List: list}, nil
+}
+
 func (s *sLeaderboard) Profit(ctx context.Context, in v1.LeaderboardProfitReq) (res *v1.LeaderboardProfitRes, err error) {
 	m := dao.TraderPerformances.DB().Model("trader_performances AS tp").
 		Ctx(ctx).

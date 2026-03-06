@@ -34,6 +34,15 @@ type LeaderboardVolumeRes struct {
 	List   []entity.Leaderboard `json:"list"`
 }
 
+// 热门币种列表
+type HotCoinReq struct {
+	g.Meta `path:"/leaderboard/hot-coin" tags:"Leaderboard" method:"get" summary:"热门币种列表"`
+}
+type HotCoinRes struct {
+	g.Meta `mime:"application/json"`
+	List   []entity.CoinMarket `json:"list"`
+}
+
 // 盈利榜（按 PnL 降序，支持分页和时间窗口）
 type LeaderboardProfitReq struct {
 	g.Meta   `path:"/leaderboard/profit" tags:"Leaderboard" method:"get" summary:"盈利榜"`
