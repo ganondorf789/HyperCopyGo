@@ -9,8 +9,7 @@ import (
 	"demo/internal/controller/copy_trading_grpc"
 	"demo/internal/initialization"
 
-	_ "demo/internal/logic/copy_trading"
-	_ "demo/internal/logic/user_app_key"
+	_ "demo/internal/logic/copy_trading_grpc"
 )
 
 var (

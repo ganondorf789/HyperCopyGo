@@ -8,6 +8,7 @@ import (
 	_ "demo/internal/logic/admin"
 	_ "demo/internal/logic/app_version"
 	_ "demo/internal/logic/copy_trading"
+	_ "demo/internal/logic/copy_trading_grpc"
 	_ "demo/internal/logic/cron_task"
 	_ "demo/internal/logic/email"
 	_ "demo/internal/logic/leaderboard"

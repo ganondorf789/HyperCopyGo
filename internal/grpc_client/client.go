@@ -27,12 +27,10 @@ func NewCopyTradingClient(serviceName, appId, appSecret string) *CopyTradingClie
 	}
 }
 
-func (c *CopyTradingClient) GetAutoCopyTradingList(ctx context.Context, page, pageSize int32) (*pb.GetAutoCopyTradingListRes, error) {
+func (c *CopyTradingClient) GetAutoCopyTradingList(ctx context.Context) (*pb.GetAutoCopyTradingListRes, error) {
 	res, err := c.client.GetAutoCopyTradingList(ctx, &pb.GetAutoCopyTradingListReq{
 		AppId:     c.appId,
 		AppSecret: c.appSecret,
-		Page:      page,
-		PageSize:  pageSize,
 	})
 	if err != nil {
 		g.Log().Errorf(ctx, "GetAutoCopyTradingList rpc error: %v", err)
