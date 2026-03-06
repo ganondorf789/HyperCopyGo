@@ -45,10 +45,10 @@ type TraderStatisticsColumns struct {
 	ShortWinRate       string // 空仓胜率
 	UnrealizedPnl      string // 未实现盈亏
 	AvgLeverage        string // 平均杠杆
+	TotalRealizedPnl   string // 已实现总盈亏（正为盈利，负为亏损）
 	Coins              string // 交易过的币种
 	CreatedAt          string // 创建时间
 	UpdatedAt          string // 更新时间
-	TotalRealizedPnl   string // 已实现总盈亏（正为盈利，负为亏损）
 }
 
 // traderStatisticsColumns holds the columns for the table trader_statistics.
@@ -77,10 +77,10 @@ var traderStatisticsColumns = TraderStatisticsColumns{
 	ShortWinRate:       "short_win_rate",
 	UnrealizedPnl:      "unrealized_pnl",
 	AvgLeverage:        "avg_leverage",
+	TotalRealizedPnl:   "total_realized_pnl",
 	Coins:              "coins",
 	CreatedAt:          "created_at",
 	UpdatedAt:          "updated_at",
-	TotalRealizedPnl:   "total_realized_pnl",
 }
 
 // NewTraderStatisticsDao creates and returns a new DAO object for table data access.

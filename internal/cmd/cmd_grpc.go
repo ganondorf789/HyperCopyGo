@@ -1,4 +1,4 @@
-package cmd
+﻿package cmd
 
 import (
 	"context"
@@ -6,10 +6,10 @@ import (
 	"github.com/gogf/gf/contrib/rpc/grpcx/v2"
 	"github.com/gogf/gf/v2/os/gcmd"
 
-	"demo/internal/controller/copy_trading_grpc"
+	"demo/internal/controller/copy_trade_config_grpc"
 	"demo/internal/initialization"
 
-	_ "demo/internal/logic/copy_trading_grpc"
+	_ "demo/internal/logic/copy_trade_config_grpc"
 )
 
 var (
@@ -23,9 +23,10 @@ var (
 			}
 
 			s := grpcx.Server.New()
-			copy_trading_grpc.Register(s)
+			copy_trade_config_grpc.Register(s)
 			s.Run()
 			return nil
 		},
 	}
 )
+

@@ -50,6 +50,9 @@ type CopyTradingItem struct {
 	UpdatedAt *gtime.Time `json:"updatedAt"`
 }
 
+// CopyTradeConfig 跟单配置（copy_trade_config 表对应 model，与 CopyTradingItem 结构相同）
+type CopyTradeConfig = CopyTradingItem
+
 // CopyTradeRecordItem 跟单记录列表项
 type CopyTradeRecordItem struct {
 	Id            int64       `json:"id"`

@@ -22,6 +22,7 @@ type CopyTradingDao struct {
 // CopyTradingColumns defines and stores column names for the table copy_trading.
 type CopyTradingColumns struct {
 	Id                             string // 主键ID
+	CopyTradingId                  string // 跟单配置ID
 	UserId                         string // 所属用户ID
 	TargetWallet                   string // 目标钱包地址
 	TargetWalletPlatform           string // 目标钱包平台
@@ -35,7 +36,7 @@ type CopyTradingColumns struct {
 	TagDirection                   string // 方向偏好 short/neutral/long
 	TagTradingRhythm               string // 交易节奏 longterm/swing/short/scalping
 	TagProfitStatus                string // 盈利状态 steady/volatile/balanced
-	TagTradingStyles               string // 交易风格(多选) hf_stable/hf_aggressive/lf_stable/lf_aggressive/steady_profit/high_risk_high_return/asymmetric/low_drawdown/volatility
+	TagTradingStyles               string // 交易风格(多选)
 	TraderMetricPeriod             string // 交易员指标周期 1d/7d/30d/90d/all
 	FollowMarginMode               string // 跟单保证金模式 1:逐仓 2:全仓
 	FollowSymbol                   string // 跟单币种
@@ -58,7 +59,19 @@ type CopyTradingColumns struct {
 	SymbolList                     string // 交易对列表,逗号分隔
 	MainWallet                     string // 主钱包地址
 	MainWalletPlatform             string // 主钱包平台
-	Status                         string // 状态 0:停用 1:启用
+	CopyTradingStatus              string // 跟单配置状态 0:停用 1:启用
+	CopyTradingCreatedAt           string // 跟单配置创建时间
+	CopyTradingUpdatedAt           string // 跟单配置更新时间
+	TraderAddress                  string // 交易员钱包地址
+	TraderCoin                     string // 币种
+	TraderSzi                      string // 仓位大小（正值为多头，负值为空头）
+	TraderLeverageType             string // 杠杆类型（cross/isolated）
+	TraderLeverage                 string // 杠杆倍数
+	TraderEntryPx                  string // 入场价
+	TraderPositionValue            string // 持仓价值
+	ExecuteStatus                  string // 执行状态 0:待执行 1:成功 2:失败 3:跳过
+	OrderStatus                    string // 订单状态 open/filled/canceled/triggered
+	ErrorMsg                       string // 执行失败原因
 	CreatedAt                      string // 创建时间
 	UpdatedAt                      string // 更新时间
 }
@@ -66,6 +79,7 @@ type CopyTradingColumns struct {
 // copyTradingColumns holds the columns for the table copy_trading.
 var copyTradingColumns = CopyTradingColumns{
 	Id:                             "id",
+	CopyTradingId:                  "copy_trading_id",
 	UserId:                         "user_id",
 	TargetWallet:                   "target_wallet",
 	TargetWalletPlatform:           "target_wallet_platform",
@@ -102,7 +116,19 @@ var copyTradingColumns = CopyTradingColumns{
 	SymbolList:                     "symbol_list",
 	MainWallet:                     "main_wallet",
 	MainWalletPlatform:             "main_wallet_platform",
-	Status:                         "status",
+	CopyTradingStatus:              "copy_trading_status",
+	CopyTradingCreatedAt:           "copy_trading_created_at",
+	CopyTradingUpdatedAt:           "copy_trading_updated_at",
+	TraderAddress:                  "trader_address",
+	TraderCoin:                     "trader_coin",
+	TraderSzi:                      "trader_szi",
+	TraderLeverageType:             "trader_leverage_type",
+	TraderLeverage:                 "trader_leverage",
+	TraderEntryPx:                  "trader_entry_px",
+	TraderPositionValue:            "trader_position_value",
+	ExecuteStatus:                  "execute_status",
+	OrderStatus:                    "order_status",
+	ErrorMsg:                       "error_msg",
 	CreatedAt:                      "created_at",
 	UpdatedAt:                      "updated_at",
 }

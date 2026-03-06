@@ -1,4 +1,4 @@
-package grpc_client_test
+﻿package grpc_client_test
 
 import (
 	"fmt"
@@ -9,15 +9,15 @@ import (
 	"github.com/gogf/gf/v2/os/gctx"
 )
 
-func TestGetAutoCopyTradingList(t *testing.T) {
+func TestGetAutoCopyTradeConfigList(t *testing.T) {
 	ctx := gctx.New()
 
-	client := grpc_client.NewCopyTradingClient("hypercopy", "your-app-id", "your-app-secret")
+	client := grpc_client.NewCopyTradeConfigClient("hypercopy", "your-app-id", "your-app-secret")
 	defer client.Close()
 
-	res, err := client.GetAutoCopyTradingList(ctx)
+	res, err := client.GetAutoCopyTradeConfigList(ctx)
 	if err != nil {
-		t.Fatalf("GetAutoCopyTradingList failed: %v", err)
+		t.Fatalf("GetAutoCopyTradeConfigList failed: %v", err)
 	}
 
 	fmt.Printf("Total: %d\n", res.Total)
@@ -25,3 +25,4 @@ func TestGetAutoCopyTradingList(t *testing.T) {
 		fmt.Printf("ID: %d, Wallet: %s, Status: %d\n", item.Id, item.TargetWallet, item.Status)
 	}
 }
+

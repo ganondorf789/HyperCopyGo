@@ -1,4 +1,4 @@
-package cmd
+﻿package cmd
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 
 	"demo/internal/controller/admin"
 	"demo/internal/controller/app_version"
-	"demo/internal/controller/copy_trading"
+	"demo/internal/controller/copy_trade_config"
 	"demo/internal/controller/cron_task"
 	"demo/internal/controller/leaderboard"
 	"demo/internal/controller/membership"
@@ -34,7 +34,7 @@ import (
 	_ "demo/internal/cron_jobs"
 	_ "demo/internal/logic/admin"
 	_ "demo/internal/logic/app_version"
-	_ "demo/internal/logic/copy_trading"
+	_ "demo/internal/logic/copy_trade_config"
 	_ "demo/internal/logic/cron_task"
 	_ "demo/internal/logic/email"
 	_ "demo/internal/logic/leaderboard"
@@ -58,31 +58,31 @@ var (
 		Usage: "main",
 		Brief: "start http server",
 		Func: func(ctx context.Context, parser *gcmd.Parser) (err error) {
-			// 初始化配置
+			// 鍒濆鍖栭厤缃?
 			if err = initialization.InitConfig(); err != nil {
 				return err
 			}
 
-			// 初始化代理池（从数据库加载）
+			// 鍒濆鍖栦唬鐞嗘睜锛堜粠鏁版嵁搴撳姞杞斤級
 			if err = proxyPool.Reload(); err != nil {
 				return err
 			}
 
-			// 从数据库加载并启动定时任务
+			// 浠庢暟鎹簱鍔犺浇骞跺惎鍔ㄥ畾鏃朵换鍔?
 			service.CronTask().StartAll(ctx)
 
-			// 启动 Redis 订阅（new_positions / market_alert）
+			// 鍚姩 Redis 璁㈤槄锛坣ew_positions / market_alert锛?
 			subscriber.Start(ctx)
 
 			s := g.Server()
 
-			// WebSocket 路由（不使用 MiddlewareHandlerResponse，避免干扰 WebSocket 升级）
+			// WebSocket 璺敱锛堜笉浣跨敤 MiddlewareHandlerResponse锛岄伩鍏嶅共鎵?WebSocket 鍗囩骇锛?
 			s.Group("/api", func(group *ghttp.RouterGroup) {
 				group.Middleware(middleware.CORS)
 				group.Bind(ws.New())
 			})
 
-			// REST API 路由
+			// REST API 璺敱
 			s.Group("/", func(group *ghttp.RouterGroup) {
 				group.Middleware(ghttp.MiddlewareHandlerResponse)
 				group.Group("/api", func(group *ghttp.RouterGroup) {
@@ -96,7 +96,7 @@ var (
 						admin.NewV1(),
 						app_version.NewV1(),
 					cron_task.NewV1(),
-						copy_trading.NewV1(),
+						copy_trade_config.NewV1(),
 						leaderboard.NewV1(),
 						wallet.NewV1(),
 						membership.NewV1(),
@@ -117,3 +117,4 @@ var (
 		},
 	}
 )
+

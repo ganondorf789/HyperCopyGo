@@ -1,47 +1,48 @@
-package grpc_client
+﻿package grpc_client
 
 import (
 	"context"
 
-	pb "demo/api/copy_trading_grpc/v1"
+	pb "demo/api/copy_trade_config_grpc/v1"
 
 	"github.com/gogf/gf/contrib/rpc/grpcx/v2"
 	"github.com/gogf/gf/v2/frame/g"
 	"google.golang.org/grpc"
 )
 
-type CopyTradingClient struct {
+type CopyTradeConfigClient struct {
 	conn      *grpc.ClientConn
-	client    pb.CopyTradingServiceClient
+	client    pb.CopyTradeConfigServiceClient
 	appId     string
 	appSecret string
 }
 
-func NewCopyTradingClient(serviceName, appId, appSecret string) *CopyTradingClient {
+func NewCopyTradeConfigClient(serviceName, appId, appSecret string) *CopyTradeConfigClient {
 	conn := grpcx.Client.MustNewGrpcClientConn(serviceName)
-	return &CopyTradingClient{
+	return &CopyTradeConfigClient{
 		conn:      conn,
-		client:    pb.NewCopyTradingServiceClient(conn),
+		client:    pb.NewCopyTradeConfigServiceClient(conn),
 		appId:     appId,
 		appSecret: appSecret,
 	}
 }
 
-func (c *CopyTradingClient) GetAutoCopyTradingList(ctx context.Context) (*pb.GetAutoCopyTradingListRes, error) {
-	res, err := c.client.GetAutoCopyTradingList(ctx, &pb.GetAutoCopyTradingListReq{
+func (c *CopyTradeConfigClient) GetAutoCopyTradeConfigList(ctx context.Context) (*pb.GetAutoCopyTradeConfigListRes, error) {
+	res, err := c.client.GetAutoCopyTradeConfigList(ctx, &pb.GetAutoCopyTradeConfigListReq{
 		AppId:     c.appId,
 		AppSecret: c.appSecret,
 	})
 	if err != nil {
-		g.Log().Errorf(ctx, "GetAutoCopyTradingList rpc error: %v", err)
+		g.Log().Errorf(ctx, "GetAutoCopyTradeConfigList rpc error: %v", err)
 		return nil, err
 	}
 	return res, nil
 }
 
-func (c *CopyTradingClient) Close() error {
+func (c *CopyTradeConfigClient) Close() error {
 	if c.conn != nil {
 		return c.conn.Close()
 	}
 	return nil
 }
+
