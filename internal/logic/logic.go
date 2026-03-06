@@ -9,6 +9,7 @@ import (
 	_ "demo/internal/logic/app_version"
 	_ "demo/internal/logic/copy_trade_config"
 	_ "demo/internal/logic/copy_trade_config_grpc"
+	_ "demo/internal/logic/copy_trading"
 	_ "demo/internal/logic/copy_trading_grpc"
 	_ "demo/internal/logic/cron_task"
 	_ "demo/internal/logic/email"
@@ -18,6 +19,7 @@ import (
 	_ "demo/internal/logic/notification"
 	_ "demo/internal/logic/position"
 	_ "demo/internal/logic/proxy_pool"
+	_ "demo/internal/logic/system_setting"
 	_ "demo/internal/logic/trader"
 	_ "demo/internal/logic/trader_performance"
 	_ "demo/internal/logic/trader_positions"
@@ -26,4 +28,3 @@ import (
 	_ "demo/internal/logic/wallet"
 	_ "demo/internal/logic/wallet_grpc"
 )
-

@@ -1,4 +1,4 @@
-﻿package service
+package service
 
 import (
 	"context"
@@ -22,4 +22,3 @@ func CopyTradeConfigGrpc() ICopyTradeConfigGrpc {
 func RegisterCopyTradeConfigGrpc(s ICopyTradeConfigGrpc) {
 	localCopyTradeConfigGrpc = s
 }
-

@@ -15,8 +15,8 @@ type (
 		Top(ctx context.Context) (res *v1.LeaderboardTopRes, err error)
 		Decline(ctx context.Context) (res *v1.LeaderboardDeclineRes, err error)
 		Volume(ctx context.Context) (res *v1.LeaderboardVolumeRes, err error)
-		Profit(ctx context.Context, in v1.LeaderboardProfitReq) (res *v1.LeaderboardProfitRes, err error)
 		HotCoin(ctx context.Context) (res *v1.HotCoinRes, err error)
+		Profit(ctx context.Context, in v1.LeaderboardProfitReq) (res *v1.LeaderboardProfitRes, err error)
 	}
 )
 

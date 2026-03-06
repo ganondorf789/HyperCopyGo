@@ -1,4 +1,4 @@
-﻿// =================================================================================
+// =================================================================================
 // Code generated and maintained by GoFrame CLI tool. DO NOT EDIT.
 // =================================================================================
 
@@ -18,4 +18,3 @@ type ICopyTradeConfigV1 interface {
 	CopyTradeConfigList(ctx context.Context, req *v1.CopyTradeConfigListReq) (res *v1.CopyTradeConfigListRes, err error)
 	CopyTradeConfigRecordList(ctx context.Context, req *v1.CopyTradeConfigRecordListReq) (res *v1.CopyTradeConfigRecordListRes, err error)
 }
-

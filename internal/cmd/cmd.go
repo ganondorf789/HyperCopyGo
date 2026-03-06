@@ -1,4 +1,4 @@
-﻿package cmd
+package cmd
 
 import (
 	"context"
@@ -10,6 +10,7 @@ import (
 	"demo/internal/controller/admin"
 	"demo/internal/controller/app_version"
 	"demo/internal/controller/copy_trade_config"
+	"demo/internal/controller/copy_trading"
 	"demo/internal/controller/cron_task"
 	"demo/internal/controller/leaderboard"
 	"demo/internal/controller/membership"
@@ -35,6 +36,7 @@ import (
 	_ "demo/internal/logic/admin"
 	_ "demo/internal/logic/app_version"
 	_ "demo/internal/logic/copy_trade_config"
+	_ "demo/internal/logic/copy_trading"
 	_ "demo/internal/logic/cron_task"
 	_ "demo/internal/logic/email"
 	_ "demo/internal/logic/leaderboard"
@@ -97,6 +99,7 @@ var (
 						app_version.NewV1(),
 					cron_task.NewV1(),
 						copy_trade_config.NewV1(),
+					copy_trading.NewV1(),
 						leaderboard.NewV1(),
 						wallet.NewV1(),
 						membership.NewV1(),

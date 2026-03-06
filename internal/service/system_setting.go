@@ -7,7 +7,6 @@ package service
 
 import (
 	"context"
-
 	v1 "demo/api/system_setting/v1"
 )
 
