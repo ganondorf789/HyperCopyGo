@@ -24,5 +24,6 @@ import (
 	_ "demo/internal/logic/user"
 	_ "demo/internal/logic/user_app_key"
 	_ "demo/internal/logic/wallet"
+	_ "demo/internal/logic/wallet_grpc"
 )
 
