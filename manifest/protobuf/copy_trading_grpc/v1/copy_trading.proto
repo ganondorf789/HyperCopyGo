@@ -9,6 +9,7 @@ service CopyTradingService {
   rpc GetCopyTradingDetail(GetCopyTradingDetailReq) returns (GetCopyTradingDetailRes);
   rpc GetCopyTradingList(GetCopyTradingListReq) returns (GetCopyTradingListRes);
   rpc SendCopyTradingNotification(SendCopyTradingNotificationReq) returns (SendCopyTradingNotificationRes);
+  rpc UpdateCopyTradingStatus(UpdateCopyTradingStatusReq) returns (UpdateCopyTradingStatusRes);
 }
 
 message CreateCopyTradingReq {
@@ -62,6 +63,16 @@ message SendCopyTradingNotificationRes {
   int64 id = 1;
 }
 
+message UpdateCopyTradingStatusReq {
+  string app_id     = 1;
+  string app_secret = 2;
+  int64  id         = 3;
+  string status     = 4;
+  string error_msg  = 5;
+}
+
+message UpdateCopyTradingStatusRes {}
+
 message CopyTradingItem {
   int64  id                                = 1;
   int64  copy_trading_id                   = 2;
@@ -111,9 +122,8 @@ message CopyTradingItem {
   int64  trader_leverage                   = 46;
   double trader_entry_px                   = 47;
   double trader_position_value             = 48;
-  int64  execute_status                    = 49;
-  string order_status                      = 50;
-  string error_msg                         = 51;
-  string created_at                        = 52;
-  string updated_at                        = 53;
+  string status                            = 49;
+  string error_msg                         = 50;
+  string created_at                        = 51;
+  string updated_at                        = 52;
 }

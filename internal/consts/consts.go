@@ -22,6 +22,13 @@ const (
 	FollowTypeCondition = 2 // 条件跟单
 	FollowTypeRealtime  = 3 // 实时跟单
 
+	// 跟单状态
+	CopyTradingStatusNotStarted = "NOT_STARTED"
+	CopyTradingStatusFollowing  = "FOLLOWING"
+	CopyTradingStatusStopped    = "STOPPED"
+	CopyTradingStatusEnded      = "ENDED"
+	CopyTradingStatusFailed     = "FAILED"
+
 	// 通知类型
 	NotificationCategoryPublic      = "public"
 	NotificationCategoryCopyTrading = "copy_trading"

@@ -60,8 +60,7 @@ type CopyTrading struct {
 	TraderLeverage                 any         // 杠杆倍数
 	TraderEntryPx                  any         // 入场价
 	TraderPositionValue            any         // 持仓价值
-	ExecuteStatus                  any         // 执行状态 0:待执行 1:成功 2:失败 3:跳过
-	OrderStatus                    any         // 订单状态 open/filled/canceled/triggered
+	Status                         any         // 状态 NOT_STARTED/FOLLOWING/STOPPED/ENDED/FAILED
 	ErrorMsg                       any         // 执行失败原因
 	CreatedAt                      *gtime.Time // 创建时间
 	UpdatedAt                      *gtime.Time // 更新时间

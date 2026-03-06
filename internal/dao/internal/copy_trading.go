@@ -69,8 +69,7 @@ type CopyTradingColumns struct {
 	TraderLeverage                 string // 杠杆倍数
 	TraderEntryPx                  string // 入场价
 	TraderPositionValue            string // 持仓价值
-	ExecuteStatus                  string // 执行状态 0:待执行 1:成功 2:失败 3:跳过
-	OrderStatus                    string // 订单状态 open/filled/canceled/triggered
+	Status                         string // 状态 NOT_STARTED/FOLLOWING/STOPPED/ENDED/FAILED
 	ErrorMsg                       string // 执行失败原因
 	CreatedAt                      string // 创建时间
 	UpdatedAt                      string // 更新时间
@@ -126,8 +125,7 @@ var copyTradingColumns = CopyTradingColumns{
 	TraderLeverage:                 "trader_leverage",
 	TraderEntryPx:                  "trader_entry_px",
 	TraderPositionValue:            "trader_position_value",
-	ExecuteStatus:                  "execute_status",
-	OrderStatus:                    "order_status",
+	Status:                         "status",
 	ErrorMsg:                       "error_msg",
 	CreatedAt:                      "created_at",
 	UpdatedAt:                      "updated_at",

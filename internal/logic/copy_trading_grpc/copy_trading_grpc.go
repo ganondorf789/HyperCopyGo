@@ -42,6 +42,7 @@ func (s *sCopyTradingGrpc) CreateCopyTrading(ctx context.Context, appId, appSecr
 	data := entity.CopyTrading{
 		CopyTradingId:                  config.Id,
 		UserId:                         userId,
+		Status:                         consts.CopyTradingStatusNotStarted,
 		TargetWallet:                   config.TargetWallet,
 		TargetWalletPlatform:           config.TargetWalletPlatform,
 		Remark:                         config.Remark,
@@ -175,6 +176,30 @@ func (s *sCopyTradingGrpc) SendCopyTradingNotification(ctx context.Context, appI
 	return id, nil
 }
 
+func (s *sCopyTradingGrpc) UpdateCopyTradingStatus(ctx context.Context, appId, appSecret string, in *v1.UpdateCopyTradingStatusReq) error {
+	userId, err := utility.ValidateAppKey(ctx, appId, appSecret)
+	if err != nil {
+		return err
+	}
+
+	data := g.Map{}
+	if in.Status != "" {
+		data["status"] = in.Status
+	}
+	if in.ErrorMsg != "" {
+		data["error_msg"] = in.ErrorMsg
+	}
+	if len(data) == 0 {
+		return nil
+	}
+
+	_, err = dao.CopyTrading.Ctx(ctx).
+		Where("id = ? AND user_id = ?", in.Id, userId).
+		Data(data).
+		Update()
+	return err
+}
+
 func entityToProto(e entity.CopyTrading) *v1.CopyTradingItem {
 	item := &v1.CopyTradingItem{
 		Id:                             e.Id,
@@ -223,8 +248,7 @@ func entityToProto(e entity.CopyTrading) *v1.CopyTradingItem {
 		TraderLeverage:                 e.TraderLeverage,
 		TraderEntryPx:                  e.TraderEntryPx,
 		TraderPositionValue:            e.TraderPositionValue,
-		ExecuteStatus:                  e.ExecuteStatus,
-		OrderStatus:                    e.OrderStatus,
+		Status:                         e.Status,
 		ErrorMsg:                       e.ErrorMsg,
 	}
 	if e.CopyTradingCreatedAt != nil {

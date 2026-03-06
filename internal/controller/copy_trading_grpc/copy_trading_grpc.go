@@ -38,3 +38,11 @@ func (*Controller) SendCopyTradingNotification(ctx context.Context, req *v1.Send
 	}
 	return &v1.SendCopyTradingNotificationRes{Id: id}, nil
 }
+
+func (*Controller) UpdateCopyTradingStatus(ctx context.Context, req *v1.UpdateCopyTradingStatusReq) (res *v1.UpdateCopyTradingStatusRes, err error) {
+	err = service.CopyTradingGrpc().UpdateCopyTradingStatus(ctx, req.AppId, req.AppSecret, req)
+	if err != nil {
+		return nil, err
+	}
+	return &v1.UpdateCopyTradingStatusRes{}, nil
+}

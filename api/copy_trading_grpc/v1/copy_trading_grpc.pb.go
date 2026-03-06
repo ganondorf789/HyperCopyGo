@@ -24,6 +24,7 @@ const (
 	CopyTradingService_GetCopyTradingDetail_FullMethodName        = "/copy_trading_grpc.v1.CopyTradingService/GetCopyTradingDetail"
 	CopyTradingService_GetCopyTradingList_FullMethodName          = "/copy_trading_grpc.v1.CopyTradingService/GetCopyTradingList"
 	CopyTradingService_SendCopyTradingNotification_FullMethodName = "/copy_trading_grpc.v1.CopyTradingService/SendCopyTradingNotification"
+	CopyTradingService_UpdateCopyTradingStatus_FullMethodName     = "/copy_trading_grpc.v1.CopyTradingService/UpdateCopyTradingStatus"
 )
 
 // CopyTradingServiceClient is the client API for CopyTradingService service.
@@ -34,6 +35,7 @@ type CopyTradingServiceClient interface {
 	GetCopyTradingDetail(ctx context.Context, in *GetCopyTradingDetailReq, opts ...grpc.CallOption) (*GetCopyTradingDetailRes, error)
 	GetCopyTradingList(ctx context.Context, in *GetCopyTradingListReq, opts ...grpc.CallOption) (*GetCopyTradingListRes, error)
 	SendCopyTradingNotification(ctx context.Context, in *SendCopyTradingNotificationReq, opts ...grpc.CallOption) (*SendCopyTradingNotificationRes, error)
+	UpdateCopyTradingStatus(ctx context.Context, in *UpdateCopyTradingStatusReq, opts ...grpc.CallOption) (*UpdateCopyTradingStatusRes, error)
 }
 
 type copyTradingServiceClient struct {
@@ -84,6 +86,16 @@ func (c *copyTradingServiceClient) SendCopyTradingNotification(ctx context.Conte
 	return out, nil
 }
 
+func (c *copyTradingServiceClient) UpdateCopyTradingStatus(ctx context.Context, in *UpdateCopyTradingStatusReq, opts ...grpc.CallOption) (*UpdateCopyTradingStatusRes, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateCopyTradingStatusRes)
+	err := c.cc.Invoke(ctx, CopyTradingService_UpdateCopyTradingStatus_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CopyTradingServiceServer is the server API for CopyTradingService service.
 // All implementations must embed UnimplementedCopyTradingServiceServer
 // for forward compatibility.
@@ -92,6 +104,7 @@ type CopyTradingServiceServer interface {
 	GetCopyTradingDetail(context.Context, *GetCopyTradingDetailReq) (*GetCopyTradingDetailRes, error)
 	GetCopyTradingList(context.Context, *GetCopyTradingListReq) (*GetCopyTradingListRes, error)
 	SendCopyTradingNotification(context.Context, *SendCopyTradingNotificationReq) (*SendCopyTradingNotificationRes, error)
+	UpdateCopyTradingStatus(context.Context, *UpdateCopyTradingStatusReq) (*UpdateCopyTradingStatusRes, error)
 	mustEmbedUnimplementedCopyTradingServiceServer()
 }
 
@@ -113,6 +126,9 @@ func (UnimplementedCopyTradingServiceServer) GetCopyTradingList(context.Context,
 }
 func (UnimplementedCopyTradingServiceServer) SendCopyTradingNotification(context.Context, *SendCopyTradingNotificationReq) (*SendCopyTradingNotificationRes, error) {
 	return nil, status.Error(codes.Unimplemented, "method SendCopyTradingNotification not implemented")
+}
+func (UnimplementedCopyTradingServiceServer) UpdateCopyTradingStatus(context.Context, *UpdateCopyTradingStatusReq) (*UpdateCopyTradingStatusRes, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateCopyTradingStatus not implemented")
 }
 func (UnimplementedCopyTradingServiceServer) mustEmbedUnimplementedCopyTradingServiceServer() {}
 func (UnimplementedCopyTradingServiceServer) testEmbeddedByValue()                            {}
@@ -207,6 +223,24 @@ func _CopyTradingService_SendCopyTradingNotification_Handler(srv interface{}, ct
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CopyTradingService_UpdateCopyTradingStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateCopyTradingStatusReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CopyTradingServiceServer).UpdateCopyTradingStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CopyTradingService_UpdateCopyTradingStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CopyTradingServiceServer).UpdateCopyTradingStatus(ctx, req.(*UpdateCopyTradingStatusReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CopyTradingService_ServiceDesc is the grpc.ServiceDesc for CopyTradingService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -229,6 +263,10 @@ var CopyTradingService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SendCopyTradingNotification",
 			Handler:    _CopyTradingService_SendCopyTradingNotification_Handler,
+		},
+		{
+			MethodName: "UpdateCopyTradingStatus",
+			Handler:    _CopyTradingService_UpdateCopyTradingStatus_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
