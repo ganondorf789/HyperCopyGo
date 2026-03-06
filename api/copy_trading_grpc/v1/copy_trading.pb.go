@@ -22,6 +22,166 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type CreateCopyTradingReq struct {
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	AppId               string                 `protobuf:"bytes,1,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
+	AppSecret           string                 `protobuf:"bytes,2,opt,name=app_secret,json=appSecret,proto3" json:"app_secret,omitempty"`
+	CopyTradeConfigId   int64                  `protobuf:"varint,3,opt,name=copy_trade_config_id,json=copyTradeConfigId,proto3" json:"copy_trade_config_id,omitempty"`
+	TraderAddress       string                 `protobuf:"bytes,4,opt,name=trader_address,json=traderAddress,proto3" json:"trader_address,omitempty"`
+	TraderCoin          string                 `protobuf:"bytes,5,opt,name=trader_coin,json=traderCoin,proto3" json:"trader_coin,omitempty"`
+	TraderSzi           float64                `protobuf:"fixed64,6,opt,name=trader_szi,json=traderSzi,proto3" json:"trader_szi,omitempty"`
+	TraderLeverageType  string                 `protobuf:"bytes,7,opt,name=trader_leverage_type,json=traderLeverageType,proto3" json:"trader_leverage_type,omitempty"`
+	TraderLeverage      int64                  `protobuf:"varint,8,opt,name=trader_leverage,json=traderLeverage,proto3" json:"trader_leverage,omitempty"`
+	TraderEntryPx       float64                `protobuf:"fixed64,9,opt,name=trader_entry_px,json=traderEntryPx,proto3" json:"trader_entry_px,omitempty"`
+	TraderPositionValue float64                `protobuf:"fixed64,10,opt,name=trader_position_value,json=traderPositionValue,proto3" json:"trader_position_value,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
+}
+
+func (x *CreateCopyTradingReq) Reset() {
+	*x = CreateCopyTradingReq{}
+	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateCopyTradingReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateCopyTradingReq) ProtoMessage() {}
+
+func (x *CreateCopyTradingReq) ProtoReflect() protoreflect.Message {
+	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateCopyTradingReq.ProtoReflect.Descriptor instead.
+func (*CreateCopyTradingReq) Descriptor() ([]byte, []int) {
+	return file_copy_trading_grpc_v1_copy_trading_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *CreateCopyTradingReq) GetAppId() string {
+	if x != nil {
+		return x.AppId
+	}
+	return ""
+}
+
+func (x *CreateCopyTradingReq) GetAppSecret() string {
+	if x != nil {
+		return x.AppSecret
+	}
+	return ""
+}
+
+func (x *CreateCopyTradingReq) GetCopyTradeConfigId() int64 {
+	if x != nil {
+		return x.CopyTradeConfigId
+	}
+	return 0
+}
+
+func (x *CreateCopyTradingReq) GetTraderAddress() string {
+	if x != nil {
+		return x.TraderAddress
+	}
+	return ""
+}
+
+func (x *CreateCopyTradingReq) GetTraderCoin() string {
+	if x != nil {
+		return x.TraderCoin
+	}
+	return ""
+}
+
+func (x *CreateCopyTradingReq) GetTraderSzi() float64 {
+	if x != nil {
+		return x.TraderSzi
+	}
+	return 0
+}
+
+func (x *CreateCopyTradingReq) GetTraderLeverageType() string {
+	if x != nil {
+		return x.TraderLeverageType
+	}
+	return ""
+}
+
+func (x *CreateCopyTradingReq) GetTraderLeverage() int64 {
+	if x != nil {
+		return x.TraderLeverage
+	}
+	return 0
+}
+
+func (x *CreateCopyTradingReq) GetTraderEntryPx() float64 {
+	if x != nil {
+		return x.TraderEntryPx
+	}
+	return 0
+}
+
+func (x *CreateCopyTradingReq) GetTraderPositionValue() float64 {
+	if x != nil {
+		return x.TraderPositionValue
+	}
+	return 0
+}
+
+type CreateCopyTradingRes struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateCopyTradingRes) Reset() {
+	*x = CreateCopyTradingRes{}
+	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateCopyTradingRes) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateCopyTradingRes) ProtoMessage() {}
+
+func (x *CreateCopyTradingRes) ProtoReflect() protoreflect.Message {
+	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateCopyTradingRes.ProtoReflect.Descriptor instead.
+func (*CreateCopyTradingRes) Descriptor() ([]byte, []int) {
+	return file_copy_trading_grpc_v1_copy_trading_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CreateCopyTradingRes) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
 type GetCopyTradingDetailReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	AppId         string                 `protobuf:"bytes,1,opt,name=app_id,json=appId,proto3" json:"app_id,omitempty"`
@@ -33,7 +193,7 @@ type GetCopyTradingDetailReq struct {
 
 func (x *GetCopyTradingDetailReq) Reset() {
 	*x = GetCopyTradingDetailReq{}
-	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[0]
+	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -45,7 +205,7 @@ func (x *GetCopyTradingDetailReq) String() string {
 func (*GetCopyTradingDetailReq) ProtoMessage() {}
 
 func (x *GetCopyTradingDetailReq) ProtoReflect() protoreflect.Message {
-	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[0]
+	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -58,7 +218,7 @@ func (x *GetCopyTradingDetailReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCopyTradingDetailReq.ProtoReflect.Descriptor instead.
 func (*GetCopyTradingDetailReq) Descriptor() ([]byte, []int) {
-	return file_copy_trading_grpc_v1_copy_trading_proto_rawDescGZIP(), []int{0}
+	return file_copy_trading_grpc_v1_copy_trading_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *GetCopyTradingDetailReq) GetAppId() string {
@@ -91,7 +251,7 @@ type GetCopyTradingDetailRes struct {
 
 func (x *GetCopyTradingDetailRes) Reset() {
 	*x = GetCopyTradingDetailRes{}
-	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[1]
+	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -103,7 +263,7 @@ func (x *GetCopyTradingDetailRes) String() string {
 func (*GetCopyTradingDetailRes) ProtoMessage() {}
 
 func (x *GetCopyTradingDetailRes) ProtoReflect() protoreflect.Message {
-	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[1]
+	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -116,7 +276,7 @@ func (x *GetCopyTradingDetailRes) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCopyTradingDetailRes.ProtoReflect.Descriptor instead.
 func (*GetCopyTradingDetailRes) Descriptor() ([]byte, []int) {
-	return file_copy_trading_grpc_v1_copy_trading_proto_rawDescGZIP(), []int{1}
+	return file_copy_trading_grpc_v1_copy_trading_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *GetCopyTradingDetailRes) GetItem() *CopyTradingItem {
@@ -137,7 +297,7 @@ type GetCopyTradingListReq struct {
 
 func (x *GetCopyTradingListReq) Reset() {
 	*x = GetCopyTradingListReq{}
-	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[2]
+	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -149,7 +309,7 @@ func (x *GetCopyTradingListReq) String() string {
 func (*GetCopyTradingListReq) ProtoMessage() {}
 
 func (x *GetCopyTradingListReq) ProtoReflect() protoreflect.Message {
-	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[2]
+	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -162,7 +322,7 @@ func (x *GetCopyTradingListReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCopyTradingListReq.ProtoReflect.Descriptor instead.
 func (*GetCopyTradingListReq) Descriptor() ([]byte, []int) {
-	return file_copy_trading_grpc_v1_copy_trading_proto_rawDescGZIP(), []int{2}
+	return file_copy_trading_grpc_v1_copy_trading_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *GetCopyTradingListReq) GetAppId() string {
@@ -195,7 +355,7 @@ type GetCopyTradingListRes struct {
 
 func (x *GetCopyTradingListRes) Reset() {
 	*x = GetCopyTradingListRes{}
-	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[3]
+	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -207,7 +367,7 @@ func (x *GetCopyTradingListRes) String() string {
 func (*GetCopyTradingListRes) ProtoMessage() {}
 
 func (x *GetCopyTradingListRes) ProtoReflect() protoreflect.Message {
-	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[3]
+	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -220,7 +380,7 @@ func (x *GetCopyTradingListRes) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCopyTradingListRes.ProtoReflect.Descriptor instead.
 func (*GetCopyTradingListRes) Descriptor() ([]byte, []int) {
-	return file_copy_trading_grpc_v1_copy_trading_proto_rawDescGZIP(), []int{3}
+	return file_copy_trading_grpc_v1_copy_trading_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *GetCopyTradingListRes) GetList() []*CopyTradingItem {
@@ -291,7 +451,7 @@ type CopyTradingItem struct {
 
 func (x *CopyTradingItem) Reset() {
 	*x = CopyTradingItem{}
-	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[4]
+	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -303,7 +463,7 @@ func (x *CopyTradingItem) String() string {
 func (*CopyTradingItem) ProtoMessage() {}
 
 func (x *CopyTradingItem) ProtoReflect() protoreflect.Message {
-	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[4]
+	mi := &file_copy_trading_grpc_v1_copy_trading_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -316,7 +476,7 @@ func (x *CopyTradingItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CopyTradingItem.ProtoReflect.Descriptor instead.
 func (*CopyTradingItem) Descriptor() ([]byte, []int) {
-	return file_copy_trading_grpc_v1_copy_trading_proto_rawDescGZIP(), []int{4}
+	return file_copy_trading_grpc_v1_copy_trading_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CopyTradingItem) GetId() int64 {
@@ -694,7 +854,24 @@ var File_copy_trading_grpc_v1_copy_trading_proto protoreflect.FileDescriptor
 
 const file_copy_trading_grpc_v1_copy_trading_proto_rawDesc = "" +
 	"\n" +
-	"'copy_trading_grpc/v1/copy_trading.proto\x12\x14copy_trading_grpc.v1\"_\n" +
+	"'copy_trading_grpc/v1/copy_trading.proto\x12\x14copy_trading_grpc.v1\"\x9b\x03\n" +
+	"\x14CreateCopyTradingReq\x12\x15\n" +
+	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12\x1d\n" +
+	"\n" +
+	"app_secret\x18\x02 \x01(\tR\tappSecret\x12/\n" +
+	"\x14copy_trade_config_id\x18\x03 \x01(\x03R\x11copyTradeConfigId\x12%\n" +
+	"\x0etrader_address\x18\x04 \x01(\tR\rtraderAddress\x12\x1f\n" +
+	"\vtrader_coin\x18\x05 \x01(\tR\n" +
+	"traderCoin\x12\x1d\n" +
+	"\n" +
+	"trader_szi\x18\x06 \x01(\x01R\ttraderSzi\x120\n" +
+	"\x14trader_leverage_type\x18\a \x01(\tR\x12traderLeverageType\x12'\n" +
+	"\x0ftrader_leverage\x18\b \x01(\x03R\x0etraderLeverage\x12&\n" +
+	"\x0ftrader_entry_px\x18\t \x01(\x01R\rtraderEntryPx\x122\n" +
+	"\x15trader_position_value\x18\n" +
+	" \x01(\x01R\x13traderPositionValue\"&\n" +
+	"\x14CreateCopyTradingRes\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\"_\n" +
 	"\x17GetCopyTradingDetailReq\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12\x1d\n" +
 	"\n" +
@@ -772,8 +949,9 @@ const file_copy_trading_grpc_v1_copy_trading_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x184 \x01(\tR\tcreatedAt\x12\x1d\n" +
 	"\n" +
-	"updated_at\x185 \x01(\tR\tupdatedAt2\xfa\x01\n" +
-	"\x12CopyTradingService\x12t\n" +
+	"updated_at\x185 \x01(\tR\tupdatedAt2\xe7\x02\n" +
+	"\x12CopyTradingService\x12k\n" +
+	"\x11CreateCopyTrading\x12*.copy_trading_grpc.v1.CreateCopyTradingReq\x1a*.copy_trading_grpc.v1.CreateCopyTradingRes\x12t\n" +
 	"\x14GetCopyTradingDetail\x12-.copy_trading_grpc.v1.GetCopyTradingDetailReq\x1a-.copy_trading_grpc.v1.GetCopyTradingDetailRes\x12n\n" +
 	"\x12GetCopyTradingList\x12+.copy_trading_grpc.v1.GetCopyTradingListReq\x1a+.copy_trading_grpc.v1.GetCopyTradingListResB\x1fZ\x1ddemo/api/copy_trading_grpc/v1b\x06proto3"
 
@@ -789,23 +967,27 @@ func file_copy_trading_grpc_v1_copy_trading_proto_rawDescGZIP() []byte {
 	return file_copy_trading_grpc_v1_copy_trading_proto_rawDescData
 }
 
-var file_copy_trading_grpc_v1_copy_trading_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_copy_trading_grpc_v1_copy_trading_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_copy_trading_grpc_v1_copy_trading_proto_goTypes = []any{
-	(*GetCopyTradingDetailReq)(nil), // 0: copy_trading_grpc.v1.GetCopyTradingDetailReq
-	(*GetCopyTradingDetailRes)(nil), // 1: copy_trading_grpc.v1.GetCopyTradingDetailRes
-	(*GetCopyTradingListReq)(nil),   // 2: copy_trading_grpc.v1.GetCopyTradingListReq
-	(*GetCopyTradingListRes)(nil),   // 3: copy_trading_grpc.v1.GetCopyTradingListRes
-	(*CopyTradingItem)(nil),         // 4: copy_trading_grpc.v1.CopyTradingItem
+	(*CreateCopyTradingReq)(nil),    // 0: copy_trading_grpc.v1.CreateCopyTradingReq
+	(*CreateCopyTradingRes)(nil),    // 1: copy_trading_grpc.v1.CreateCopyTradingRes
+	(*GetCopyTradingDetailReq)(nil), // 2: copy_trading_grpc.v1.GetCopyTradingDetailReq
+	(*GetCopyTradingDetailRes)(nil), // 3: copy_trading_grpc.v1.GetCopyTradingDetailRes
+	(*GetCopyTradingListReq)(nil),   // 4: copy_trading_grpc.v1.GetCopyTradingListReq
+	(*GetCopyTradingListRes)(nil),   // 5: copy_trading_grpc.v1.GetCopyTradingListRes
+	(*CopyTradingItem)(nil),         // 6: copy_trading_grpc.v1.CopyTradingItem
 }
 var file_copy_trading_grpc_v1_copy_trading_proto_depIdxs = []int32{
-	4, // 0: copy_trading_grpc.v1.GetCopyTradingDetailRes.item:type_name -> copy_trading_grpc.v1.CopyTradingItem
-	4, // 1: copy_trading_grpc.v1.GetCopyTradingListRes.list:type_name -> copy_trading_grpc.v1.CopyTradingItem
-	0, // 2: copy_trading_grpc.v1.CopyTradingService.GetCopyTradingDetail:input_type -> copy_trading_grpc.v1.GetCopyTradingDetailReq
-	2, // 3: copy_trading_grpc.v1.CopyTradingService.GetCopyTradingList:input_type -> copy_trading_grpc.v1.GetCopyTradingListReq
-	1, // 4: copy_trading_grpc.v1.CopyTradingService.GetCopyTradingDetail:output_type -> copy_trading_grpc.v1.GetCopyTradingDetailRes
-	3, // 5: copy_trading_grpc.v1.CopyTradingService.GetCopyTradingList:output_type -> copy_trading_grpc.v1.GetCopyTradingListRes
-	4, // [4:6] is the sub-list for method output_type
-	2, // [2:4] is the sub-list for method input_type
+	6, // 0: copy_trading_grpc.v1.GetCopyTradingDetailRes.item:type_name -> copy_trading_grpc.v1.CopyTradingItem
+	6, // 1: copy_trading_grpc.v1.GetCopyTradingListRes.list:type_name -> copy_trading_grpc.v1.CopyTradingItem
+	0, // 2: copy_trading_grpc.v1.CopyTradingService.CreateCopyTrading:input_type -> copy_trading_grpc.v1.CreateCopyTradingReq
+	2, // 3: copy_trading_grpc.v1.CopyTradingService.GetCopyTradingDetail:input_type -> copy_trading_grpc.v1.GetCopyTradingDetailReq
+	4, // 4: copy_trading_grpc.v1.CopyTradingService.GetCopyTradingList:input_type -> copy_trading_grpc.v1.GetCopyTradingListReq
+	1, // 5: copy_trading_grpc.v1.CopyTradingService.CreateCopyTrading:output_type -> copy_trading_grpc.v1.CreateCopyTradingRes
+	3, // 6: copy_trading_grpc.v1.CopyTradingService.GetCopyTradingDetail:output_type -> copy_trading_grpc.v1.GetCopyTradingDetailRes
+	5, // 7: copy_trading_grpc.v1.CopyTradingService.GetCopyTradingList:output_type -> copy_trading_grpc.v1.GetCopyTradingListRes
+	5, // [5:8] is the sub-list for method output_type
+	2, // [2:5] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name
 	2, // [2:2] is the sub-list for extension extendee
 	0, // [0:2] is the sub-list for field type_name
@@ -822,7 +1004,7 @@ func file_copy_trading_grpc_v1_copy_trading_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_copy_trading_grpc_v1_copy_trading_proto_rawDesc), len(file_copy_trading_grpc_v1_copy_trading_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

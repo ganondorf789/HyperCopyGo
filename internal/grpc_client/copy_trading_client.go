@@ -27,6 +27,17 @@ func NewCopyTradingClient(serviceName, appId, appSecret string) *CopyTradingClie
 	}
 }
 
+func (c *CopyTradingClient) CreateCopyTrading(ctx context.Context, req *pb.CreateCopyTradingReq) (*pb.CreateCopyTradingRes, error) {
+	req.AppId = c.appId
+	req.AppSecret = c.appSecret
+	res, err := c.client.CreateCopyTrading(ctx, req)
+	if err != nil {
+		g.Log().Errorf(ctx, "CreateCopyTrading rpc error: %v", err)
+		return nil, err
+	}
+	return res, nil
+}
+
 func (c *CopyTradingClient) GetCopyTradingDetail(ctx context.Context, id int64) (*pb.GetCopyTradingDetailRes, error) {
 	res, err := c.client.GetCopyTradingDetail(ctx, &pb.GetCopyTradingDetailReq{
 		AppId:     c.appId,

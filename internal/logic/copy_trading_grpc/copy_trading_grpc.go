@@ -17,6 +17,80 @@ func init() {
 
 type sCopyTradingGrpc struct{}
 
+func (s *sCopyTradingGrpc) CreateCopyTrading(ctx context.Context, appId, appSecret string, in *v1.CreateCopyTradingReq) (int64, error) {
+	userId, err := validateAppKey(ctx, appId, appSecret)
+	if err != nil {
+		return 0, err
+	}
+
+	var config entity.CopyTradeConfig
+	err = dao.CopyTradeConfig.Ctx(ctx).
+		Where("id = ? AND user_id = ?", in.CopyTradeConfigId, userId).
+		Scan(&config)
+	if err != nil {
+		return 0, err
+	}
+	if config.Id == 0 {
+		return 0, fmt.Errorf("copy trade config not found")
+	}
+
+	data := entity.CopyTrading{
+		CopyTradingId:                  config.Id,
+		UserId:                         userId,
+		TargetWallet:                   config.TargetWallet,
+		TargetWalletPlatform:           config.TargetWalletPlatform,
+		Remark:                         config.Remark,
+		FollowType:                     config.FollowType,
+		FollowOnce:                     config.FollowOnce,
+		PositionConditions:             config.PositionConditions,
+		TraderConditions:               config.TraderConditions,
+		TagAccountValue:                config.TagAccountValue,
+		TagProfitScale:                 config.TagProfitScale,
+		TagDirection:                   config.TagDirection,
+		TagTradingRhythm:               config.TagTradingRhythm,
+		TagProfitStatus:                config.TagProfitStatus,
+		TagTradingStyles:               config.TagTradingStyles,
+		TraderMetricPeriod:             config.TraderMetricPeriod,
+		FollowMarginMode:               config.FollowMarginMode,
+		FollowSymbol:                   config.FollowSymbol,
+		Leverage:                       config.Leverage,
+		MarginMode:                     config.MarginMode,
+		FollowModel:                    config.FollowModel,
+		FollowModelValue:               config.FollowModelValue,
+		MinValue:                       config.MinValue,
+		MaxValue:                       config.MaxValue,
+		MaxMarginUsage:                 config.MaxMarginUsage,
+		TpValue:                        config.TpValue,
+		SlValue:                        config.SlValue,
+		OptReverseFollowOrder:          config.OptReverseFollowOrder,
+		OptFollowupDecrease:            config.OptFollowupDecrease,
+		OptFollowupIncrease:            config.OptFollowupIncrease,
+		OptForcedLiquidationProtection: config.OptForcedLiquidationProtection,
+		OptPositionIncreaseOpening:     config.OptPositionIncreaseOpening,
+		OptSlippageProtection:          config.OptSlippageProtection,
+		SymbolListType:                 config.SymbolListType,
+		SymbolList:                     config.SymbolList,
+		MainWallet:                     config.MainWallet,
+		MainWalletPlatform:             config.MainWalletPlatform,
+		CopyTradingStatus:              config.Status,
+		CopyTradingCreatedAt:           config.CreatedAt,
+		CopyTradingUpdatedAt:           config.UpdatedAt,
+		TraderAddress:                  in.TraderAddress,
+		TraderCoin:                     in.TraderCoin,
+		TraderSzi:                      in.TraderSzi,
+		TraderLeverageType:             in.TraderLeverageType,
+		TraderLeverage:                 in.TraderLeverage,
+		TraderEntryPx:                  in.TraderEntryPx,
+		TraderPositionValue:            in.TraderPositionValue,
+	}
+
+	id, err := dao.CopyTrading.Ctx(ctx).Data(data).InsertAndGetId()
+	if err != nil {
+		return 0, err
+	}
+	return id, nil
+}
+
 func (s *sCopyTradingGrpc) GetCopyTradingDetail(ctx context.Context, appId, appSecret string, id int64) (*v1.CopyTradingItem, error) {
 	userId, err := validateAppKey(ctx, appId, appSecret)
 	if err != nil {

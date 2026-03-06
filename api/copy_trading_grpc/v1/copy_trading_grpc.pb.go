@@ -20,6 +20,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
+	CopyTradingService_CreateCopyTrading_FullMethodName    = "/copy_trading_grpc.v1.CopyTradingService/CreateCopyTrading"
 	CopyTradingService_GetCopyTradingDetail_FullMethodName = "/copy_trading_grpc.v1.CopyTradingService/GetCopyTradingDetail"
 	CopyTradingService_GetCopyTradingList_FullMethodName   = "/copy_trading_grpc.v1.CopyTradingService/GetCopyTradingList"
 )
@@ -28,6 +29,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CopyTradingServiceClient interface {
+	CreateCopyTrading(ctx context.Context, in *CreateCopyTradingReq, opts ...grpc.CallOption) (*CreateCopyTradingRes, error)
 	GetCopyTradingDetail(ctx context.Context, in *GetCopyTradingDetailReq, opts ...grpc.CallOption) (*GetCopyTradingDetailRes, error)
 	GetCopyTradingList(ctx context.Context, in *GetCopyTradingListReq, opts ...grpc.CallOption) (*GetCopyTradingListRes, error)
 }
@@ -38,6 +40,16 @@ type copyTradingServiceClient struct {
 
 func NewCopyTradingServiceClient(cc grpc.ClientConnInterface) CopyTradingServiceClient {
 	return &copyTradingServiceClient{cc}
+}
+
+func (c *copyTradingServiceClient) CreateCopyTrading(ctx context.Context, in *CreateCopyTradingReq, opts ...grpc.CallOption) (*CreateCopyTradingRes, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateCopyTradingRes)
+	err := c.cc.Invoke(ctx, CopyTradingService_CreateCopyTrading_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *copyTradingServiceClient) GetCopyTradingDetail(ctx context.Context, in *GetCopyTradingDetailReq, opts ...grpc.CallOption) (*GetCopyTradingDetailRes, error) {
@@ -64,6 +76,7 @@ func (c *copyTradingServiceClient) GetCopyTradingList(ctx context.Context, in *G
 // All implementations must embed UnimplementedCopyTradingServiceServer
 // for forward compatibility.
 type CopyTradingServiceServer interface {
+	CreateCopyTrading(context.Context, *CreateCopyTradingReq) (*CreateCopyTradingRes, error)
 	GetCopyTradingDetail(context.Context, *GetCopyTradingDetailReq) (*GetCopyTradingDetailRes, error)
 	GetCopyTradingList(context.Context, *GetCopyTradingListReq) (*GetCopyTradingListRes, error)
 	mustEmbedUnimplementedCopyTradingServiceServer()
@@ -76,6 +89,9 @@ type CopyTradingServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedCopyTradingServiceServer struct{}
 
+func (UnimplementedCopyTradingServiceServer) CreateCopyTrading(context.Context, *CreateCopyTradingReq) (*CreateCopyTradingRes, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateCopyTrading not implemented")
+}
 func (UnimplementedCopyTradingServiceServer) GetCopyTradingDetail(context.Context, *GetCopyTradingDetailReq) (*GetCopyTradingDetailRes, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetCopyTradingDetail not implemented")
 }
@@ -101,6 +117,24 @@ func RegisterCopyTradingServiceServer(s grpc.ServiceRegistrar, srv CopyTradingSe
 		t.testEmbeddedByValue()
 	}
 	s.RegisterService(&CopyTradingService_ServiceDesc, srv)
+}
+
+func _CopyTradingService_CreateCopyTrading_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateCopyTradingReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CopyTradingServiceServer).CreateCopyTrading(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CopyTradingService_CreateCopyTrading_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CopyTradingServiceServer).CreateCopyTrading(ctx, req.(*CreateCopyTradingReq))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _CopyTradingService_GetCopyTradingDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -146,6 +180,10 @@ var CopyTradingService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "copy_trading_grpc.v1.CopyTradingService",
 	HandlerType: (*CopyTradingServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateCopyTrading",
+			Handler:    _CopyTradingService_CreateCopyTrading_Handler,
+		},
 		{
 			MethodName: "GetCopyTradingDetail",
 			Handler:    _CopyTradingService_GetCopyTradingDetail_Handler,

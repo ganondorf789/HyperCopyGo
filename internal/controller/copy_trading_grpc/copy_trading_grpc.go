@@ -24,3 +24,7 @@ func (*Controller) GetCopyTradingDetail(ctx context.Context, req *v1.GetCopyTrad
 func (*Controller) GetCopyTradingList(ctx context.Context, req *v1.GetCopyTradingListReq) (res *v1.GetCopyTradingListRes, err error) {
 	return nil, gerror.NewCode(gcode.CodeNotImplemented)
 }
+
+func (*Controller) CreateCopyTrading(ctx context.Context, req *v1.CreateCopyTradingReq) (res *v1.CreateCopyTradingRes, err error) {
+	return nil, gerror.NewCode(gcode.CodeNotImplemented)
+}
