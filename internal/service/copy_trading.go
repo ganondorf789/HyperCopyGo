@@ -12,6 +12,7 @@ type ICopyTrading interface {
 	Delete(ctx context.Context, userId int64, id int64) error
 	Detail(ctx context.Context, userId int64, id int64) (res *v1.CopyTradingDetailRes, err error)
 	List(ctx context.Context, userId int64, in v1.CopyTradingListReq) (res *v1.CopyTradingListRes, err error)
+	RecordList(ctx context.Context, userId int64, in v1.CopyTradingRecordListReq) (res *v1.CopyTradingRecordListRes, err error)
 }
 
 var localCopyTrading ICopyTrading

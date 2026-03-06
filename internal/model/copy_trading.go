@@ -49,3 +49,19 @@ type CopyTradingItem struct {
 	CreatedAt *gtime.Time `json:"createdAt"`
 	UpdatedAt *gtime.Time `json:"updatedAt"`
 }
+
+// CopyTradeRecordItem 跟单记录列表项
+type CopyTradeRecordItem struct {
+	Id            int64       `json:"id"`
+	Address       string      `json:"address"`
+	Coin          string      `json:"coin"`
+	Direction     string      `json:"direction"`
+	Size          float64     `json:"size"`
+	Price         float64     `json:"price"`
+	ClosedPnl     float64     `json:"closedPnl"`
+	ExecuteStatus int64       `json:"executeStatus"`
+	OrderStatus   string      `json:"orderStatus"`
+	ErrorMsg      string      `json:"errorMsg"`
+	TradeTime     *gtime.Time `json:"tradeTime"`
+	CreatedAt     *gtime.Time `json:"createdAt"`
+}

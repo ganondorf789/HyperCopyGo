@@ -125,6 +125,37 @@ func (s *sCopyTrading) List(ctx context.Context, userId int64, in v1.CopyTrading
 	}, nil
 }
 
+func (s *sCopyTrading) RecordList(ctx context.Context, userId int64, in v1.CopyTradingRecordListReq) (res *v1.CopyTradingRecordListRes, err error) {
+	var records []entity.CopyTradeRecord
+	err = dao.CopyTradeRecord.Ctx(ctx).
+		Where("user_id = ? AND address = ?", userId, in.Address).
+		OrderDesc(dao.CopyTradeRecord.Columns().Id).
+		Scan(&records)
+	if err != nil {
+		return nil, err
+	}
+
+	list := make([]model.CopyTradeRecordItem, 0, len(records))
+	for _, r := range records {
+		list = append(list, model.CopyTradeRecordItem{
+			Id:            r.Id,
+			Address:       r.Address,
+			Coin:          r.Coin,
+			Direction:     r.Direction,
+			Size:          r.Size,
+			Price:         r.Price,
+			ClosedPnl:     r.ClosedPnl,
+			ExecuteStatus: r.ExecuteStatus,
+			OrderStatus:   r.OrderStatus,
+			ErrorMsg:      r.ErrorMsg,
+			TradeTime:     r.TradeTime,
+			CreatedAt:     r.CreatedAt,
+		})
+	}
+
+	return &v1.CopyTradingRecordListRes{List: list}, nil
+}
+
 func entityToItem(e entity.CopyTrading) model.CopyTradingItem {
 	return model.CopyTradingItem{
 		Id: e.Id,

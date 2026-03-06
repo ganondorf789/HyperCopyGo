@@ -16,4 +16,5 @@ type ICopyTradingV1 interface {
 	CopyTradingDelete(ctx context.Context, req *v1.CopyTradingDeleteReq) (res *v1.CopyTradingDeleteRes, err error)
 	CopyTradingDetail(ctx context.Context, req *v1.CopyTradingDetailReq) (res *v1.CopyTradingDetailRes, err error)
 	CopyTradingList(ctx context.Context, req *v1.CopyTradingListReq) (res *v1.CopyTradingListRes, err error)
+	CopyTradingRecordList(ctx context.Context, req *v1.CopyTradingRecordListReq) (res *v1.CopyTradingRecordListRes, err error)
 }

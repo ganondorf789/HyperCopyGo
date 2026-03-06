@@ -59,3 +59,13 @@ type CopyTradingListRes struct {
 	Total  int                     `json:"total"`
 	Page   int                     `json:"page"`
 }
+
+// 跟单记录列表（需登录）
+type CopyTradingRecordListReq struct {
+	g.Meta  `path:"/copy-trading/records" tags:"CopyTrading" method:"get" summary:"跟单记录列表" login_required:"true"`
+	Address string `json:"address" v:"required#请输入目标钱包地址"`
+}
+type CopyTradingRecordListRes struct {
+	g.Meta `mime:"application/json"`
+	List   []model.CopyTradeRecordItem `json:"list"`
+}
