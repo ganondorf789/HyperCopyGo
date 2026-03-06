@@ -9,7 +9,6 @@ import (
 
 	"demo/internal/controller/admin"
 	"demo/internal/controller/app_version"
-	"demo/internal/controller/completed_trades"
 	"demo/internal/controller/copy_trading"
 	"demo/internal/controller/cron_task"
 	"demo/internal/controller/leaderboard"
@@ -35,7 +34,6 @@ import (
 	_ "demo/internal/cron_jobs"
 	_ "demo/internal/logic/admin"
 	_ "demo/internal/logic/app_version"
-	_ "demo/internal/logic/completed_trades"
 	_ "demo/internal/logic/copy_trading"
 	_ "demo/internal/logic/cron_task"
 	_ "demo/internal/logic/email"
@@ -97,8 +95,7 @@ var (
 						user.NewV1(),
 						admin.NewV1(),
 						app_version.NewV1(),
-						completed_trades.NewV1(),
-						cron_task.NewV1(),
+					cron_task.NewV1(),
 						copy_trading.NewV1(),
 						leaderboard.NewV1(),
 						wallet.NewV1(),

@@ -39,4 +39,5 @@ type TraderStatistics struct {
 	Coins              []string    // 交易过的币种
 	CreatedAt          *gtime.Time // 创建时间
 	UpdatedAt          *gtime.Time // 更新时间
+	TotalRealizedPnl   any         // 已实现总盈亏（正为盈利，负为亏损）
 }

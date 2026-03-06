@@ -18,6 +18,8 @@ type (
 		KolList(ctx context.Context, in v1.TraderKolListReq) (res *v1.TraderKolListRes, err error)
 		// Discover 发现交易员，支持排序/筛选/标签/币种/分页
 		Discover(ctx context.Context, in v1.TraderDiscoverReq) (res *v1.TraderDiscoverRes, err error)
+		// CompletedTradesList 已完成交易列表，支持地址/币种/方向/时间窗口筛选和分页
+		CompletedTradesList(ctx context.Context, in v1.TraderCompletedTradesListReq) (res *v1.TraderCompletedTradesListRes, err error)
 	}
 )
 

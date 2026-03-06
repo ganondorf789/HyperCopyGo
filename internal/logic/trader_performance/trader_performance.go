@@ -13,6 +13,7 @@ import (
 	"demo/internal/service"
 )
 
+
 func init() {
 	service.RegisterTraderPerformance(&sTraderPerformance{})
 }
@@ -127,58 +128,25 @@ func (s *sTraderPerformance) Performance(ctx context.Context, in v1.TraderPerfor
 func (s *sTraderPerformance) Summary(ctx context.Context, in v1.TraderPerformanceSummaryReq) (res *v1.TraderPerformanceSummaryRes, err error) {
 	res = &v1.TraderPerformanceSummaryRes{}
 
-	windowStart := time.Now().Add(-7 * 24 * time.Hour).UnixMilli()
-	tradesQuery := dao.CompletedTrades.Ctx(ctx).
-		Where("address = ?", in.Address).
-		Where("end_time >= ?", windowStart)
-
-	var trades []entity.CompletedTrades
-	if err = tradesQuery.OrderAsc("end_time").Scan(&trades); err != nil {
+	// 从 trader_statistics 直接读取周维度预计算指标
+	var stats entity.TraderStatistics
+	if err = dao.TraderStatistics.Ctx(ctx).
+		Where("address = ? AND window = ?", in.Address, "week").
+		Scan(&stats); err != nil {
 		return nil, err
 	}
-
-	closePosCount := len(trades)
-	res.ClosePosCount = closePosCount
-
-	if closePosCount > 0 {
-		var totalPnl float64
-		var totalDurationMs int64
-		var winning int
-
-		var peakCumPnl float64
-		var maxDrawdown float64
-		var cumPnl float64
-
-		for _, e := range trades {
-			totalPnl += e.Pnl
-			totalDurationMs += e.EndTime - e.StartTime
-
-			if e.Pnl > 0 {
-				winning++
-			}
-
-			cumPnl += e.Pnl
-			if cumPnl > peakCumPnl {
-				peakCumPnl = cumPnl
-			}
-			if peakCumPnl > 0 {
-				dd := (peakCumPnl - cumPnl) / peakCumPnl
-				if dd > maxDrawdown {
-					maxDrawdown = dd
-				}
-			}
-		}
-
-		res.WinRate = float64(winning) / float64(closePosCount)
-		res.TotalPnl = totalPnl
-		res.AvgPosDuration = totalDurationMs / int64(closePosCount) / 1000
-		res.MaxDrawdown = maxDrawdown
+	if stats.Id != 0 {
+		res.WinRate = stats.WinRate
+		res.TotalPnl = stats.TotalRealizedPnl
+		res.MaxDrawdown = stats.Drawdown
+		res.ClosePosCount = int(stats.PositionCount)
 	}
 
-	ordersQuery := dao.TraderOrders.Ctx(ctx).
-		Where("address = ?", in.Address).
-		Where("timestamp >= ?", windowStart)
-	orderCount, err := ordersQuery.Count()
+	// trader_statistics 不含订单数，仍需单独 Count
+	windowStart := time.Now().Add(-7 * 24 * time.Hour).UnixMilli()
+	orderCount, err := dao.TraderOrders.Ctx(ctx).
+		Where("address = ? AND timestamp >= ?", in.Address, windowStart).
+		Count()
 	if err != nil {
 		return nil, err
 	}
