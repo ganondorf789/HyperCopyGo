@@ -17,4 +17,7 @@ type SystemSetting struct {
 	MarketNewPositionCount any         // 时间窗口内新仓位数量阈值
 	CreatedAt              *gtime.Time // 创建时间
 	UpdatedAt              *gtime.Time // 更新时间
+	LimitTradingWallet     any         // 交易钱包数量限制（0=不限制）
+	LimitCopyTrading       any         // 跟单交易数量限制（0=不限制）
+	LimitWatchedAddress    any         // 监控地址数量限制（0=不限制）
 }

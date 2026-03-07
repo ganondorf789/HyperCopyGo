@@ -19,6 +19,7 @@ import (
 	_ "demo/internal/logic/notification"
 	_ "demo/internal/logic/position"
 	_ "demo/internal/logic/proxy_pool"
+	_ "demo/internal/logic/server_management"
 	_ "demo/internal/logic/system_setting"
 	_ "demo/internal/logic/trade"
 	_ "demo/internal/logic/trader"

@@ -18,6 +18,7 @@ import (
 	"demo/internal/controller/notification"
 	"demo/internal/controller/position"
 	"demo/internal/controller/proxy_pool"
+	"demo/internal/controller/server_management"
 	"demo/internal/controller/trade"
 	"demo/internal/controller/trader"
 	"demo/internal/controller/trader_performance"
@@ -46,6 +47,7 @@ import (
 	_ "demo/internal/logic/notification"
 	_ "demo/internal/logic/position"
 	_ "demo/internal/logic/proxy_pool"
+	_ "demo/internal/logic/server_management"
 	_ "demo/internal/logic/trade"
 	_ "demo/internal/logic/trader"
 	_ "demo/internal/logic/trader_performance"
@@ -109,7 +111,8 @@ var (
 						notification.NewV1(),
 						position.NewV1(),
 					proxy_pool.NewV1(),
-					system_setting.NewV1(),
+					server_management.NewV1(),
+				system_setting.NewV1(),
 					trader.NewV1(),
 						trader_performance.NewV1(),
 						trader_positions.NewV1(),

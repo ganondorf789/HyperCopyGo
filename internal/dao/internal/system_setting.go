@@ -26,6 +26,9 @@ type SystemSettingColumns struct {
 	MarketNewPositionCount string // 时间窗口内新仓位数量阈值
 	CreatedAt              string // 创建时间
 	UpdatedAt              string // 更新时间
+	LimitTradingWallet     string // 交易钱包数量限制（0=不限制）
+	LimitCopyTrading       string // 跟单交易数量限制（0=不限制）
+	LimitWatchedAddress    string // 监控地址数量限制（0=不限制）
 }
 
 // systemSettingColumns holds the columns for the table system_setting.
@@ -35,6 +38,9 @@ var systemSettingColumns = SystemSettingColumns{
 	MarketNewPositionCount: "market_new_position_count",
 	CreatedAt:              "created_at",
 	UpdatedAt:              "updated_at",
+	LimitTradingWallet:     "limit_trading_wallet",
+	LimitCopyTrading:       "limit_copy_trading",
+	LimitWatchedAddress:    "limit_watched_address",
 }
 
 // NewSystemSettingDao creates and returns a new DAO object for table data access.
