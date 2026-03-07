@@ -29,6 +29,7 @@ type LeaderboardColumns struct {
 	Vlm          string // 交易量
 	CreatedAt    string // 创建时间
 	UpdatedAt    string // 更新时间
+	Window       string // 统计窗口 day/week/month/allTime
 }
 
 // leaderboardColumns holds the columns for the table leaderboard.
@@ -41,6 +42,7 @@ var leaderboardColumns = LeaderboardColumns{
 	Vlm:          "vlm",
 	CreatedAt:    "created_at",
 	UpdatedAt:    "updated_at",
+	Window:       "window",
 }
 
 // NewLeaderboardDao creates and returns a new DAO object for table data access.

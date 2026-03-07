@@ -73,40 +73,37 @@ func SyncLeaderboard(ctx context.Context, _ string) {
 
 		accountValue, _ := row.AccountValue.Float64()
 
-		var pnl, roi, vlm float64
 		for _, wp := range row.WindowPerformances {
-			if wp.Window == "week" {
-				pnl, _ = wp.Perf.Pnl.Float64()
-				roi, _ = wp.Perf.Roi.Float64()
-				vlm, _ = wp.Perf.Vlm.Float64()
-				break
+			pnl, _ := wp.Perf.Pnl.Float64()
+			roi, _ := wp.Perf.Roi.Float64()
+			vlm, _ := wp.Perf.Vlm.Float64()
+
+			data := g.Map{
+				"eth_address":   row.EthAddress,
+				"account_value": accountValue,
+				"pnl":           pnl,
+				"roi":           roi,
+				"vlm":           vlm,
+				"window":        wp.Window,
 			}
-		}
 
-		data := g.Map{
-			"eth_address":   row.EthAddress,
-			"account_value": accountValue,
-			"pnl":           pnl,
-			"roi":           roi,
-			"vlm":           vlm,
-		}
-
-		affected, err := dao.Leaderboard.Ctx(ctx).
-			Where("eth_address = ?", row.EthAddress).
-			Data(data).
-			UpdateAndGetAffected()
-		if err != nil {
-			g.Log().Errorf(ctx, "SyncLeaderboard: 更新 %s 失败: %v", row.EthAddress, err)
-			continue
-		}
-		if affected == 0 {
-			if _, err = dao.Leaderboard.Ctx(ctx).Data(data).Insert(); err != nil {
-				g.Log().Errorf(ctx, "SyncLeaderboard: 插入 %s 失败: %v", row.EthAddress, err)
+			affected, err := dao.Leaderboard.Ctx(ctx).
+				Where("eth_address = ? AND window = ?", row.EthAddress, wp.Window).
+				Data(data).
+				UpdateAndGetAffected()
+			if err != nil {
+				g.Log().Errorf(ctx, "SyncLeaderboard: 更新 %s/%s 失败: %v", row.EthAddress, wp.Window, err)
 				continue
 			}
+			if affected == 0 {
+				if _, err = dao.Leaderboard.Ctx(ctx).Data(data).Insert(); err != nil {
+					g.Log().Errorf(ctx, "SyncLeaderboard: 插入 %s/%s 失败: %v", row.EthAddress, wp.Window, err)
+					continue
+				}
+			}
+			synced++
 		}
-		synced++
 	}
 
-	g.Log().Infof(ctx, "SyncLeaderboard: 成功同步 %d 个排行榜交易员", synced)
+	g.Log().Infof(ctx, "SyncLeaderboard: 成功同步 %d 条排行榜记录", synced)
 }

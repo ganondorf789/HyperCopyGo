@@ -20,4 +20,5 @@ type Leaderboard struct {
 	Vlm          any         // 交易量
 	CreatedAt    *gtime.Time // 创建时间
 	UpdatedAt    *gtime.Time // 更新时间
+	Window       any         // 统计窗口 day/week/month/allTime
 }
