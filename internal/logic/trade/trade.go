@@ -198,6 +198,40 @@ func (s *sTrade) SetTpSl(ctx context.Context, userId int64, in v1.TradeSetTpSlRe
 	return &v1.TradeSetTpSlRes{Status: toOrderResult(status)}, nil
 }
 
+func (s *sTrade) OpenOrders(ctx context.Context, userId int64, in v1.TradeOpenOrdersReq) (res *v1.TradeOpenOrdersRes, err error) {
+	w, err := s.getWallet(ctx, userId, in.WalletId)
+	if err != nil {
+		return nil, err
+	}
+
+	info := hyperliquid.NewInfo(ctx, hyperliquid.MainnetAPIURL, true, nil, nil, nil)
+	orders, err := info.FrontendOpenOrders(ctx, w.Address)
+	if err != nil {
+		return nil, fmt.Errorf("获取挂单失败: %v", err)
+	}
+
+	list := make([]v1.OpenOrderItem, 0, len(orders))
+	for _, o := range orders {
+		list = append(list, v1.OpenOrderItem{
+			Coin:             o.Coin,
+			Oid:              o.Oid,
+			Side:             string(o.Side),
+			LimitPx:          o.LimitPx,
+			Size:             o.Sz,
+			OrigSize:         o.OrigSz,
+			OrderType:        o.OrderType,
+			ReduceOnly:       o.ReduceOnly,
+			IsTrigger:        o.IsTrigger,
+			IsPositionTpSl:   o.IsPositionTpSl,
+			TriggerPx:        o.TriggerPx,
+			TriggerCondition: o.TriggerCondition,
+			Timestamp:        o.Timestamp,
+		})
+	}
+
+	return &v1.TradeOpenOrdersRes{List: list}, nil
+}
+
 func (s *sTrade) CancelOrder(ctx context.Context, userId int64, in v1.TradeCancelOrderReq) error {
 	w, err := s.getWallet(ctx, userId, in.WalletId)
 	if err != nil {

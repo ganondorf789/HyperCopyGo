@@ -16,6 +16,7 @@ type (
 		MarketClose(ctx context.Context, userId int64, in v1.TradeMarketCloseReq) (res *v1.TradeMarketCloseRes, err error)
 		LimitClose(ctx context.Context, userId int64, in v1.TradeLimitCloseReq) (res *v1.TradeLimitCloseRes, err error)
 		SetTpSl(ctx context.Context, userId int64, in v1.TradeSetTpSlReq) (res *v1.TradeSetTpSlRes, err error)
+		OpenOrders(ctx context.Context, userId int64, in v1.TradeOpenOrdersReq) (res *v1.TradeOpenOrdersRes, err error)
 		CancelOrder(ctx context.Context, userId int64, in v1.TradeCancelOrderReq) error
 	}
 )

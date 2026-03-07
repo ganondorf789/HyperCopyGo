@@ -78,6 +78,33 @@ type TradeCancelOrderRes struct {
 	g.Meta `mime:"application/json"`
 }
 
+// ==================== 获取挂单 ====================
+
+type TradeOpenOrdersReq struct {
+	g.Meta   `path:"/trade/open-orders" tags:"Trade" method:"get" summary:"获取挂单列表" login_required:"true"`
+	WalletId int64 `json:"walletId" in:"query" v:"required#请选择钱包"`
+}
+type TradeOpenOrdersRes struct {
+	g.Meta `mime:"application/json"`
+	List   []OpenOrderItem `json:"list"`
+}
+
+type OpenOrderItem struct {
+	Coin             string  `json:"coin"`
+	Oid              int64   `json:"oid"`
+	Side             string  `json:"side"`
+	LimitPx          float64 `json:"limitPx"`
+	Size             float64 `json:"sz"`
+	OrigSize         float64 `json:"origSz"`
+	OrderType        string  `json:"orderType"`
+	ReduceOnly       bool    `json:"reduceOnly"`
+	IsTrigger        bool    `json:"isTrigger"`
+	IsPositionTpSl   bool    `json:"isPositionTpsl"`
+	TriggerPx        float64 `json:"triggerPx"`
+	TriggerCondition string  `json:"triggerCondition"`
+	Timestamp        int64   `json:"timestamp"`
+}
+
 // ==================== 公共响应结构 ====================
 
 type OrderResult struct {

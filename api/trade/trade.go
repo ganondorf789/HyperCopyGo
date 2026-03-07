@@ -16,4 +16,5 @@ type ITradeV1 interface {
 	TradeLimitClose(ctx context.Context, req *v1.TradeLimitCloseReq) (res *v1.TradeLimitCloseRes, err error)
 	TradeSetTpSl(ctx context.Context, req *v1.TradeSetTpSlReq) (res *v1.TradeSetTpSlRes, err error)
 	TradeCancelOrder(ctx context.Context, req *v1.TradeCancelOrderReq) (res *v1.TradeCancelOrderRes, err error)
+	TradeOpenOrders(ctx context.Context, req *v1.TradeOpenOrdersReq) (res *v1.TradeOpenOrdersRes, err error)
 }
