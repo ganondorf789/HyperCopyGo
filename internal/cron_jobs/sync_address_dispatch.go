@@ -3,6 +3,8 @@ package cron_jobs
 import (
 	"context"
 	"encoding/json"
+	"sync"
+	"time"
 
 	"demo/internal/consts"
 	"demo/internal/dao"
@@ -12,9 +14,10 @@ import (
 )
 
 const (
-	redisKeyAssignment = "addr_dispatch:assignment" // Hash: address → server_ip
-	maxAddrsPerServer  = 200
-	leaderboardMinVlm  = 1000
+	redisKeyAssignment   = "addr_dispatch:assignment" // Hash: address → server_ip
+	maxAddrsPerServer    = 200
+	leaderboardMinVlm    = 1000
+	triggerDebounceDelay = 3 * time.Second
 )
 
 type dispatchNotification struct {
@@ -22,8 +25,34 @@ type dispatchNotification struct {
 	Unsubscribe []string `json:"unsubscribe"`
 }
 
+var (
+	triggerMu    sync.Mutex
+	triggerTimer *time.Timer
+)
+
 func init() {
 	Register("sync_address_dispatch", SyncAddressDispatch)
+}
+
+// TriggerAddressDispatch 事件触发：在 copy_trade_config / my_track_wallet 增删改后调用，
+// 防抖 3 秒，多次调用只执行一次 dispatch。
+func TriggerAddressDispatch() {
+	triggerMu.Lock()
+	defer triggerMu.Unlock()
+
+	if triggerTimer != nil {
+		triggerTimer.Stop()
+	}
+
+	triggerTimer = time.AfterFunc(triggerDebounceDelay, func() {
+		triggerMu.Lock()
+		triggerTimer = nil
+		triggerMu.Unlock()
+
+		ctx := context.Background()
+		g.Log().Infof(ctx, "[dispatch] event-triggered run")
+		SyncAddressDispatch(ctx, "")
+	})
 }
 
 func SyncAddressDispatch(ctx context.Context, _ string) {

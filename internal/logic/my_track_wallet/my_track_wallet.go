@@ -10,6 +10,7 @@ import (
 	hyperliquid "github.com/sonirico/go-hyperliquid"
 
 	v1 "demo/api/my_track_wallet/v1"
+	"demo/internal/cron_jobs"
 	proxyPool "demo/internal/proxy_pool"
 	"demo/internal/dao"
 	"demo/internal/model"
@@ -39,6 +40,7 @@ func (s *sMyTrackWallet) Create(ctx context.Context, userId int64, in v1.MyTrack
 		}
 		ids = append(ids, id)
 	}
+	cron_jobs.TriggerAddressDispatch()
 	return &v1.MyTrackWalletCreateRes{Ids: ids}, nil
 }
 
@@ -68,14 +70,22 @@ func (s *sMyTrackWallet) Update(ctx context.Context, userId int64, in v1.MyTrack
 		Where("id = ? AND user_id = ?", in.Id, userId).
 		Data(data).
 		Update()
-	return err
+	if err != nil {
+		return err
+	}
+	cron_jobs.TriggerAddressDispatch()
+	return nil
 }
 
 func (s *sMyTrackWallet) Delete(ctx context.Context, userId int64, id int64) error {
 	_, err := dao.MyTrackWallet.Ctx(ctx).
 		Where("id = ? AND user_id = ?", id, userId).
 		Delete()
-	return err
+	if err != nil {
+		return err
+	}
+	cron_jobs.TriggerAddressDispatch()
+	return nil
 }
 
 func (s *sMyTrackWallet) Detail(ctx context.Context, userId int64, id int64) (res *v1.MyTrackWalletDetailRes, err error) {
@@ -301,5 +311,8 @@ func (s *sMyTrackWallet) Import(ctx context.Context, userId int64, in v1.MyTrack
 		ids = append(ids, id)
 	}
 
+	if len(ids) > 0 {
+		cron_jobs.TriggerAddressDispatch()
+	}
 	return &v1.MyTrackWalletImportRes{Ids: ids}, nil
 }

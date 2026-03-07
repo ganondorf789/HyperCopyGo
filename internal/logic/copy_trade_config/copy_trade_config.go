@@ -1,4 +1,4 @@
-﻿package copy_trade_config
+package copy_trade_config
 
 import (
 	"context"
@@ -6,6 +6,7 @@ import (
 
 	v1 "demo/api/copy_trade_config/v1"
 	"demo/internal/consts"
+	"demo/internal/cron_jobs"
 	"demo/internal/dao"
 	"demo/internal/model"
 	"demo/internal/model/entity"
@@ -45,6 +46,7 @@ func (s *sCopyTradeConfig) Create(ctx context.Context, userId int64, in v1.CopyT
 	if err != nil {
 		return nil, err
 	}
+	cron_jobs.TriggerAddressDispatch()
 	return &v1.CopyTradeConfigCreateRes{Id: id}, nil
 }
 
@@ -68,14 +70,22 @@ func (s *sCopyTradeConfig) Update(ctx context.Context, userId int64, in v1.CopyT
 		Data(data).
 		OmitEmpty().
 		Update()
-	return err
+	if err != nil {
+		return err
+	}
+	cron_jobs.TriggerAddressDispatch()
+	return nil
 }
 
 func (s *sCopyTradeConfig) Delete(ctx context.Context, userId int64, id int64) error {
 	_, err := dao.CopyTradeConfig.Ctx(ctx).
 		Where("id = ? AND user_id = ?", id, userId).
 		Delete()
-	return err
+	if err != nil {
+		return err
+	}
+	cron_jobs.TriggerAddressDispatch()
+	return nil
 }
 
 func (s *sCopyTradeConfig) Detail(ctx context.Context, userId int64, id int64) (res *v1.CopyTradeConfigDetailRes, err error) {
