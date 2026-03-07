@@ -18,6 +18,7 @@ import (
 	"demo/internal/controller/notification"
 	"demo/internal/controller/position"
 	"demo/internal/controller/proxy_pool"
+	"demo/internal/controller/trade"
 	"demo/internal/controller/trader"
 	"demo/internal/controller/trader_performance"
 	"demo/internal/controller/trader_positions"
@@ -45,6 +46,7 @@ import (
 	_ "demo/internal/logic/notification"
 	_ "demo/internal/logic/position"
 	_ "demo/internal/logic/proxy_pool"
+	_ "demo/internal/logic/trade"
 	_ "demo/internal/logic/trader"
 	_ "demo/internal/logic/trader_performance"
 	_ "demo/internal/logic/trader_positions"
@@ -111,6 +113,7 @@ var (
 					trader.NewV1(),
 						trader_performance.NewV1(),
 						trader_positions.NewV1(),
+						trade.NewV1(),
 						user_app_key.NewV1(),
 					)
 				})
